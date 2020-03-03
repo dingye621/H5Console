@@ -42,7 +42,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/app/dashboard'
+    redirect: '/app/livelvview'
   },
   {
     path: '/app',

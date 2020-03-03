@@ -1,8 +1,8 @@
 <template>
 
 <div>
-    <div id="page-wrapper"  >
-        <div id="watermarktoggle"></div>
+    <div id="page-wrapper"  class="page-own"> 
+        <!-- <div id="watermarktoggle"></div> -->
         <!-- Header -->
         <!-- <div class="container-fluid ">
             <div class="row bg-title">
@@ -118,6 +118,8 @@
             </div>
         </div><!-- Video -->
         
+    
+    
     </div>
 
 </div>
@@ -690,6 +692,7 @@ export default {
         },
         //点击宫格
         changePanel(event) {
+            console.log('clickgong');
             let data = $(event.target).data('row');
             let _this = this;
              window.setTimeout(function() {
@@ -1328,5 +1331,9 @@ div[name="flex"]:hover {
     height: 32px;
     width: 32px;
 } */
+#page-wrapper{
 
+    margin-left:0px;
+    padding-bottom: 0px;
+}
 </style>
