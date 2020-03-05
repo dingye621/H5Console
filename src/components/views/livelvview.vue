@@ -185,6 +185,8 @@ export default {
     },
     mounted() {
         console.log("....................",this.listdatag.listdatag);
+        console.log(this.listdatag.listdatag);
+        console.log(JSON.stringify(this.listdatag.listdatag));
         this.updateUI();
         // this.loadDevice();
         // this.loadtest();
@@ -193,7 +195,7 @@ export default {
         //this.addWaterMarker();
         // this.height_zsy();
         // 水印
-        document.getElementById("watermarktoggle").style.display=this.watermarktoggle;
+        //document.getElementById("watermarktoggle").style.display=this.watermarktoggle;
         this.$root.bus.$emit('liveplayproto',this.proto);
       
         this.addParameter();
