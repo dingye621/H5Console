@@ -20,7 +20,7 @@ console.log(i18n.tc('message.live.camera')) // 你好世界
 //测试机仓
 var listdatag=[];
 var listdatagload=[];
-function loadtest(){
+async function loadtest(){
     var root = process.env.API_ROOT;
     var wsroot = process.env.WS_HOST_ROOT;
     if (root == undefined){
@@ -34,7 +34,7 @@ function loadtest(){
     var url = root + "/api/v1//GetSrcCamera?session="+ store.state.token;
     console.log(url);
     // return falsel;
-    axios.get(url).then(result=>{
+    await axios.get(url).then(result=>{
         if(result.status == 200){
             var data =  result.data;
             var srcGroup = {children: []};
@@ -93,7 +93,7 @@ function loadtest(){
 }
 loadtest();
 //写作业
-function loadDevice() {
+async function loadDevice() {
     let _this =this;
     var root = process.env.API_ROOT;
     var wsroot = process.env.WS_HOST_ROOT;
@@ -108,7 +108,7 @@ function loadDevice() {
    var url = root + "/api/v1/GetDevice?session="+ store.state.token;
 
       //重组
-      axios.get(url).then(result=>{
+      await axios.get(url).then(result=>{
           if(result.status == 200){
               var srcData = [];
               var data=result.data;
@@ -122,7 +122,7 @@ function loadDevice() {
           }
       })
 }
-function loadSrc(srclevel, srcData) {
+async function loadSrc(srclevel, srcData) {
 
     let _this =this;
     var root = process.env.API_ROOT;
@@ -137,7 +137,7 @@ function loadSrc(srclevel, srcData) {
 
     var url = root + "/api/v1/GetDeviceSrc?token="+ srclevel.strToken + "&session=" + store.state.token;
 
-    axios.get(url).then(result => {
+    await axios.get(url).then(result => {
         if (result.status == 200)
         {
             var data =  result.data;
@@ -203,7 +203,7 @@ function loadSrc(srclevel, srcData) {
 }
 loadDevice();
 //数字仓机
-function NumberDevice() {
+async function NumberDevice() {
     let _this =this;
     var root = process.env.API_ROOT;
     var wsroot = process.env.WS_HOST_ROOT;
@@ -218,7 +218,7 @@ function NumberDevice() {
    var url = root + "/api/v1/GetGbDevice?session="+ store.state.token;
 
       //重组
-      axios.get(url).then(result=>{
+      await axios.get(url).then(result=>{
           if(result.status == 200){
               var srcData = [];
               var data=result.data;
@@ -233,7 +233,7 @@ function NumberDevice() {
       })
 }
 NumberDevice();
-function NumberSrc(srclevel, srcData) {
+async function NumberSrc(srclevel, srcData) {
 
     let _this =this;
     var root = process.env.API_ROOT;
@@ -248,7 +248,7 @@ function NumberSrc(srclevel, srcData) {
 
     var url = root + "/api/v1/GetGbDeviceSrc?token="+ srclevel.strToken + "&session=" + store.state.token;
 
-    axios.get(url).then(result => {
+    await axios.get(url).then(result => {
         if (result.status == 200)
         {
             var data =  result.data;
@@ -300,7 +300,7 @@ function NumberSrc(srclevel, srcData) {
     });
 }
 //级联
-function cloudDevice() {
+async function cloudDevice() {
     let _this =this;
     var root = process.env.API_ROOT;
     var wsroot = process.env.WS_HOST_ROOT;
@@ -315,7 +315,7 @@ function cloudDevice() {
    var url = root + "/api/v1/GetCloudDevice?session="+ store.state.token;
 
       //重组
-      axios.get(url).then(result=>{
+      await axios.get(url).then(result=>{
           if(result.status == 200){
               var srcData = [];
               var data=result.data;
@@ -330,7 +330,7 @@ function cloudDevice() {
       })
 }
 cloudDevice();
-function cloudSrc(srclevel, srcData) {
+async function cloudSrc(srclevel, srcData) {
 
     let _this =this;
     var root = process.env.API_ROOT;
@@ -345,7 +345,7 @@ function cloudSrc(srclevel, srcData) {
 
     var url = root + "/api/v1/GetCloudDeviceSrc?token="+ srclevel.strToken + "&session=" + store.state.token;
 
-    axios.get(url).then(result => {
+    await axios.get(url).then(result => {
         if (result.status == 200)
         {
             var data =  result.data;
@@ -396,5 +396,5 @@ function cloudSrc(srclevel, srcData) {
         console.log('GetSrc failed', error);
     });
 }
-// console.log("....................",listdatag);
+console.log("....................dev",listdatag);
 export default{listdatag,listdatagload}

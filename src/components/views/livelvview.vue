@@ -150,8 +150,8 @@ export default {
                 //过滤文字
                 filterText:"",
                 rc:13,
-                rows: 3,
-                cols: 3,
+                rows: 1,
+                cols: 1,
                 selectCol: 1,
                 selectRow: 1,
                 proto: this.$store.state.rtc,
@@ -169,7 +169,7 @@ export default {
                 direction: 'rtl',//右侧栏
                 watermarktoggle:this.$store.state.watermarktoggle,
                 title:this.$t("message.live.setting"),
-                cameraList: "data123",
+                tokenList: "testTokenList",
             };
 
     },
@@ -181,12 +181,18 @@ export default {
     created()
     {
 
-
+ console.log("...............create",this.listdatag.listdatag);
     },
     mounted() {
-        console.log("....................",this.listdatag.listdatag);
-        console.log(this.listdatag.listdatag);
-        console.log(JSON.stringify(this.listdatag.listdatag));
+        console.log("...............",this.listdatag.listdatag);
+        console.log('lenth:',this.listdatag.listdatag.length);
+       console.log([...this.listdatag.listdatag])
+       console.log('print1',JSON.parse(JSON.stringify([this.listdatag.listdatag])));
+        this.listdatag.listdatag.forEach((item, index, arr) => {
+    console.log('print',item,index,arr);
+});
+       var ress=JSON.stringify(this.listdatag);
+       console.log('ress:',ress);
         this.updateUI();
         // this.loadDevice();
         // this.loadtest();
@@ -198,15 +204,17 @@ export default {
         //document.getElementById("watermarktoggle").style.display=this.watermarktoggle;
         this.$root.bus.$emit('liveplayproto',this.proto);
       
-        this.addParameter();
+       // this.addParameter();
     },
     methods: {
         //获取参数
         addParameter()
         {
-
-            this.$data.cameraList = decodeURI(this.$route.query.cl);
-            console.log(this.$data.cameraList);
+            this.$data.tokenList = decodeURI(this.$route.query.tokenList);
+            console.log(this.$data.tokenList);
+            var tList=JSON.parse(this.$data.tokenList);
+            tList.forEach(console.log);
+            this.listdatag.listdatag.forEach();
         },
 
         //水印

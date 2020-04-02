@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>懋特地图Demo</title>
+<!-- 地图 -->
+<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol.css" />
+<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol3-base_3d.css" />
+	<script src="http://47.103.35.78:8081/chem/js/global/jquery-2.1.1.min.js"></script>
+	<script src="http://47.103.35.78:8081/chem/js/global/bootstrap.js"></script>
+	<!-- 地图 -->
+	<script src="http://47.103.35.78:8081/chem/js/map/map/ol-debug.js"></script>
+	<script src="src/api_Common.js"></script>
+	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_style.js"></script>
+	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_init.js"></script>
+	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_base_fun.js"></script>
+	<script src="src/Motemap.js"></script>
+	<script src="src/api_draw.js"></script>
+	<!-- 弹框 -->
+	<script src="http://47.103.35.78:8081/chem/com/layer/layer.js"></script>
+</head>
+<body>
+
+<div id="map">
+<div>
+	<button onclick="getBuilding();">获取建筑编号</button>
+	<button onclick="getFloor();">获取当前楼层</button>
+	<button onclick="getZoom();">获取当前zoom</button>
+	<button onclick="setLonLatByClick();">获取经纬度</button>
+</div>
+<div>
+	<button onclick="getPOIByMoveon();">POI鼠标移入事件</button>
+	<button onclick="getPOIByClick();">POI鼠标单击事件</button>
+	<button onclick="getPOIByDblclick();">POI鼠标双击事件</button>
+	<button onclick="getAreaByMoveon();">AREA鼠标移入事件</button>
+	<button onclick="getAreaByClick();">AREA鼠标单击事件</button>
+	<button onclick="getAreaByDblclick();">AREA鼠标双击事件</button>
+</div>
+<div>
+	<button onclick="drawPot();">标点</button>
+	<button onclick="modifyPot();">修改点</button>
+	<button onclick="deletePot();">删除点</button>
+	<button onclick="drawArea();">标面</button>
+	<button onclick="modifyArea();">修改面</button>
+	<button onclick="deleteArea();">删除面</button>
+</div>
+</div>
+
+<script>
+	// 初始化
+	var tmap = new Mote.Map({
+		target: "map",
+		place: "61",
+		building: 1,
+		floor: "01",
+		mode: "2d"
+	})
+	// 获取buildingid
+	function getBuilding(){
+		alert("建筑编号是：" + tmap.getBuilding());
+	}
+	// 获取floorid
+	function getFloor(){
+		alert("当前楼层是：" + tmap.getFloor());
+	}
+	// 获取zoom
+	function getZoom(){
+		alert("当前层级是：" + tmap.getZoom());
+	}
+	// 获取lonlat,click
+	function setLonLatByClick(){
+		tmap.rmEvent('click');
+		tmap.setLonLatByClick();
+	}
+	// POI鼠标移入事件
+	function getPOIByMoveon(){
+		var condition = ol.events.condition.pointerMove;
+		var select = tmap.selectByInteraction([configPotLayer],condition);
+		select.select.on('select', function(e) {
+			alert(e.selected[0].get('name'));
+			tmap.rmInteraction(select.select);
+		});
+	}
+	// POI鼠标单击事件
+	function getPOIByClick(){
+		var condition = ol.events.condition.singleClick;
+		var select = tmap.selectByInteraction([configPotLayer],condition);
+		select.select.on('select', function(e) {
+			alert(e.selected[0].get('name'));
+			tmap.rmInteraction(select.select);
+		});
+	}
+	// POI鼠标双击事件
+	function getPOIByDblclick(){
+		var condition = ol.events.condition.doubleClick;
+		var select = tmap.selectByInteraction([configPotLayer],condition);
+		select.select.on('select', function(e) {
+			alert(e.selected[0].get('name'));
+			tmap.rmInteraction(select.select);
+
+			layer.open({
+  type: 2,
+  area: ['700px', '450px'],
+  fixed: false, //不固定
+  maxmin: true,
+  content: 'www.baidu.com'
+});
+		});
+	}
+	// Area鼠标移入事件
+	function getAreaByMoveon(){
+		var condition = ol.events.condition.pointerMove;
+		var select = tmap.selectByInteraction([configAreaLayer],condition);
+		select.select.on('select', function(e) {
+			alert(e.selected[0].get('name'));
+			tmap.rmInteraction(select.select);
+		});
+	}
+	// Area鼠标单击事件
+	function getAreaByClick(){
+		var condition = ol.events.condition.singleClick;
+		var select = tmap.selectByInteraction([configAreaLayer],condition);
+		select.select.on('select', function(e) {
+			alert(e.selected[0].get('name'));
+			tmap.rmInteraction(select.select);
+		});
+	}
+	// Area鼠标双击事件
+	function getAreaByDblclick(){
+		var condition = ol.events.condition.doubleClick;
+		var select = tmap.selectByInteraction([configAreaLayer],condition);
+		select.select.on('select', function(e) {
+			alert(e.selected[0].get('name'));
+			tmap.rmInteraction(select.select);
+		});
+	}
+  // 加载点
+  tmap.loadPoint();
+  // 加载面
+  tmap.loadPolygon();
+  // 新增点&保存
+  function drawPot(){
+	var drawPot = tmap.drawPotByInteraction(configPotSource);
+	drawPot.Point.on('drawend', function(evt) {
+		var Coordinates = evt.feature.get('geom').getCoordinates();
+		var newCoordinates = [Coordinates[1],Coordinates[0]];
+
+		//弹出框  编辑newFeature
+		var newFeature = new ol.Feature();
+		newFeature.setId('pot');
+		newFeature.setGeometryName('geom');
+		newFeature.set('geom', null);
+		newFeature.set('place_id', placeid);
+		newFeature.set('building_id', buildingid);
+		newFeature.set('floor_id', floorid);
+		newFeature.set('name', '添加点');
+		newFeature.set('remarks', '测试');
+		newFeature.set('icon', '13');
+		newFeature.setGeometry(new ol.geom.Point(newCoordinates));
+		//drawPot.setActive(false);
+		// 带信息保存
+		tmap.saveFuature([newFeature], 'fence_configpot','insert',function(e){
+			if (e ==4 ){alert('保存成功');tmap.loadPoint();}
+		});
+		
+		tmap.rmInteraction(drawPot.Point);
+	}, this);
+  }
+  // 新增面&保存
+  function drawArea(){
+	var drawArea = tmap.drawAreaByInteraction(configAreaSource);
+	drawArea.Polygon.on('drawend', function(evt) {
+		var Coordinates = evt.feature.get('geom').getCoordinates()[0];
+		var CoordinatesLength = Coordinates.length;
+		var newCoordinates = [];
+		var oldCoordinates;
+		for (var i=0;i<CoordinatesLength;i++){
+			oldCoordinates = Coordinates[i];
+			newCoordinates[i] = [oldCoordinates[1],oldCoordinates[0]];
+		}
+		var newFeature = new ol.Feature();
+		newFeature.setId('area');
+		newFeature.setGeometryName('geom');
+		newFeature.set('geom', null);
+		newFeature.set('place_id', placeid);
+		newFeature.set('building_id', buildingid);
+		newFeature.set('floor_id', floorid);
+		newFeature.set('name', '添加面');
+		newFeature.set('remarks', '测试');
+		newFeature.set('color', '#a2c4c9');
+		newFeature.setGeometry(new ol.geom.Polygon([newCoordinates]));
+		//drawArea.setActive(false);
+		// 带信息保存
+		tmap.saveFuature([newFeature], 'fence_configarea','insert',function(e){
+			if (e ==4 ){alert('保存成功');tmap.loadPolygon();}
+		});
+		
+		tmap.rmInteraction(drawArea.Polygon);
+	}, this);
+  }
+  // 修改点&保存
+  function modifyPot(){
+	var modifyPot = tmap.modifyPotByInteraction([configPotLayer]);
+	modifyPot.modify.on('modifyend', function(evt) {
+		var modifyId = evt.features.getArray()[0].getId();
+		var Coordinates = evt.features.getArray()[0].getGeometry().getCoordinates();
+		var newCoordinates = [Coordinates[1],Coordinates[0]];
+		var newFeature = new ol.Feature();
+		newFeature.setId(modifyId);
+		newFeature.setGeometryName('geom');
+		newFeature.set('geom', null);
+		newFeature.set('place_id', placeid);
+		newFeature.set('building_id', buildingid);
+		newFeature.set('floor_id', floorid);
+		newFeature.set('name', '修改点');
+		newFeature.set('remarks', '测试');
+		newFeature.set('icon', '13');
+		newFeature.setGeometry(new ol.geom.Point(newCoordinates));
+		//drawPot.setActive(false);
+		// 带信息保存
+		tmap.saveFuature([newFeature], 'fence_configpot','update',function(e){
+			if (e ==4 ){alert('保存成功');tmap.loadPoint();}
+		});
+		tmap.rmInteraction(modifyPot.select);
+		tmap.rmInteraction(modifyPot.modify);
+	}, this);
+  }
+  // 修改面&保存
+  function modifyArea(){
+	var modifyArea = tmap.modifyAreaByInteraction([configAreaLayer]);
+	modifyArea.modify.on('modifyend', function(evt) {
+		var modifyId = evt.features.getArray()[0].getId();
+		var Coordinates = evt.features.getArray()[0].getGeometry().getCoordinates()[0];
+		var CoordinatesLength = Coordinates.length;
+		var newCoordinates = [];
+		var oldCoordinates;
+		for (var i=0;i<CoordinatesLength;i++){
+			oldCoordinates = Coordinates[i];
+			newCoordinates[i] = [oldCoordinates[1],oldCoordinates[0]];
+		}
+		var newFeature = new ol.Feature();
+		newFeature.setId(modifyId);
+		newFeature.setGeometryName('geom');
+		newFeature.set('geom', null);
+		newFeature.set('place_id', placeid);
+		newFeature.set('building_id', buildingid);
+		newFeature.set('floor_id', floorid);
+		newFeature.set('name', '修改面');
+		newFeature.set('remarks', '测试');
+		newFeature.set('color', '#a2c4c9');
+		newFeature.setGeometry(new ol.geom.Polygon([newCoordinates]));
+		//drawPot.setActive(false);
+		// 带信息保存
+		tmap.saveFuature([newFeature], 'fence_configarea','update',function(e){
+			if (e ==4 ){alert('保存成功');tmap.loadPolygon();}
+		});
+		tmap.rmInteraction(modifyArea.select);
+		tmap.rmInteraction(modifyArea.modify);
+	}, this);
+  }
+  // 删除点
+  function deletePot(){
+	var condition = ol.events.condition.singleClick;
+	var select = tmap.selectByInteraction([configPotLayer],condition);
+	select.select.on('select', function(e) {
+		if(e.selected.length != 0) {  
+			var selectInfo = e.selected[0];
+			layer.msg('确认删除？', {
+				  time: 0 //不自动关闭
+				  ,btn: ['确定', '取消']
+				  ,yes: function(index){
+				    layer.close(index);
+					var newFeature = new ol.Feature();
+					newFeature.setId(selectInfo.getId());
+					tmap.saveFuature([newFeature], 'fence_configpot','remove',function(e){
+						if (e ==4 ){alert('保存成功');tmap.loadPoint();}
+					});
+				  }
+			});
+		}			
+		tmap.rmInteraction(select.select);
+	});
+  }
+  // 删除面
+  function deleteArea(){
+	var condition = ol.events.condition.singleClick;
+	var select = tmap.selectByInteraction([configAreaLayer],condition);
+	select.select.on('select', function(e) {
+		if(e.selected.length != 0) {  
+			var selectInfo = e.selected[0];
+			layer.msg('确认删除？', {
+				  time: 0 //不自动关闭
+				  ,btn: ['确定', '取消']
+				  ,yes: function(index){
+				    layer.close(index);
+					var newFeature = new ol.Feature();
+					newFeature.setId(selectInfo.getId());
+					tmap.saveFuature([newFeature], 'fence_configarea','remove',function(e){
+						if (e ==4 ){alert('保存成功');tmap.loadPolygon();}
+					});
+				  }
+			});
+		}			
+		tmap.rmInteraction(select.select);
+	});
+  }
+</script>
+</body>
+</html>
