@@ -57,32 +57,72 @@ color: black;
 	<button onclick="deleteArea();">删除面</button>
 </div>
 </div>
-
+<!--可燃有毒气体监测图览template模版-->
 <script type="text/html" id="template1">
     <ul>
 		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#tab-1" data-toggle="tab">基础数据</a></li>
-				<li><a href="#tab-2" data-toggle="tab">功能授权</a></li>
-				<li><a href="#tab-3" data-toggle="tab">角色描述</a></li>
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">监测信息</a></li>
+				<li><a href="#tab-3" data-toggle="tab">历史报警数据</a></li>
 			</ul>
 			<div style="padding-top: 20px; margin-right: 30px;">
 				<div class="tab-content">
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
-								tab1
-							
+							<table>
+								<tr><td>监测设备名称：</td><td><%= list[0].equipment %></td></tr>
+								<tr><td>监测设备点简称：</td><td><%= list[0].equipment %></td></tr>
+							</table>
 						</div>
 					</div>
 					<div id="tab-2" class="tab-pane">
-						<div class="panel-body">
-							tab2
-						</div>
+							<div class="panel-body">
+									<table>
+										<tr><td>监测点位号：</td><td><%= list[0].equipment %></td></tr>
+										<tr><td>监测点数值：</td><td><%= list[0].equipment %></td></tr>
+									</table>
+								</div>
 					</div>
 					<div id="tab-3" class="tab-pane">
+							<div class="panel-body">
+									<table>
+										<tr><td>上次报警时间：</td><td><%= list[0].equipment %></td></tr>
+										<tr><td>今年报警次数：</td><td><%= list[0].equipment %></td></tr>
+									</table>
+								</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+	<!--重大危险源监控图层template模版-->
+<script type="text/html" id="template2">
+
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">视频播放</a></li>
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
-							tab3
+							<table>
+								<tr><td>监测设备名称：</td><td><%= list[0].equipment %></td></tr>
+								<tr><td>监测设备点简称：</td><td><%= list[0].equipment %></td></tr>
+							</table>
 						</div>
+					</div>
+					<div id="tab-2" class="tab-pane">
+							<div class="panel-body">
+									<table>
+										<tr><td>监测点位号：</td><td><%= list[0].equipment %></td></tr>
+										<tr><td>监测点数值：</td><td><%= list[0].equipment %></td></tr>
+									</table>
+								</div>
 					</div>
 				</div>
 			</div>
@@ -96,7 +136,7 @@ color: black;
  {
 
  // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
- var data = [{name:"张三",sex:"女"},{name:"李四",sex:"男"},{name:"王五",sex:"女"}]
+ var data = [{name:"张三",sex:"女",equipment:"测试设备"},{name:"李四",sex:"男"},{name:"王五",sex:"女"}]
  
  // 模板渲染
  var template1 = document.getElementById('template1').innerHTML;
