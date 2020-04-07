@@ -16,19 +16,19 @@
 	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_base_fun.js"></script>
 	<script src="src/Motemap2.js"></script>
 	<script src="src/api_draw.js"></script>
-	<script src="src/indextab.js.js"></script>
+	<script src="src/indextab.js"></script>
 	<!-- 弹框 -->
 	<script src="http://47.103.35.78:8081/chem/com/layer/layer.js"></script>
+	<!--css-->
 	<link href="src/bootstrap.min.css" rel="stylesheet" />
 	<link href="src/framework-theme.css" rel="stylesheet" />
-	<script src="src/template.js"></script>
-	<style>
-		.layui-layer{
 
+	<style>
+.layui-layer{
 background-color: white;
 color: black;
 		}
-		</style>
+	</style>
 </head>
 <body>
 
@@ -57,6 +57,9 @@ color: black;
 	<button onclick="deleteArea();">删除面</button>
 </div>
 </div>
+<!--js-->
+<script src="src/template.js"></script>
+<script src="src/echarts.min.js"></script>
 <!--可燃有毒气体监测图览template模版-->
 <script type="text/html" id="template1">
     <ul>
@@ -71,24 +74,24 @@ color: black;
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
 							<table>
-								<tr><td>监测设备名称：</td><td><%= list[0].equipment %></td></tr>
-								<tr><td>监测设备点简称：</td><td><%= list[0].equipment %></td></tr>
+								<tr><td>监测设备名称：</td><td><%= data.equipment %></td></tr>
+								<tr><td>监测设备点简称：</td><td><%= data.equipment %></td></tr>
 							</table>
 						</div>
 					</div>
 					<div id="tab-2" class="tab-pane">
 							<div class="panel-body">
 									<table>
-										<tr><td>监测点位号：</td><td><%= list[0].equipment %></td></tr>
-										<tr><td>监测点数值：</td><td><%= list[0].equipment %></td></tr>
+										<tr><td>监测点位号：</td><td><%= data.equipment %></td></tr>
+										<tr><td>监测点数值：</td><td><%= data.equipment %></td></tr>
 									</table>
 								</div>
 					</div>
 					<div id="tab-3" class="tab-pane">
 							<div class="panel-body">
 									<table>
-										<tr><td>上次报警时间：</td><td><%= list[0].equipment %></td></tr>
-										<tr><td>今年报警次数：</td><td><%= list[0].equipment %></td></tr>
+										<tr><td>上次报警时间：</td><td><%= data.equipment %></td></tr>
+										<tr><td>今年报警次数：</td><td><%= data.equipment %></td></tr>
 									</table>
 								</div>
 					</div>
@@ -97,7 +100,7 @@ color: black;
 		</div>
     </ul>
 </script>
-	<!--重大危险源监控图层template模版-->
+<!--重大危险源监控图层template模版-->
 <script type="text/html" id="template2">
 
     <ul>
@@ -111,18 +114,54 @@ color: black;
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
 							<table>
-								<tr><td>监测设备名称：</td><td><%= list[0].equipment %></td></tr>
-								<tr><td>监测设备点简称：</td><td><%= list[0].equipment %></td></tr>
+								<tr><td>监控名称：</td><td><%= data.equipment %></td></tr>
+								<tr>
+									<td>品牌：</td><td><%= data.equipment %></td>
+									<td>型号：</td><td><%= data.equipment %></td>
+								</tr>
+								<tr><td>用途：</td><td><%= data.equipment %></td></tr>
+								<tr><td>监测设备名称：</td><td><%= data.equipment %></td></tr>
+							</table>
+						</div>
+					</div>
+					<div id="tab-2" class="tab-pane">
+						<iframe src="http://10.105.16.61:8080/ws.html?token=c123&autoplay=1" style="width:100%;height:100%;"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+
+<!--隐患排查与治理图览-->
+<script type="text/html" id="template3">
+
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">统计信息</a></li>
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<table>
+								<tr><td>监测设备名称：</td><td><%= data.equipment %></td></tr>
+								<tr>
+									<td>监测设备点简称：</td><td><%= data.equipment %></td>
+								</tr>
+								<tr><td>用区域名称：</td><td><%= data.equipment %></td></tr>
+								
 							</table>
 						</div>
 					</div>
 					<div id="tab-2" class="tab-pane">
 							<div class="panel-body">
-									<table>
-										<tr><td>监测点位号：</td><td><%= list[0].equipment %></td></tr>
-										<tr><td>监测点数值：</td><td><%= list[0].equipment %></td></tr>
-									</table>
-								</div>
+								<div>工厂同类隐患发生次数：</div>
+								<div id="main" style="width: 600px;height:400px;"></div>
+								<div>区域内各类隐患分布：</div>
+						    </div>
 					</div>
 				</div>
 			</div>
@@ -132,34 +171,72 @@ color: black;
 
 <script>
  
- function testTemp()
+ function testTemp(type)
  {
-
  // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
- var data = [{name:"张三",sex:"女",equipment:"测试设备"},{name:"李四",sex:"男"},{name:"王五",sex:"女"}]
+ var data = {name:"张三",sex:"女",equipment:"测试数据demo"};
  
  // 模板渲染
- var template1 = document.getElementById('template1').innerHTML;
- document.getElementById('templatelist').innerHTML = template(template1,{list:data});
+ var template1 = document.getElementById('template'+type).innerHTML;
+ document.getElementById('templatelist'+type).innerHTML = template(template1,{data:data});
+
+ 
  }
    
 
- function layerOpen()
+ function layerOpen(type)
  {
 	layer.open({
 			title:null,
   type: 1,
   skin: 'layui-layer-rim', //加上边框
-  area: ['420px', '240px'], //宽高
-  content: '<div id="templatelist"></div>'
+  area: ['620px', '340px'], //宽高
+  content: '<div id="templatelist'+ type+'"></div>'
 });
 
-testTemp();
+testTemp(type);
  }
+
+ function layerOpen2(type)
+ {
+	layer.open({
+  type: 2,
+  area: ['700px', '450px'],
+  fixed: false, //不固定
+  maxmin: true,
+  content: 'http://www.baidu.com'
+});
+
+testTemp(type);
+ }
+ 
+function initEChart()
+{
+ // 基于准备好的dom，初始化echarts实例
+ var myChart = echarts.init(document.getElementById('main'));
+ //var option=null;
+  option = {
+    xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: 'line'
+    }]
+};
+// 使用刚指定的配置项和数据显示图表。
+myChart.setOption(option);
+}
+
  
 </script>
 
 <script>
+
 	// 初始化
 	var tmap = new Mote.Map({
 		target: "map",
@@ -203,20 +280,14 @@ testTemp();
 	function getPOIByClick(){
 		tmap.poiMouseEvent('click', function(info){
 		   alert(JSON.stringify(info));
-		   layerOpen();
+		   layerOpen(1);
 		});
 	}
 	// POI鼠标双击事件
 	function getPOIByDblclick(){
 		tmap.poiMouseEvent('dbclick', function(info){
 		   alert(JSON.stringify(info));
-			layer.open({
-  type: 2,
-  area: ['700px', '450px'],
-  fixed: false, //不固定
-  maxmin: true,
-  content: 'http://www.baidu.com'
-});
+		   layerOpen(2);
 		});
 	}
 	// Area鼠标移入事件
@@ -229,13 +300,15 @@ testTemp();
 	function getAreaByClick(){
 		tmap.areaMouseEvent('click', function(info){
 			alert(JSON.stringify(info));
-			layerOpen();
+			layerOpen(3);
+			initEChart();
 		});
 	}
 	// Area鼠标双击事件
 	function getAreaByDblclick(){
 		tmap.areaMouseEvent('dbclick', function(info){
 		    alert(JSON.stringify(info));
+			layerOpen(2);
 		});
 	}
   // 加载点
