@@ -282,6 +282,12 @@ var svglocationWarn = '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/
 var mysvglocationWarn = new Image();
 mysvglocationWarn.src = 'data:image/svg+xml,' + escape(svglocationWarn);
 
+var svglocation = '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30px" height="30px">'
+		+ '<circle fill="#FFFFFF" stroke="#0000AA" stroke-width="1" cx="15" cy="15" r="8"/>'
+		+ '<circle fill="#3333ff" stroke="#0000ff" stroke-width="1" cx="15" cy="15" r="5"/></svg>';
+var mysvglocation = new Image();
+mysvglocation.src = 'data:image/svg+xml,' + escape(svglocation);
+
 var assetstylefunction = function(feature) {
 	var asset_id = feature.get('l_id');
 	var asset_classiiiid = feature.get('category');
@@ -305,17 +311,32 @@ var assetstylefunction = function(feature) {
 					width : 2
 				})
 			}),
-			image : new ol.style.Icon({
-				src : IconPath + '/' + locateIcon[asset_classiiiid],
-				anchor : [ 0.5, 0.5 ],
-				scale : 0.2 + (map.getView().getZoom()-19)*0.02,
-				rotateWithView : false
-			}),
+			// image : new ol.style.Icon({
+				// src : IconPath + '/' + locateIcon[asset_classiiiid],
+				// anchor : [ 0.5, 0.5 ],
+				// scale : 0.2 + (map.getView().getZoom()-19)*0.02,
+				// rotateWithView : false
+			// }),
 			zIndex : 300
 		}),
 		'alarm' : new ol.style.Style({
+			text : new ol.style.Text({
+				text : asset_name,
+				font : '0.76em sans-serif',
+				// scale: 100,
+				textAlign : 'center',
+				textBaseline : 'top',
+				offsetY : 0,
+				fill : new ol.style.Fill({
+					color : [ 40, 40, 40, 1 ]
+				}),
+				stroke : new ol.style.Stroke({
+					color : [ 255, 255, 255, 1 ],
+					width : 2
+				})
+			}),
 			image : new ol.style.Icon({
-				img : mysvglocationWarn,
+				img : mysvglocation,
 				imgSize : [ 30, 30 ], // 图标大小
 				anchor : [ 0.5, 1 ], // 摆放位置
 				rotateWithView : false
@@ -337,12 +358,12 @@ var assetstylefunction = function(feature) {
 					width : 1
 				})
 			}),
-			image : new ol.style.Icon({
-				src : IconPath + '/icon/' + asset_classiiiid + '_Highlight.png',
-				anchor : [ 0.5, 0.5 ],
-				scale : 0.3,
-				rotateWithView : false
-			}),
+			// image : new ol.style.Icon({
+				// src : IconPath + '/icon/' + asset_classiiiid + '_Highlight.png',
+				// anchor : [ 0.5, 0.5 ],
+				// scale : 0.3,
+				// rotateWithView : false
+			// }),
 			zIndex : 300
 		})
 	};
@@ -360,7 +381,7 @@ var assetstylefunction = function(feature) {
 			showOrHide = 'show'; // 正常显示
 		}
 	}
-	return assetLocateStyle[showOrHide];
+	return assetLocateStyle['alarm'];
 }
 
 // 网关基站样式设置

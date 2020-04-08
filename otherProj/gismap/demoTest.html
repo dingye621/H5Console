@@ -14,8 +14,9 @@
 	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_style.js"></script>
 	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_init.js"></script>
 	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_base_fun.js"></script>
-	<script src="src/Motemap2.js"></script>
-	<script src="src/api_draw.js"></script>
+	<script src="src/Motemap.js"></script>
+	<!-- <script src="src/api_draw.js"></script> -->
+	<script src="src/api_PotArea.js"></script>
 	<script src="src/indextab.js"></script>
 	<!-- 弹框 -->
 	<script src="http://47.103.35.78:8081/chem/com/layer/layer.js"></script>
@@ -27,6 +28,24 @@
 .layui-layer{
 background-color: white;
 color: black;
+		}
+		.leftMenu{
+			list-style-type: none;
+			padding: 0px;
+			margin-left:20px;
+			position:fixed; bottom:620px; left:0;
+			border: 1px solid black;
+		}
+		.leftMenu li{
+background-color: white;
+width: 100px;
+height: 30px;
+line-height: 30px;
+padding: 5px;
+		}
+		.leftMenu li:hover{
+background-color:skyblue;
+
 		}
 	</style>
 </head>
@@ -49,17 +68,39 @@ color: black;
 	<button onclick="removeMouseEvent()">消除事件</button>
 </div>
 <div>
-	<button onclick="drawPot();">标点</button>
+	<button onclick="drawPot(1);">标点（有毒气体）</button>
+	<button onclick="drawPot(2);">标点（重大危险源）</button>
+	<button onclick="drawPot(3);">标点（隐患排查与治理）</button>
 	<button onclick="modifyPot();">修改点</button>
 	<button onclick="deletePot();">删除点</button>
 	<button onclick="drawArea();">标面</button>
 	<button onclick="modifyArea();">修改面</button>
 	<button onclick="deleteArea();">删除面</button>
 </div>
+<div>
+		<button onclick="loadMapByLonLat();">根据坐标加载地图</button>
+		<button onclick="loadLocate();">定位点显示</button>
+		<button onclick="getLocateByMoveon();">定位点鼠标移入</button>
+		<button onclick="getPOIByType();">根据类型加载POI</button>
+	</div>
 </div>
+
+<!--左边按钮-->
+<ul class="leftMenu">
+	<li id="tp1">
+		可燃有毒气体
+	</li>
+	<li id="tp2">
+		重大危险源
+	</li>
+	<li id="tp3">
+		隐患排查与治理
+	</li>
+</ul>
 <!--js-->
 <script src="src/template.js"></script>
 <script src="src/echarts.min.js"></script>
+<script src="src/config.js"></script>
 <!--可燃有毒气体监测图览template模版-->
 <script type="text/html" id="template1">
     <ul>
@@ -74,24 +115,24 @@ color: black;
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
 							<table>
-								<tr><td>监测设备名称：</td><td><%= data.equipment %></td></tr>
-								<tr><td>监测设备点简称：</td><td><%= data.equipment %></td></tr>
+								<tr><td>监测设备名称：</td><td><%= data.equipmentName %></td></tr>
+								<tr><td>监测设备点简称：</td><td><%= data.shortName %></td></tr>
 							</table>
 						</div>
 					</div>
 					<div id="tab-2" class="tab-pane">
 							<div class="panel-body">
 									<table>
-										<tr><td>监测点位号：</td><td><%= data.equipment %></td></tr>
-										<tr><td>监测点数值：</td><td><%= data.equipment %></td></tr>
+										<tr><td>监测点位号：</td><td><%= data.tagName %></td></tr>
+										<tr><td>监测点数值：</td><td><%= data.tagName %></td></tr>
 									</table>
 								</div>
 					</div>
 					<div id="tab-3" class="tab-pane">
 							<div class="panel-body">
 									<table>
-										<tr><td>上次报警时间：</td><td><%= data.equipment %></td></tr>
-										<tr><td>今年报警次数：</td><td><%= data.equipment %></td></tr>
+										<tr><td>上次报警时间：</td><td></td></tr>
+										<tr><td>今年报警次数：</td><td></td></tr>
 									</table>
 								</div>
 					</div>
@@ -170,7 +211,14 @@ color: black;
 </script>
 
 <script>
- 
+//获取配置文件的ip
+var ip = globalConfig.ip;
+
+//浏览器当前窗口可视区域高度
+ var h=$(window).height();
+
+$('.leftMenu').css('bottom',h/2+'px');
+
  function testTemp(type)
  {
  // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
@@ -189,8 +237,8 @@ color: black;
 	layer.open({
 			title:null,
   type: 1,
-  skin: 'layui-layer-rim', //加上边框
-  area: ['620px', '340px'], //宽高
+  //skin: 'layui-layer-rim', //加上边框
+  area: ['620px', '420px'], //宽高
   content: '<div id="templatelist'+ type+'"></div>'
 });
 
@@ -241,8 +289,10 @@ myChart.setOption(option);
 	var tmap = new Mote.Map({
 		target: "map",
 		place: "61",
+			//place: "2",
 		building: 1,
 		floor: "01",
+			//floor: "22",
 		mode: "2d"
 	})
 	// 获取buildingid
@@ -316,7 +366,7 @@ myChart.setOption(option);
   // 加载面
   tmap.loadPolygon();
   // 新增点&保存
-  function drawPot()
+  function drawPot(tp)
   {
 	var info = {
 	 name:'有毒汽体',
@@ -324,7 +374,7 @@ myChart.setOption(option);
 	 building_id:tmap.getBuilding(),
 	 floor_id:tmap.getFloor(),
 	 place_id:tmap.getPlace(),
-	 type:12
+	 type:tp
 	};
 	tmap.drawPoint(info, function(e){
 	 if(e == 1)
@@ -405,7 +455,70 @@ myChart.setOption(option);
 	  });
   }
 
-  
+
+  // 根据坐标加载地图
+  function loadMapByLonLat(){
+	var lon = 119.02492270,lat = 33.38843574;
+	var ret = tmap.loadMap(lon, lat,function(e){
+		 if(e == 1)
+		alert("加载成功");
+	});
+  }
+  // 定位点显示
+  function loadLocate(){
+	var locators = [{
+		bid:'233',
+		placeId:'61',
+		buildingId:1,
+		floorId:'01',
+		lon:119.02492270,
+		lat:119.38843574
+	} ];
+	var ret = tmap.loadLocators(locators,function(e){
+		 if(e == 1)
+		alert("加载成功");
+	});
+  }
+  // 定位点鼠标移入
+  function getLocateByMoveon(){
+		tmap.locatorMouseEvent('move', function(info){
+		   alert(JSON.stringify(info));
+		});
+	}
+  // 根据类型加载POI，示例：加载type=12的poi
+  function getPOIByType(tp){
+	var filter = {
+		type:tp
+	};
+	// 删除全部pot图层
+	// tmap.rmPoint();
+	// 根据type加载pot图层
+	tmap.loadPointByType(filter,function(e){
+		if(e == 1)
+			alert("加载成功");
+		});
+	}
+	//
+  $('#tp1').click(function(){
+
+	getPOIByType(1);
+  });
+  $('#tp2').click(function(){
+
+getPOIByType(2);
+});
+$('#tp3').click(function(){
+
+getPOIByType(3);
+});
+
+function getPOIByClickReal(){
+		tmap.poiMouseEvent('click', function(info){
+			console.log(info);
+		   layerOpen(info.type);
+		});
+	}
+	getPOIByClickReal();
 </script>
 
 
