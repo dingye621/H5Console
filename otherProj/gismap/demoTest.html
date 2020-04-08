@@ -228,7 +228,8 @@ $('.leftMenu').css('bottom',h/2+'px');
  var template1 = document.getElementById('template'+type).innerHTML;
  document.getElementById('templatelist'+type).innerHTML = template(template1,{data:data});
 
- 
+ if(type==3)
+ initEChart();
  }
    
 
