@@ -1,7 +1,6 @@
 (function(w){
 	w.globalConfig = {
-			ip:"localhost",
-			port:8080
+			ip:"localhost:7000"
 	};
 	return w;
 })(window || {});

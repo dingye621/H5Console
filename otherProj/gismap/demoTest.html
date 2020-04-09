@@ -101,6 +101,7 @@ background-color:skyblue;
 <script src="src/template.js"></script>
 <script src="src/echarts.min.js"></script>
 <script src="src/config.js"></script>
+<script src="src/ajax.js"></script>
 <!--可燃有毒气体监测图览template模版-->
 <script type="text/html" id="template1">
     <ul>
@@ -115,8 +116,8 @@ background-color:skyblue;
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
 							<table>
-								<tr><td>监测设备名称：</td><td><%= data.equipmentName %></td></tr>
-								<tr><td>监测设备点简称：</td><td><%= data.shortName %></td></tr>
+								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
+								<tr><td>监测设备点简称：</td><td><%= data.equipment.shortName %></td></tr>
 							</table>
 						</div>
 					</div>
@@ -219,34 +220,41 @@ var ip = globalConfig.ip;
 
 $('.leftMenu').css('bottom',h/2+'px');
 
- function testTemp(type)
+ function testTemp(info)
  {
  // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
+ 
  var data = {name:"张三",sex:"女",equipment:"测试数据demo"};
+ if(info.type==1)
+ {
+	 console.log('info..',info);
+	date=getTagInfo(info.name);
+ }
+ 
  
  // 模板渲染
- var template1 = document.getElementById('template'+type).innerHTML;
- document.getElementById('templatelist'+type).innerHTML = template(template1,{data:data});
+ var template1 = document.getElementById('template'+info.type).innerHTML;
+ document.getElementById('templatelist'+info.type).innerHTML = template(template1,{data:data});
 
- if(type==3)
+ if(info.type==3)
  initEChart();
- }
+  }
    
 
- function layerOpen(type)
+ function layerOpen(info)
  {
 	layer.open({
 			title:null,
   type: 1,
   //skin: 'layui-layer-rim', //加上边框
   area: ['620px', '420px'], //宽高
-  content: '<div id="templatelist'+ type+'"></div>'
+  content: '<div id="templatelist'+ info.type+'"></div>'
 });
 
-testTemp(type);
+testTemp(info);
  }
 
- function layerOpen2(type)
+ function layerOpen2(info)
  {
 	layer.open({
   type: 2,
@@ -256,7 +264,7 @@ testTemp(type);
   content: 'http://www.baidu.com'
 });
 
-testTemp(type);
+testTemp(info);
  }
  
 function initEChart()
@@ -370,7 +378,7 @@ myChart.setOption(option);
   function drawPot(tp)
   {
 	var info = {
-	 name:'有毒汽体',
+	 name:'1123',
 	 remarks:'这是一个测试点',
 	 building_id:tmap.getBuilding(),
 	 floor_id:tmap.getFloor(),
@@ -516,7 +524,7 @@ getPOIByType(3);
 function getPOIByClickReal(){
 		tmap.poiMouseEvent('click', function(info){
 			console.log(info);
-		   layerOpen(info.type);
+		   layerOpen(info);
 		});
 	}
 	getPOIByClickReal();
