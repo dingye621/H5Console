@@ -102,6 +102,7 @@ background-color:skyblue;
 <script src="src/echarts.min.js"></script>
 <script src="src/config.js"></script>
 <script src="src/ajax.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!--可燃有毒气体监测图览template模版-->
 <script type="text/html" id="template1">
     <ul>
@@ -214,23 +215,22 @@ background-color:skyblue;
 <script>
 //获取配置文件的ip
 var ip = globalConfig.ip;
-
+const a=1;
 //浏览器当前窗口可视区域高度
  var h=$(window).height();
 
 $('.leftMenu').css('bottom',h/2+'px');
 
- function testTemp(info)
+ async function testTemp(info)
  {
  // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
  
  var data = {name:"张三",sex:"女",equipment:"测试数据demo"};
  if(info.type==1)
  {
-	 console.log('info..',info);
-	date=getTagInfo(info.name);
+	data=await getTagInfo(info.name);
+	data=data.data;
  }
- 
  
  // 模板渲染
  var template1 = document.getElementById('template'+info.type).innerHTML;
