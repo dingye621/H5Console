@@ -3,23 +3,25 @@
 <head>
 <meta charset="utf-8">
 <title>懋特地图Demo</title>
+<!--47.103.35.78:8081 原测试地址-->
+<!--10.109.75.228:8091 -->
 <!-- 地图 -->
-<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol.css" />
-<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol3-base_3d.css" />
-	<script src="http://47.103.35.78:8081/chem/js/global/jquery-2.1.1.min.js"></script>
-	<script src="http://47.103.35.78:8081/chem/js/global/bootstrap.js"></script>
+<link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol.css" />
+<link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol3-base_3d.css" />
+	<script src="http://10.109.75.228:8091/chem/js/global/jquery-2.1.1.min.js"></script>
+	<script src="http://10.109.75.228:8091/chem/js/global/bootstrap.js"></script>
 	<!-- 地图 -->
-	<script src="http://47.103.35.78:8081/chem/js/map/map/ol-debug.js"></script>
+	<script src="http://10.109.75.228:8091/chem/js/map/map/ol-debug.js"></script>
 	<script src="src/api_Common.js"></script>
-	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_style.js"></script>
-	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_init.js"></script>
-	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_base_fun.js"></script>
+	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_style.js"></script>
+	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_init.js"></script>
+	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_base_fun.js"></script>
 	<script src="src/Motemap.js"></script>
 	<!-- <script src="src/api_draw.js"></script> -->
 	<script src="src/api_PotArea.js"></script>
 	<script src="src/indextab.js"></script>
 	<!-- 弹框 -->
-	<script src="http://47.103.35.78:8081/chem/com/layer/layer.js"></script>
+	<script src="http://10.109.75.228:8091/chem/com/layer/layer.js"></script>
 	<!--css-->
 	<link href="src/bootstrap.min.css" rel="stylesheet" />
 	<link href="src/framework-theme.css" rel="stylesheet" />
@@ -157,10 +159,10 @@ background-color:skyblue;
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
 							<table>
-								<tr><td>监控名称：</td><td><%= data.equipment %></td></tr>
+								<tr><td>监控名称：</td><td><%= data.cameraName %></td></tr>
 								<tr>
-									<td>品牌：</td><td><%= data.equipment %></td>
-									<td>型号：</td><td><%= data.equipment %></td>
+									<td>品牌：</td><td><%= data.cameraBrand %></td>
+									<td>型号：</td><td><%= data.cameraType %></td>
 								</tr>
 								<tr><td>用途：</td><td><%= data.equipment %></td></tr>
 								<tr><td>监测设备名称：</td><td><%= data.equipment %></td></tr>
@@ -215,7 +217,7 @@ background-color:skyblue;
 <script>
 //获取配置文件的ip
 var ip = globalConfig.ip;
-const a=1;
+
 //浏览器当前窗口可视区域高度
  var h=$(window).height();
 
@@ -225,11 +227,32 @@ $('.leftMenu').css('bottom',h/2+'px');
  {
  // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
  
- var data = {name:"张三",sex:"女",equipment:"测试数据demo"};
+ var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
  if(info.type==1)
  {
-	data=await getTagInfo(info.name);
-	data=data.data;
+	var res=await getTagInfo(info.name);
+	if(res.data.success)
+	{
+		console.log(res.data);
+		data=res.data.data.length>0?res.data.data[0]:{};
+	}
+	else{
+		layer.alert('数据加载失败');
+		return;
+	}
+ }
+ else if(info.type==2)
+ {
+	var res=await getCameraInfo(info.name);
+	if(res.data.success)
+	{
+		data=res.data.data.length>0?res.data.data[0]:{};
+	}
+	else
+	{
+		layer.alert('数据加载失败');
+		return;
+	}
  }
  
  // 模板渲染
@@ -250,6 +273,7 @@ $('.leftMenu').css('bottom',h/2+'px');
   area: ['620px', '420px'], //宽高
   content: '<div id="templatelist'+ info.type+'"></div>'
 });
+
 
 testTemp(info);
  }

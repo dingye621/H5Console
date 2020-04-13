@@ -11,9 +11,14 @@
 //     });  
 // }
 
+// async function getTagInfo(tagName)
+// {
+//     return await axios.get("http://" + globalConfig.ip + "/api/Tag/getDto?name="+tagName);
+// }
+
 async function getTagInfo(tagName)
 {
-    return await axios.get("http://" + globalConfig.ip + "/api/Tag/getDto?name="+tagName);
+    return await axios.get('http://' + globalConfig.ip + '/api/Tag?tagName='+tagName+'&current=1&pageSize=1');
 //   .then(function (response) {
 //       console.log('res..',response);
 //    return response;
@@ -22,4 +27,11 @@ async function getTagInfo(tagName)
 //     console.log(error);
 //   });
 }
+
+async function getCameraInfo(cameraName)
+{
+    return await axios.get('http://' + globalConfig.ip + '/api/Camera?cameraName='+cameraName+'&current=1&pageSize=1');
+
+}
+
 
