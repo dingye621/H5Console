@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>懋特地图Demo</title>
+<!--47.103.35.78:8081 原测试地址-->
+<!--10.109.75.228:8091 -->
+<!-- 地图 -->
+<link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol.css" />
+<link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol3-base_3d.css" />
+	<script src="http://10.109.75.228:8091/chem/js/global/jquery-2.1.1.min.js"></script>
+	<script src="http://10.109.75.228:8091/chem/js/global/bootstrap.js"></script>
+	<!-- 地图 -->
+	<script src="http://10.109.75.228:8091/chem/js/map/map/ol-debug.js"></script>
+	<script src="src/api_Common.js"></script>
+	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_style.js"></script>
+	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_init.js"></script>
+	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_base_fun.js"></script>
+	<script src="src/Motemap.js"></script>
+	<!-- <script src="src/api_draw.js"></script> -->
+	<script src="src/api_PotArea.js"></script>
+	<script src="src/indextab.js"></script>
+	<!-- 弹框 -->
+	<script src="http://10.109.75.228:8091/chem/com/layer/layer.js"></script>
+	<!--css-->
+	<link href="src/bootstrap.min.css" rel="stylesheet" />
+	<link href="src/framework-theme.css" rel="stylesheet" />
+
+	<style>
+.layui-layer{
+background-color: white;
+color: black;
+		}
+		.leftMenu{
+			list-style-type: none;
+			padding: 0px;
+			margin-left:20px;
+			position:fixed; bottom:620px; left:0;
+			border: 1px solid black;
+		}
+		.leftMenu li{
+background-color: white;
+width: 100px;
+height: 30px;
+line-height: 30px;
+padding: 5px;
+		}
+		.leftMenu li:hover{
+background-color:skyblue;
+
+		}
+	</style>
+</head>
+<body>
+
+<div id="map">
+
+</div>
+
+<!--左边按钮-->
+<ul class="leftMenu">
+	<li id="tp1">
+		可燃有毒气体
+	</li>
+	<li id="tp2">
+		重大危险源
+	</li>
+	<li id="tp3">
+		隐患排查与治理
+	</li>
+</ul>
+<!--js-->
+<script src="src/template.js"></script>
+<script src="src/echarts.min.js"></script>
+<script src="src/config.js"></script>
+<script src="src/ajax.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!--可燃有毒气体监测图览template模版-->
+<script type="text/html" id="template1">
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">监测信息</a></li>
+				<li><a href="#tab-3" data-toggle="tab">历史报警数据</a></li>
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<table>
+								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
+								<tr><td>监测设备点简称：</td><td><%= data.equipment.shortName %></td></tr>
+							</table>
+						</div>
+					</div>
+					<div id="tab-2" class="tab-pane">
+							<div class="panel-body">
+									<table>
+										<tr><td>监测点位号：</td><td><%= data.tagName %></td></tr>
+										<tr><td>监测点数值：</td><td><%= data.tagName %></td></tr>
+									</table>
+								</div>
+					</div>
+					<div id="tab-3" class="tab-pane">
+							<div class="panel-body">
+									<table>
+										<tr><td>上次报警时间：</td><td></td></tr>
+										<tr><td>今年报警次数：</td><td></td></tr>
+									</table>
+								</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+<!--重大危险源监控图层template模版-->
+<script type="text/html" id="template2">
+
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">视频播放</a></li>
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<table>
+								<tr><td>监控名称：</td><td><%= data.cameraName %></td></tr>
+								<tr>
+									<td>品牌：</td><td><%= data.cameraBrand %></td>
+									<td>型号：</td><td><%= data.cameraType %></td>
+								</tr>
+								<tr><td>用途：</td><td><%= data.equipment %></td></tr>
+								<tr><td>监测设备名称：</td><td><%= data.equipmentName %></td></tr>
+							</table>
+						</div>
+					</div>
+					<div id="tab-2" class="tab-pane">
+						<iframe src="http://10.105.16.61:8080/ws.html?token=c123&autoplay=1" style="width:100%;height:100%;"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+
+<!--隐患排查与治理图览-->
+<script type="text/html" id="template3">
+
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">统计信息</a></li>
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<table>
+								<tr><td>监测设备名称：</td><td><%= data.equipment %></td></tr>
+								<tr>
+									<td>监测设备点简称：</td><td><%= data.equipment %></td>
+								</tr>
+								<tr><td>用区域名称：</td><td><%= data.equipment %></td></tr>
+								
+							</table>
+						</div>
+					</div>
+					<div id="tab-2" class="tab-pane">
+							<div class="panel-body">
+								<div>工厂同类隐患发生次数：</div>
+								<div id="main" style="width: 600px;height:400px;"></div>
+								<div>区域内各类隐患分布：</div>
+						    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+
+<script>
+//获取配置文件的ip
+var ip = globalConfig.ip;
+
+//浏览器当前窗口可视区域高度
+ var h=$(window).height();
+
+$('.leftMenu').css('bottom',h/2+'px');
+
+ async function testTemp(info)
+ {
+ // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
+ 
+ var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
+ if(info.type==1)
+ {
+	var res=await getTagInfo(info.name);
+	if(res.data.success)
+	{
+		console.log(res.data);
+		data=res.data.data.length>0?res.data.data[0]:{};
+	}
+	else{
+		layer.alert('数据加载失败');
+		return;
+	}
+ }
+ else if(info.type==2)
+ {
+	var res=await getCameraInfo(info.name);
+	if(res.data.success)
+	{
+		data=res.data.data.length>0?res.data.data[0]:{};
+	}
+	else
+	{
+		layer.alert('数据加载失败');
+		return;
+	}
+ }
+ 
+ // 模板渲染
+ var template1 = document.getElementById('template'+info.type).innerHTML;
+ document.getElementById('templatelist'+info.type).innerHTML = template(template1,{data:data});
+
+ if(info.type==3)
+ initEChart();
+  }
+   
+
+ function layerOpen(info)
+ {
+	layer.open({
+			title:null,
+  type: 1,
+  //skin: 'layui-layer-rim', //加上边框
+  area: ['620px', '420px'], //宽高
+  content: '<div id="templatelist'+ info.type+'"></div>'
+});
+
+
+testTemp(info);
+ }
+
+ function layerOpen2(info)
+ {
+	layer.open({
+  type: 2,
+  area: ['700px', '450px'],
+  fixed: false, //不固定
+  maxmin: true,
+  content: 'http://www.baidu.com'
+});
+
+testTemp(info);
+ }
+ 
+function initEChart()
+{
+ // 基于准备好的dom，初始化echarts实例
+ var myChart = echarts.init(document.getElementById('main'));
+ //var option=null;
+  option = {
+    xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: 'line'
+    }]
+};
+// 使用刚指定的配置项和数据显示图表。
+myChart.setOption(option);
+}
+
+ 
+</script>
+
+<script>
+
+	// 初始化
+	var tmap = new Mote.Map({
+		target: "map",
+		place: "61",
+			//place: "2",
+		building: 1,
+		floor: "01",
+			//floor: "22",
+		mode: "2d"
+	})
+	// 获取buildingid
+	function getBuilding(){
+		alert("建筑编号是：" + tmap.getBuilding());
+	}
+	// 获取floorid
+	function getFloor(){
+		alert("当前楼层是：" + tmap.getFloor());
+	}
+	// 获取zoom
+	function getZoom(){
+		alert("当前层级是：" + tmap.getZoom());
+	}
+	// 获取lonlat,click
+	function setLonLatByClick(){
+	
+		tmap.getCoordByClick(function(coord){
+		  	alert("lon: " + coord.lon + ", lat:" + coord.lat);
+		});
+		
+	}
+	//消除鼠标单击事件
+	function removeMouseEvent()
+	{
+	   tmap.rmMouseEvent();
+	}
+	// POI鼠标移入事件
+	function getPOIByMoveon(){
+		tmap.poiMouseEvent('move', function(info){
+		   alert(JSON.stringify(info));
+		});
+	}
+	// POI鼠标单击事件
+	function getPOIByClick(){
+		tmap.poiMouseEvent('click', function(info){
+		   alert(JSON.stringify(info));
+		   layerOpen(1);
+		});
+	}
+	// POI鼠标双击事件
+	function getPOIByDblclick(){
+		tmap.poiMouseEvent('dbclick', function(info){
+		   alert(JSON.stringify(info));
+		   layerOpen(2);
+		});
+	}
+	// Area鼠标移入事件
+	function getAreaByMoveon(){
+		tmap.areaMouseEvent('move', function(info){
+		    alert(JSON.stringify(info));
+		});
+	}
+	// Area鼠标单击事件
+	function getAreaByClick(){
+		tmap.areaMouseEvent('click', function(info){
+			alert(JSON.stringify(info));
+			layerOpen(3);
+			initEChart();
+		});
+	}
+	// Area鼠标双击事件
+	function getAreaByDblclick(){
+		tmap.areaMouseEvent('dbclick', function(info){
+		    alert(JSON.stringify(info));
+			layerOpen(2);
+		});
+	}
+  // 加载点
+  tmap.loadPoint();
+  // 加载面
+  tmap.loadPolygon();
+  // 新增点&保存
+  function drawPot(tp)
+  {
+	var info = {
+	 name:'1123',
+	 remarks:'这是一个测试点',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 type:tp
+	};
+	tmap.drawPoint(info, function(e){
+	 if(e == 1)
+	   alert("标点成功");
+	});
+  }
+  // 新增面&保存
+  function drawArea(){
+	var info = {
+	 name:'红色区域',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 color:'#FF3030'
+	};
+	tmap.drawArea(info, function(e){
+	 if(e == 1)
+	   alert("绘制区域成功!");
+	});
+  }
+  // 修改点&保存
+  function modifyPot(){
+	var info = {
+	 name:'有毒汽体_修改',
+	 remarks:'这是一个测试点',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 type:12
+	};
+	tmap.modifyPoint(info, function(e){
+	 if(e == 1)
+	   alert("修改点位成功");
+	});
+  }
+  // 修改面&保存
+  function modifyArea(){
+	var info = {
+	 name:'红色区域_修改',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 color:'#FF3030'
+	};
+	tmap.modifyArea(info, function(e){
+	 if(e == 1)
+	   alert("修改区域成功!");
+	});
+  }
+  // 删除点
+  function deletePot(){
+	  tmap.getPointByClick(function(point){
+	      layer.msg('确认删除？', {
+				  time: 0 //不自动关闭
+				  ,btn: ['确定', '取消']
+				  ,yes: function(index){
+				    layer.close(index);
+					//删除点
+					tmap.deletePoint(point);
+				  }
+			});
+	  });
+  }
+  // 删除面
+  function deleteArea(){
+	 tmap.getAreaByClick(function(area){
+	      layer.msg('确认删除？', {
+				  time: 0 //不自动关闭
+				  ,btn: ['确定', '取消']
+				  ,yes: function(index){
+				    layer.close(index);
+					//删除点
+					tmap.deleteArea(area);
+				  }
+			});
+	  });
+  }
+
+
+  // 根据坐标加载地图
+  function loadMapByLonLat(){
+	var lon = 119.02492270,lat = 33.38843574;
+	var ret = tmap.loadMap(lon, lat,function(e){
+		 if(e == 1)
+		alert("加载成功");
+	});
+  }
+  // 定位点显示
+  function loadLocate(){
+	var locators = [{
+		bid:'233',
+		placeId:'61',
+		buildingId:1,
+		floorId:'01',
+		lon:119.02492270,
+		lat:119.38843574
+	} ];
+	var ret = tmap.loadLocators(locators,function(e){
+		 if(e == 1)
+		alert("加载成功");
+	});
+  }
+  // 定位点鼠标移入
+  function getLocateByMoveon(){
+		tmap.locatorMouseEvent('move', function(info){
+		   alert(JSON.stringify(info));
+		});
+	}
+  // 根据类型加载POI，示例：加载type=12的poi
+  function getPOIByType(tp){
+	var filter = {
+		type:tp
+	};
+	// 删除全部pot图层
+	// tmap.rmPoint();
+	// 根据type加载pot图层
+	tmap.loadPointByType(filter,function(e){
+		if(e == 1)
+			alert("加载成功");
+		});
+	}
+	//
+  $('#tp1').click(function(){
+
+	getPOIByType(1);
+  });
+  $('#tp2').click(function(){
+
+getPOIByType(2);
+});
+$('#tp3').click(function(){
+
+getPOIByType(3);
+});
+
+function getPOIByClickReal(){
+		tmap.poiMouseEvent('click', function(info){
+			console.log(info);
+		   layerOpen(info);
+		});
+	}
+	getPOIByClickReal();
+</script>
+
+
+</body>
+</html>
