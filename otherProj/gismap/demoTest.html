@@ -363,7 +363,7 @@ myChart.setOption(option);
 	function getPOIByClick(){
 		tmap.poiMouseEvent('click', function(info){
 		   alert(JSON.stringify(info));
-		   layerOpen(1);
+		   //layerOpen(1);
 		});
 	}
 	// POI鼠标双击事件
@@ -551,7 +551,17 @@ function getPOIByClickReal(){
 		   layerOpen(info);
 		});
 	}
-	getPOIByClickReal();
+	//getPOIByClickReal();
+
+	// 根据坐标和层级加载地图
+	function loadMapByLonLatZoom(){
+	var lon = 119.02492270,lat = 33.38843574,zoom = 17;// minZoom 15,maxZoom 24
+	var ret = tmap.loadMap(lon, lat,zoom,function(e){
+		//  if(e == 1)
+		// alert("加载成功");
+	});
+  }
+  loadMapByLonLatZoom();
 </script>
 
 

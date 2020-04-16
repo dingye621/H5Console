@@ -8,20 +8,24 @@
 <!-- 地图 -->
 <link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol.css" />
 <link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol3-base_3d.css" />
-	<script src="http://10.109.75.228:8091/chem/js/global/jquery-2.1.1.min.js"></script>
-	<script src="http://10.109.75.228:8091/chem/js/global/bootstrap.js"></script>
-	<!-- 地图 -->
-	<script src="http://10.109.75.228:8091/chem/js/map/map/ol-debug.js"></script>
-	<script src="src/api_Common.js"></script>
-	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_style.js"></script>
-	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_init.js"></script>
-	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_base_fun.js"></script>
-	<script src="src/Motemap.js"></script>
-	<!-- <script src="src/api_draw.js"></script> -->
-	<script src="src/api_PotArea.js"></script>
-	<script src="src/indextab.js"></script>
-	<!-- 弹框 -->
-	<script src="http://10.109.75.228:8091/chem/com/layer/layer.js"></script>
+<script src="src/config.js"></script>
+<script src="src/src_config.js"></script>
+<script src="http://10.109.75.228:8091/chem/js/global/jquery-2.1.1.min.js"></script> 
+<script src="http://10.109.75.228:8091/chem/js/global/bootstrap.js"></script>
+	
+<!-- 地图 -->
+<script src="http://10.109.75.228:8091/chem/js/map/map/ol-debug.js"></script>
+<script src="src/api_Common.js"></script>
+<script src="http://10.109.75.228:8091/chem/js/map/map/asset_style.js"></script>
+<script src="http://10.109.75.228:8091/chem/js/map/map/asset_init.js"></script>
+<script src="http://10.109.75.228:8091/chem/js/map/map/asset_base_fun.js"></script>
+<script src="src/Motemap.js"></script>
+<!-- <script src="src/api_draw.js"></script> -->
+<script src="src/api_PotArea.js"></script>
+<script src="src/indextab.js"></script>
+<!-- 弹框 -->
+<script src="http://10.109.75.228:8091/chem/com/layer/layer.js"></script>
+
 	<!--css-->
 	<link href="src/bootstrap.min.css" rel="stylesheet" />
 	<link href="src/framework-theme.css" rel="stylesheet" />
@@ -30,6 +34,7 @@
 background-color: white;
 opacity:0.7;
 color: black;
+font-size: 20px;
 		}
 		.leftMenu{
 			list-style-type: none;
@@ -37,15 +42,34 @@ color: black;
 			margin-left:20px;
 			position:fixed; bottom:620px; left:0;
 			border: 1px solid black;
+			display: none;
 		}
 		.leftMenu li{
 background-color: white;
-width: 100px;
-height: 30px;
+width:  100px !important;
+height: 30px !important;
 line-height: 30px;
 padding: 5px;
 		}
 		.leftMenu li:hover{
+background-color:skyblue;
+
+		}
+
+		.rightMenu{
+			list-style-type: none;
+			padding: 0px;
+			margin-left:40px;
+			position:fixed; bottom:620px; left:0;
+		}
+		.rightMenu li{
+background-color: white;
+width:  30px !important;
+height: 30px !important;
+line-height: 30px;
+padding: 5px;
+		}
+		.rightMenu li:hover{
 background-color:skyblue;
 
 		}
@@ -59,23 +83,38 @@ background-color:skyblue;
 
 <!--左边按钮-->
 <ul class="leftMenu">
-	<li id="tp1">
+	<li id="tp11">
 		可燃有毒气体
 	</li>
-	<li id="tp2">
+	<li id="tp22">
 		重大危险源
 	</li>
-	<li id="tp3">
+	<li id="tp33">
 		隐患排查与治理
 	</li>
 </ul>
+
+<!--右边按钮-->
+<ul class="rightMenu btn-group-vertical">
+	<li id="tpPoison" class="btn btn-default"  >
+		<span class="glyphicon glyphicon-heart"></span>
+	</li>
+	<li id="tpDanger" class="btn btn-default" >
+		<span class="glyphicon glyphicon-star"></span>
+	</li>
+	<li id="tpHidden" class="btn btn-default">
+		<span class="glyphicon glyphicon-music"></span>
+	</li>
+</ul>
 <!--js-->
+
 <script src="src/template.js"></script>
 <script src="src/echarts.min.js"></script>
-<script src="src/config.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+<script src="src/axios.min.js"></script>
 <!-- <script src="src/oidc-client.js"></script> -->
-<script src="src/ajax.js"></script>
+<script src="src/http.js"></script>
 <!-- <script src="src/axiosex.js"></script> -->
 
 
@@ -198,6 +237,7 @@ var ip = globalConfig.ip;
  var h=$(window).height();
 
 $('.leftMenu').css('bottom',h/2+'px');
+$('.rightMenu').css('bottom',h/2+'px');
 
 //填充弹窗内容
  async function fitContent(info)
@@ -206,6 +246,7 @@ $('.leftMenu').css('bottom',h/2+'px');
  
  var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
  var template1='';
+ 
  if(info.type==globalConfig.poison)
  {
 	// 模板渲染
@@ -252,14 +293,15 @@ $('.leftMenu').css('bottom',h/2+'px');
 
  function layerOpen(info)
  {
-	 var area=[];
-	 if(info.type==globalConfig.posion)
+	 var area=['620px', '420px'];
+	 if(info.type==globalConfig.poison)
 area=['420px', '260px'];
 	layer.open({
 			title:null,
   type: 1,
   //skin: 'layui-layer-rim', //加上边框
-  area: ['620px', '420px'], //宽高
+  area:area, //宽高
+  shade: 0.1,//阴影
   content: '<div id="templatelist'+ info.type+'"></div>'
   });
   fitContent(info);
@@ -356,22 +398,22 @@ myChart.setOption(option);
 
 	// 根据坐标和层级加载地图
 	function loadMapByLonLatZoom(){
-	var lon = 119.02492270,lat = 33.38843574,zoom = 18;// minZoom 18,maxZoom 24
+	var lon = 119.02492270,lat = 33.38843574,zoom = 17;// minZoom 15,maxZoom 24
 	var ret = tmap.loadMap(lon, lat,zoom,function(e){
 		//  if(e == 1)
 		// alert("加载成功");
 	});
   }
   loadMapByLonLatZoom();
-  $('#tp'+globalConfig.poison).click(function(){
+  $('#tpPoison').click(function(){
 
-	getPOIByType(globalConfig.posion);
+	getPOIByType(globalConfig.poison);
   });
-  $('#tp'+globalConfig.danger).click(function(){
+  $('#tpDanger').click(function(){
 
 getPOIByType(globalConfig.danger);
 });
-$('#tp'+globalConfig.hidden).click(function(){
+$('#tpHidden').click(function(){
 
 getPOIByType(globalConfig.hidden);
 });
