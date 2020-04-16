@@ -133,7 +133,7 @@ var view = new ol.View({
 	projection : 'EPSG:4326',
 	zoom : lzoom,
 	maxZoom : 24,
-	minZoom : 18
+	minZoom : 15
 });
 
 
