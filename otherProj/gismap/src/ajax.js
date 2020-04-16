@@ -18,10 +18,10 @@
 
 async function getTagInfo(tagName)
 {
-    return await axios.get('http://' + globalConfig.ip + '/api/Tag?tagName='+tagName+'&current=1&pageSize=1');
+    return await axios.get('http://' + globalConfig.ip + '/api/Tag/getObject?tagName='+tagName+'&current=1&pageSize=1');
 //   .then(function (response) {
 //       console.log('res..',response);
-//    return response;
+//    return response;                                                                                                                                                                         
 //   })
 //   .catch(function (error) {
 //     console.log(error);
@@ -33,5 +33,3 @@ async function getCameraInfo(cameraName)
     return await axios.get('http://' + globalConfig.ip + '/api/Camera?cameraName='+cameraName+'&current=1&pageSize=1');
 
 }
-
-

@@ -7,6 +7,7 @@ var Mote = (function()
 	 this.buildingId = e.building;
 	 this.floorId = e.floor;
 	 this.target = e.target;
+	 this.moveRoute = false;
 	 
 	 var self = this;
 
@@ -31,26 +32,9 @@ var Mote = (function()
 		loadBasemap();
 		view.setCenter(mapCenter(buildingid));
 	 }
-	 Map.prototype.loadMap = function(lon,lat,callback){
+	 Map.prototype.loadMap = function(lon,lat,zoom,callback){
 		 view.setCenter([lon,lat]);
-		  callback &&　callback(1);
-	 }
-
-	 Map.prototype.loadLocators =  function(info,callback){
-		 var features = [];
-		 for(var i=0;i<info.length;i++){
-			features[i] = new ol.Feature();
-			features[i].setId(info[i].bid);
-			features[i].set('place_id', info[i].placeId);
-			features[i].set('building_id', info[i].buildingId);
-			features[i].set('floor_id', info[i].floorId);
-			features[i].set('name', info[i].bid);
-			features[i].setGeometryName('geom');
-			features[i].set('geom', null);
-			features[i].setGeometry(new ol.geom.Point([info[i].lon,info[i].lat]));
-		 }
-		 AssetLocateSource.clear();
-		 AssetLocateSource.addFeatures(features);
+		 view.setZoom(zoom)
 		  callback &&　callback(1);
 	 }
 	 
@@ -96,6 +80,7 @@ var Mote = (function()
 			  	break;
 			  }
 	 }
+	
 	 /*
 	  *处理鼠标事件
 	  *eventType 参数类型，单击'click',双击"dbclick"，移入'move'
@@ -163,8 +148,6 @@ var Mote = (function()
 		 }
 		 
 	 }
-	 
-	 
 	  /*
 	  *处理框的鼠标事件
 	  *eventType 参数类型，单击'click',双击"dbclick"，移入'move'
@@ -416,7 +399,6 @@ var Mote = (function()
 		   loadConfigPotArea(dbtype_pot,cqlFilter);//加载点的图层
 			callback && callback(1);
 	 }
-	 
 	 Map.prototype.loadPolygon = function(callback){
 		 var cqlFilter = 'place_id=' + placeid;
 		 loadConfigPotArea(dbtype_area,cqlFilter);//加载面的图层
@@ -460,10 +442,8 @@ var Mote = (function()
 		});
 		//消除选择
 		self.rmInteraction(self.select.select);
-	 }
-	 
-	 //获取某个区域
-	  Map.prototype.getAreaByClick = function(callback){
+	 } 
+	 Map.prototype.getAreaByClick = function(callback){
 		    var condition = ol.events.condition.singleClick;
 			this.select = this.selectByInteraction([configAreaLayer],condition);
 			this.select.select.on('select', function(e) {
@@ -475,7 +455,6 @@ var Mote = (function()
 			});
 			//self.rmInteraction(select.select);
 	 }
-	 
 	  /*
 	  *删除某个面
 	 */
@@ -533,9 +512,7 @@ var Mote = (function()
 			
 			s.rmInteraction(drawPot.Point);
 	   }, this);
-	 }
-	 
-	 
+	 }	 
 	  /*
 	 * 修改点 0 回调函数-1表示失败 0表示成功
 	 */
@@ -571,7 +548,6 @@ var Mote = (function()
 			s.rmInteraction(modifyPot.modify);
 	    }, this);
 	 }
-	 
 	  /*
 	 * 绘制面 0 回调函数-1表示失败 0表示成功
 	 */
@@ -613,7 +589,6 @@ var Mote = (function()
 			s.rmInteraction(drawArea.Polygon);
 		}, this);
 	 }
-	 
 	  /*
 	 * 修改面 0 回调函数-1表示失败 0表示成功
 	 */
@@ -656,6 +631,132 @@ var Mote = (function()
 		}, this);
 	 }
 	 
+	 Map.prototype.loadLocators =  function(info,callback){
+		 var features = [];
+		 for(var i=0;i<info.length;i++){
+			features[i] = new ol.Feature();
+			features[i].setId(info[i].bid);
+			features[i].set('place_id', info[i].placeId);
+			features[i].set('building_id', info[i].buildingId);
+			features[i].set('floor_id', info[i].floorId);
+			features[i].set('name', info[i].bid);
+			features[i].setGeometryName('geom');
+			features[i].set('geom', null);
+			features[i].setGeometry(new ol.geom.Point([info[i].lon,info[i].lat]));
+		 }
+		 AssetLocateSource.clear();
+		 AssetLocateSource.addFeatures(features);
+		  callback &&　callback(1);
+	 }
+	 Map.prototype.loadLocatorsNew =  function(icon,info,callback){
+		 var features = [];
+		 for(var i=0;i<info.length;i++){
+			features[i] = new ol.Feature();
+			features[i].setId(info[i].bid);
+			features[i].set('icon',icon);
+			features[i].set('bid', info[i].bid);
+			features[i].set('place_id', info[i].placeId);
+			features[i].set('building_id', info[i].buildingId);
+			features[i].set('floor_id', info[i].floorId);
+			features[i].set('name', info[i].name);
+			features[i].set('sex', info[i].sex?'男':'女');
+			features[i].set('battery', info[i].battery);
+			features[i].set('heartRate', info[i].heartRate);
+			features[i].set('bloodPressure', info[i].bloodPressure);
+			features[i].set('steps', info[i].steps);
+			features[i].setGeometryName('geom');
+			features[i].set('geom', null);
+			features[i].setGeometry(new ol.geom.Point([info[i].lon,info[i].lat]));
+		 }
+		 AssetLocateSource.clear();
+		 AssetLocateSource.addFeatures(features);
+		  callback &&　callback(1);
+	 }
+	 Map.prototype.loadPeopleLocators =  function(icon,info,callback){
+		 if(!info.length){callback(0,"没有定位数据");}
+		 self.loadLocatorsNew(icon,info);
+		 
+		 var popup = self.setPopupLegend();
+		 self.overlay = self.setPopupOverlay(popup.container);
+		 map.addOverlay(self.overlay);
+		  
+		 if(self.overlay){
+			var condition = ol.events.condition.singleClick;
+			self.selectPointerMove = self.selectByInteraction([AssetLocateLayer],condition);
+			self.selectPointerMove.select.on('select', function(e) {
+			if (e.selected[0] != null){
+				//if(self.getZoom() > 17){
+					self.makePopupMsg(e.selected[0],popup.content);
+				//}
+				self.overlay.setPosition(e.selected[0].getGeometry().getCoordinates());
+			}else{
+				self.overlay.setPosition(null);
+			}
+		  });
+		  callback(1,"鼠标点击定位点显示信息");
+		 }else{
+			  callback(0,"请添加popupcontainer");
+		 }
+	 }
+	 Map.prototype.setPopupLegend = function(){
+	     var popupcontainer = document.createElement("div");
+		 popupcontainer.className = "ol-popup";
+		 popupcontainer.style.width = "340px";
+		 
+		 var popuppucture = document.createElement("div");
+		 popuppucture.className = "col-md-4 col-sm-4";
+		 popuppucture.setAttribute('align', 'right');
+		 popuppucture.style.padding="0px 0px 0px 2px";
+		 popupcontainer.appendChild(popuppucture);
+		 
+		 var popupcontent = document.createElement("div");
+		 popupcontent.className = "col-md-8 col-sm-8";
+		 popupcontent.setAttribute('align', 'left');
+		 popupcontainer.appendChild(popupcontent);
+		 
+		 var popupimg = document.createElement("img");
+		 popupimg.style.width="100px";
+		 popupimg.style.heigth="220px";
+		 popuppucture.appendChild(popupimg);
+		 
+		 document.body.append(popupcontainer);
+		 return {
+			 container:popupcontainer,
+			 content:popupcontent
+		 }
+	 }
+	 Map.prototype.setPopupOverlay = function(container){
+		if(container){
+			return new ol.Overlay( ({
+			 element: container, 
+			 autoPan: true,
+			 autoPanAnimation: {
+				 duration: 250
+			 }
+		 }));
+		}else{
+		 return null
+		} 
+	 }
+	 Map.prototype.makePopupMsg = function(info,popupcontent){
+		  var icon = info.get('icon');
+		  var personImgUrl = icon ==1?'./pion/icon':icon ==2?'./chem/icon':'./scho/icon';
+		  var alertinfo = '姓名：  ' + info.values_.name + '<br>'
+		  + '性别：  ' + info.get('sex') + '<br>'
+		  + '编号：  ' + info.get('bid') + '<br>'
+		  + '场景：  ' + info.get('place_id') + '<br>'
+		  + '建筑：  ' + info.get('building_id') + '<br>'
+		  + '楼层：  ' + info.get('floor_id') + '<br>'
+		  + '电量：  ' + info.get('battery') + '<br>'
+		  + '心率：  ' + info.get('heartRate') + '<br>'
+		  + '血压：  ' + info.get('bloodPressure') + '<br>'
+		  + '步数：  ' + info.get('steps') + '<br>'
+		  + '经度：  ' + info.getGeometry().getCoordinates()[0] + '<br>'
+		  + '纬度：  ' + info.getGeometry().getCoordinates()[1];
+		  popupcontent.innerHTML = alertinfo;
+		  $('.popup-pucture img').attr("src",personImgUrl);
+	 }
+	 
 	 Map.prototype.locatorMouseEvent = function(eventType,callback){
 		var condition = ol.events.condition.pointerMove;
 		self.select = self.selectByInteraction([AssetLocateLayer],condition);
@@ -672,6 +773,88 @@ var Mote = (function()
 			}
 		});
 	 }
+	 
+	 Map.prototype.trail = function(b,o){
+		self.initTrail();
+		self.setRoutePoint(b,o);
+	 }
+	 Map.prototype.initTrail = function(){
+		 if (moveRoute) {
+			moveRoute = false;
+			clearInterval(myAssetRouteTime);
+		}
+		if (AssetRouteLayer != null || AssetRoutePointLayer != null){
+			AssetRouteLayer.getSource().clear();
+			AssetRoutePointLayer.getSource().clear();
+		}else{
+			getAssetFenceLayer();
+			overmap.getLayers().extend([AssetRouteLayer]);	
+			overmap.getLayers().extend([AssetRoutePointLayer]);	
+		}
+		moveRoute = true;
+	 }
+	 Map.prototype.setRoutePoint = function(b,o){
+		 if (o.length){			
+			// var mybuild = o[0].buildingId;
+			// var myfloor = o[0].floorId;
+			
+			// if(mybuild != 0){
+				// self.changeBuild(mybuild,myfloor);
+			// }
+			
+			var FeaturePoints = [];
+			var num =0;
+			myAssetRouteTime = setInterval(function(){showme()}, 1000);
+			function showme(){
+				FeaturePoints[num] = new ol.Feature({
+					geometry: new ol.geom.Point([o[num].lon,o[num].lat])
+				});
+				FeaturePoints[num].set('build',o[num].buildingId);
+				FeaturePoints[num].set('time',o[num].time);
+				FeaturePoints[num].set('floor',o[num].floorId);
+				FeaturePoints[num].set('bid',b);
+				
+				if(num == 0){
+					FeaturePoints[num].set('type','start');
+					AssetRoutePointLayer.getSource().addFeature(FeaturePoints[num]);
+				}else{
+					num == o.length - 1?
+						FeaturePoints[num].set('type','end'):
+						FeaturePoints[num].set('type','geoms');
+					if(o[num].buildingId != buildingid && o[num].buildingId != 0){
+						// self.changeBuild(o[num].buildingId,o[num].floorId);
+						AssetRoutePointLayer.getSource().addFeature(FeaturePoints[num]);
+					}else{
+						moveRoutePoint(FeaturePoints[num],[o[num-1].lon,o[num-1].lat],[o[num].lon,o[num].lat]);
+					}
+				} 
+				if(num > 0 && distanceFromAToB([o[num-1].lon,o[num-1].lat],[o[num].lon,o[num].lat]) > 10 ){
+					view.setCenter([o[num].lon,o[num].lat]);
+				}
+				num ++;
+				if(num>o.length-1) clearInterval(myAssetRouteTime);
+			}
+		}
+	 }
+	 Map.prototype.changeBuild = function(build,floor){
+		changeBuilding(build);
+		floorUpdate(floor);
+		changeFloorAction();
+	 }
+	 Map.prototype.trailMouseEvent = function(eventType,callback){
+		var condition = ol.events.condition.pointerMove;
+		self.select = self.selectByInteraction([AssetRoutePointLayer],condition);
+		self.select.select.on('select', function(e) {
+			if(e.selected.length != 0){
+				var info = new Object();
+				info.time = e.selected[0].get('time');
+				callback && callback(info);
+			}
+		});
+	 }
+	 
+	 
+	 
 	 
 	 
 	}
