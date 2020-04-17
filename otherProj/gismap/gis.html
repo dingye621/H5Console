@@ -34,7 +34,7 @@
 background-color: white;
 opacity:0.7;
 color: black;
-font-size: 20px;
+font-size: 16px;
 		}
 		.leftMenu{
 			list-style-type: none;
@@ -82,7 +82,7 @@ background-color:skyblue;
 </div>
 
 <!--左边按钮-->
-<ul class="leftMenu">
+<ul class="leftMenu">
 	<li id="tp11">
 		可燃有毒气体
 	</li>
@@ -95,7 +95,7 @@ background-color:skyblue;
 </ul>
 
 <!--右边按钮-->
-<ul class="rightMenu btn-group-vertical">
+<ul class="rightMenu btn-group-vertical">
 	<li id="tpPoison" class="btn btn-default"  >
 		<span class="glyphicon glyphicon-heart"></span>
 	</li>
@@ -143,7 +143,7 @@ background-color:skyblue;
 							<div class="panel-body">
 									<table>
 										<tr><td>监测点位号：</td><td><%= data.tagName %></td></tr>
-										<tr><td>监测点数值：</td><td><%= data.tagName %></td></tr>
+										<tr><td>监测点数值：</td><td></td></tr>
 									</table>
 								</div>
 					</div>
@@ -179,8 +179,8 @@ background-color:skyblue;
 									<td>品牌：</td><td><%= data.cameraBrand %></td>
 									<td>型号：</td><td><%= data.cameraType %></td>
 								</tr>
-								<tr><td>用途：</td><td><%= data.equipment %></td></tr>
-								<tr><td>监测设备名称：</td><td><%= data.equipmentName %></td></tr>
+								<tr><td>用途：</td><td>用途</td></tr>
+								<tr><td>监测设备名称：</td><td></td></tr>
 							</table>
 						</div>
 					</div>
@@ -269,7 +269,7 @@ $('.rightMenu').css('bottom',h/2+'px');
  {
 	template1 = document.getElementById('templateDanger').innerHTML;
 	var res=await getCameraInfo(info.name);
-	if(res.data.success)
+	if(res.data.success&&res.data.data.length>0)
 	{
 		data=res.data.data.length>0?res.data.data[0]:{};
 	}
@@ -301,8 +301,11 @@ area=['420px', '260px'];
   type: 1,
   //skin: 'layui-layer-rim', //加上边框
   area:area, //宽高
-  shade: 0.1,//阴影
-  content: '<div id="templatelist'+ info.type+'"></div>'
+  shade: 0,//阴影
+  content: '<div id="templatelist'+ info.type+'"></div>',
+  end: function () {
+	removeMouseEvent();
+      }
   });
   fitContent(info);
  }
@@ -351,7 +354,11 @@ myChart.setOption(option);
   // 加载面
   tmap.loadPolygon();
 
-
+//消除鼠标单击事件
+function removeMouseEvent()
+	{
+	   tmap.rmMouseEvent();
+	}
   // 根据坐标加载地图
   function loadMapByLonLat(){
 	var lon = 119.02492270,lat = 33.38843574;

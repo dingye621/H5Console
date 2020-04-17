@@ -30,6 +30,6 @@ async function getTagInfo(tagName)
 
 async function getCameraInfo(cameraName)
 {
-    return await axios.get('http://' + globalConfig.ip + '/api/Camera?cameraName='+cameraName+'&current=1&pageSize=1');
+    return await axios.get('http://' + globalConfig.ip + '/api/Camera/getObject?cameraName='+cameraName+'&current=1&pageSize=1');
 
 }
