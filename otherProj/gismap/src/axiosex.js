@@ -9,6 +9,7 @@ var config = {
 };
 var mgr = new Oidc.UserManager(config);
 
+alert('axios');
 
 // async function getToken()
 // {

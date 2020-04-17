@@ -215,6 +215,9 @@ var Mote = (function()
 		 
 	 }
 	 
+	 Map.prototype.rmFeatureSelsct = function(){
+		 self.select.rmFeatures();
+	 }
 	 /*
 	 * 消除事件
 	 */
@@ -226,10 +229,20 @@ var Mote = (function()
 		 return this.clickEvent?Object.keys(this.clickEvent).length:false
 	 }
 	 Map.prototype.selectByInteraction = function(layers,condition){
+		 var style = layers[0] == configPotLayer
+			?configPotStyleFun
+			:layers[0] == configAreaLayer
+				?configAreaStyleFun
+				:layers[0] == AssetLocateLayer
+					?assetstylefunction
+					:layers[0] == AssetRoutePointLayer
+						?RouteStyle['geoms']
+						:geojsonstylefunction
 		 this.selectFeature = {
 			init: function() {
 				this.select = new ol.interaction.Select({
 					layers: layers,
+					style : style,
 					condition: condition
 				}); 
 				map.addInteraction(this.select);
@@ -244,6 +257,10 @@ var Mote = (function()
 			},
 			setActive: function(active) {
 				this.select.setActive(active);
+			},
+			rmFeatures: function() {
+				var selectedFeatures = this.select.getFeatures();
+				selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
 			}
 		 };
 		  this.selectFeature.init();

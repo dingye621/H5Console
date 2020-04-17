@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol.css" />
 <link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol3-base_3d.css" />
 <script src="src/config.js"></script>
-<script src="src/src_config.js"></script>
+<!-- <script src="src/src_config.js"></script> -->
 <script src="http://10.109.75.228:8091/chem/js/global/jquery-2.1.1.min.js"></script> 
 <script src="http://10.109.75.228:8091/chem/js/global/bootstrap.js"></script>
 	
@@ -304,7 +304,7 @@ area=['420px', '260px'];
   shade: 0,//阴影
   content: '<div id="templatelist'+ info.type+'"></div>',
   end: function () {
-	removeMouseEvent();
+	removeFeatureSelsct();
       }
   });
   fitContent(info);
@@ -358,6 +358,10 @@ myChart.setOption(option);
 function removeMouseEvent()
 	{
 	   tmap.rmMouseEvent();
+	}
+//消除要素选中状态
+function removeFeatureSelsct(){
+	   tmap.rmFeatureSelsct();
 	}
   // 根据坐标加载地图
   function loadMapByLonLat(){
