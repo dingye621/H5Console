@@ -180,7 +180,7 @@ background-color:skyblue;
 									<td>型号：</td><td><%= data.cameraType %></td>
 								</tr>
 								<tr><td>用途：</td><td>用途</td></tr>
-								<tr><td>监测设备名称：</td><td></td></tr>
+								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
 							</table>
 						</div>
 					</div>
@@ -272,6 +272,8 @@ $('.rightMenu').css('bottom',h/2+'px');
 	if(res.data.success&&res.data.data.length>0)
 	{
 		data=res.data.data.length>0?res.data.data[0]:{};
+		if(data.equipment==null)
+		data.equipment={equipmentName:'点位未关联主设备',shortName:''}
 	}
 	else
 	{
@@ -283,6 +285,10 @@ $('.rightMenu').css('bottom',h/2+'px');
  {
 	template1 = document.getElementById('templateHidden').innerHTML;
  }
+ else if(info,type==globalConfig.risk){}
+ else if(info,type==globalConfig.work){}
+ else if(info,type==globalConfig.emer){}
+ else if(info,type==globalConfig.position){}
 
  document.getElementById('templatelist'+info.type).innerHTML = template(template1,{data:data});
 
