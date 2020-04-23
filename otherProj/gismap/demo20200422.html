@@ -37,6 +37,9 @@
 	<button onclick="getAreaByMoveon();">AREA鼠标移入事件</button>
 	<button onclick="getAreaByClick();">AREA鼠标单击事件</button>
 	<button onclick="getAreaByDblclick();">AREA鼠标双击事件</button>
+	<button onclick="getAlphaAreaByMoveon();">透明框鼠标移入事件</button>
+	<button onclick="getAlphaAreaByClick();">透明框鼠标单击事件</button>
+	<button onclick="getAlphaAreaByDblclick();">透明框鼠标双击事件</button>
 	<button onclick="removeFeatureSelsct()">清除选中</button>
 	<button onclick="removeMouseEvent()">消除事件</button>
 </div>
@@ -47,6 +50,9 @@
 	<button onclick="drawArea();">标面</button>
 	<button onclick="modifyArea();">修改面</button>
 	<button onclick="deleteArea();">删除面</button>
+	<button onclick="drawAlphaArea();">标透明框</button>
+	<button onclick="modifyAlphaArea();">修改透明框</button>
+	<button onclick="deleteAlphaArea();">删除透明框</button>
 </div>
 <div>
 	<button onclick="loadMapByLonLatZoom();">根据坐标和层级加载地图</button>
@@ -136,10 +142,33 @@
 			tmap.rmFeatureSelsct();
 		});
 	}
+	// AlphaArea鼠标移入事件
+	function getAlphaAreaByMoveon(){
+		tmap.alphaAreaMouseEvent('move', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
+	// AlphaArea鼠标单击事件
+	function getAlphaAreaByClick(){
+		tmap.alphaAreaMouseEvent('click', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
+	// AlphaArea鼠标双击事件
+	function getAlphaAreaByDblclick(){
+		tmap.alphaAreaMouseEvent('dbclick', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
   // 加载点
   tmap.loadPoint();
   // 加载面
   tmap.loadPolygon();
+  // 加载透明面
+  tmap.loadAlphaPolygon();
   // 新增点&保存
   function drawPot(){
 	var info = {
@@ -166,6 +195,21 @@
 	 color:'#FF3030'
 	};
 	tmap.drawArea(info, function(e){
+	 if(e == 1)
+	   alert("绘制区域成功!");
+	});
+  }
+  // 新增透明框&保存
+  function drawAlphaArea(){
+	var info = {
+	 name:'红色框区域',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 border_color:'#FF3030'
+	};
+	tmap.drawAlphaArea(info, function(e){
 	 if(e == 1)
 	   alert("绘制区域成功!");
 	});
@@ -200,6 +244,21 @@
 	   alert("修改区域成功!");
 	});
   }
+  // 修改透明框&保存
+  function modifyAlphaArea(){
+	var info = {
+	 name:'绿色框区域_修改',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 border_color:'#30FF30'
+	};
+	tmap.modifyAlphaArea(info, function(e){
+	 if(e == 1)
+	   alert("修改区域成功!");
+	});
+  }
   // 删除点
   function deletePot(){
 	  tmap.getPointByClick(function(point){
@@ -228,6 +287,21 @@
 			});
 	  });
   }
+  // 删除透明框
+  function deleteAlphaArea(){
+	 tmap.getAlphaAreaByClick(function(area){
+	      layer.msg('确认删除？', {
+				  time: 0 //不自动关闭
+				  ,btn: ['确定', '取消']
+				  ,yes: function(index){
+				    layer.close(index);
+					//删除点
+					tmap.deleteAlphaArea(area);
+				  }
+			});
+	  });
+  }
+  
   // 根据坐标和层级加载地图
   function loadMapByLonLatZoom(){
 	var lon = 119.02492270,lat = 33.38843574,zoom = 18;// minZoom 15,maxZoom 24
@@ -313,8 +387,8 @@
 		placeId:'61',
 		buildingId:1,
 		floorId:'01',
-		lon:119.02422270,
-		lat:33.38453574
+		lon:119.02432570,
+		lat:33.38862374
 	} ];
 	tmap.trail(bid,o);
   }

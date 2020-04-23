@@ -78,6 +78,9 @@ background-color:skyblue;
 	<button onclick="drawArea();">标面</button>
 	<button onclick="modifyArea();">修改面</button>
 	<button onclick="deleteArea();">删除面</button>
+	<button onclick="drawAlphaArea();">标透明框</button>
+	<button onclick="modifyAlphaArea();">修改透明框</button>
+	<button onclick="deleteAlphaArea();">删除透明框</button>
 </div>
 <div>
 		<button onclick="loadMapByLonLat();">根据坐标加载地图</button>
@@ -562,6 +565,37 @@ function getPOIByClickReal(){
 	});
   }
   loadMapByLonLatZoom();
+
+    // 新增透明框&保存
+	function drawAlphaArea(){
+	var info = {
+	 name:'红色框区域',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 border_color:'#FF3030'
+	};
+	tmap.drawAlphaArea(info, function(e){
+	 if(e == 1)
+	   alert("绘制区域成功!");
+	});
+  }
+
+    // 删除透明框
+  function deleteAlphaArea(){
+	 tmap.getAlphaAreaByClick(function(area){
+	      layer.msg('确认删除？', {
+				  time: 0 //不自动关闭
+				  ,btn: ['确定', '取消']
+				  ,yes: function(index){
+				    layer.close(index);
+					//删除点
+					tmap.deleteAlphaArea(area);
+				  }
+			});
+	  });
+  }
 </script>
 
 

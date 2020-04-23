@@ -75,7 +75,10 @@ function addConfigAreaPage(info){
 					htm += "</div>";
 					$('#modelarea').html(htm);
 					break;
-				
+				case 'fence_configalphaarea':
+					configAlphaAreaSource.clear();
+					configAlphaAreaSource.addFeatures(features);
+					break;
 				}
 			},
 		});

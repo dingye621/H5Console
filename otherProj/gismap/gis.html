@@ -35,27 +35,7 @@ background-color: white;
 opacity:0.7;
 color: black;
 font-size: 16px;
-		}
-		.leftMenu{
-			list-style-type: none;
-			padding: 0px;
-			margin-left:20px;
-			position:fixed; bottom:620px; left:0;
-			border: 1px solid black;
-			display: none;
-		}
-		.leftMenu li{
-background-color: white;
-width:  100px !important;
-height: 30px !important;
-line-height: 30px;
-padding: 5px;
-		}
-		.leftMenu li:hover{
-background-color:skyblue;
-
-		}
-
+}
 		.rightMenu{
 			list-style-type: none;
 			padding: 0px;
@@ -78,22 +58,7 @@ background-color:skyblue;
 <body>
 
 <div id="map">
-
 </div>
-
-<!--左边按钮-->
-<ul class="leftMenu">
-	<li id="tp11">
-		可燃有毒气体
-	</li>
-	<li id="tp22">
-		重大危险源
-	</li>
-	<li id="tp33">
-		隐患排查与治理
-	</li>
-</ul>
-
 <!--右边按钮-->
 <ul class="rightMenu btn-group-vertical">
 	<li id="tpPoison" class="btn btn-default"  >
@@ -230,6 +195,13 @@ background-color:skyblue;
 </script>
 
 <script>
+//获取sessionStorage
+var storage = window.sessionStorage;  
+var access_token = storage.getItem("access_token");  
+console.log('sto..',storage);
+console.log('access_token..',access_token);
+
+
 //获取配置文件的ip
 var ip = globalConfig.ip;
 
@@ -360,15 +332,15 @@ myChart.setOption(option);
   // 加载面
   tmap.loadPolygon();
 
-//消除鼠标单击事件
-function removeMouseEvent()
-	{
-	   tmap.rmMouseEvent();
-	}
+// //消除鼠标单击事件
+// function removeMouseEvent()
+// 	{
+// 	   tmap.rmMouseEvent();
+// 	}
 //消除要素选中状态
 function removeFeatureSelsct(){
 	   tmap.rmFeatureSelsct();
-	}
+}
   // 根据坐标加载地图
   function loadMapByLonLat(){
 	var lon = 119.02492270,lat = 33.38843574;
@@ -442,6 +414,13 @@ function getPOIByClickReal(){
 		});
 	}
 	getPOIByClickReal();
+
+//根据参数加载点位
+var req=GetRequest();
+if(req['tp'])
+{
+	getPOIByType(req['tp']);
+}
 </script>
 
 

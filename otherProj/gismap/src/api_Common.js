@@ -448,20 +448,29 @@ var configPotStyleFun = function(feature) {
 var configAreaStyleFun = function(feature) {
 	var featureFloor = feature.get('floor_id');
 	var featureName = feature.get('name');
-	var featureColor = feature.get('color')?feature.get('color'):'#ffc864';
+	var featureStrokeColor = feature.get('border_color')
+		?feature.get('border_color')
+		:feature.get('color')
+		?feature.get('color')
+		:[255,200,100,0.5];
+	var featureFillColor = feature.get('border_color')
+		?[255,255,255,0.1]
+		:feature.get('color')
+		?feature.get('color')
+		:[255,200,100,0.5];
 	// 返回数据的style
 	return new ol.style.Style({
 		stroke: new ol.style.Stroke({
-			color: featureColor,
+			color: featureStrokeColor,
 			width:2
 		}),
 		fill: new ol.style.Fill({
-			color: featureColor
+			color: featureFillColor
 		}),
 		image: new ol.style.Circle({
 			radius: 5,
 			fill: new ol.style.Fill({
-				color: featureColor
+				color: featureFillColor
 			})
 		}),
 		text: new ol.style.Text({

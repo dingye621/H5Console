@@ -13,6 +13,7 @@ var Mote = (function()
 
 	 const dbtype_pot = 'fence_configpot'; 
 	 const dbtype_area = "fence_configarea";
+	 const dbtype_alphaArea = "fence_configalphaarea";
 	 
 	 Map.prototype.init = function(target){
 		 initLoadMap(target);
@@ -214,6 +215,63 @@ var Mote = (function()
 		 }
 		 
 	 }
+	 Map.prototype.alphaAreaMouseEvent = function(eventType, callback){
+		 switch(eventType){
+			 case 'move':
+			 {
+				 var condition = ol.events.condition.pointerMove;
+				 self.select = self.selectByInteraction([configAlphaAreaLayer],condition);
+				 self.select.select.on('select', function(e) {
+					var info = new Object();
+					info.name = e.selected[0].get('name');
+					info.remarks = e.selected[0].get('remarks');
+					//info.type = e.selected[0].get('type');
+					info.building_id = e.selected[0].get('building_id');
+					info.floor_id = e.selected[0].get('floor_id');
+					info.place_id = e.selected[0].get('place_id');
+					info.border_color = e.selected[0].get('border_color');
+					
+					callback && callback(info);
+		        });
+			 }break;
+			case 'click':
+			{
+				 var condition = ol.events.condition.singleClick;
+				 self.select = tmap.selectByInteraction([configAlphaAreaLayer],condition);
+				 self.select.select.on('select', function(e) {
+					var info = new Object();
+					info.name = e.selected[0].get('name');
+					info.remarks = e.selected[0].get('remarks');
+					//info.type = e.selected[0].get('type');
+					info.building_id = e.selected[0].get('building_id');
+					info.floor_id = e.selected[0].get('floor_id');
+					info.place_id = e.selected[0].get('place_id');
+					info.border_color = e.selected[0].get('border_color');
+					
+					callback && callback(info);
+				});
+			}break;
+			case 'dbclick':
+			{
+				var condition = ol.events.condition.doubleClick;
+				self.select = tmap.selectByInteraction([configAlphaAreaLayer],condition);
+				self.select.select.on('select', function(e) {
+                   	var info = new Object();
+					info.name = e.selected[0].get('name');
+					info.remarks = e.selected[0].get('remarks');
+					//info.type = e.selected[0].get('type');
+					info.building_id = e.selected[0].get('building_id');
+					info.floor_id = e.selected[0].get('floor_id');
+					info.place_id = e.selected[0].get('place_id');
+					info.border_color = e.selected[0].get('border_color');
+					
+					callback && callback(info);
+				});
+			}break;
+			 
+		 }
+		 
+	 }
 	 
 	 Map.prototype.rmFeatureSelsct = function(){
 		 self.select.rmFeatures();
@@ -263,7 +321,7 @@ var Mote = (function()
 				selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
 			}
 		 };
-		  this.selectFeature.init();
+		 this.selectFeature.init();
 		 return this.selectFeature
 	 }
 	 Map.prototype.drawPotByInteraction = function(source){
@@ -421,6 +479,11 @@ var Mote = (function()
 		 loadConfigPotArea(dbtype_area,cqlFilter);//加载面的图层
 		 callback && callback();
 	 }
+	 Map.prototype.loadAlphaPolygon = function(callback){
+		 var cqlFilter = 'place_id=' + placeid;
+		 loadConfigPotArea(dbtype_alphaArea,cqlFilter);//加载面的图层
+		 callback && callback();
+	 }
 	 Map.prototype.rmPoint = function(callback){
 		configPotSource.clear();
 			callback && callback();
@@ -442,9 +505,6 @@ var Mote = (function()
 			});
 			//self.rmInteraction(select.select);
 	 }
-	 /*
-	  *删除某个点
-	 */
 	 Map.prototype.deletePoint = function(point, callback){
 		 var newFeature = new ol.Feature();
 		 newFeature.setId(point.getId());
@@ -472,9 +532,6 @@ var Mote = (function()
 			});
 			//self.rmInteraction(select.select);
 	 }
-	  /*
-	  *删除某个面
-	 */
 	 Map.prototype.deleteArea = function(area, callback){
 		var newFeature = new ol.Feature();
 		newFeature.setId(area.getId());
@@ -482,6 +539,32 @@ var Mote = (function()
 			if (e == 4 ){
 				callback && callback(1);
 			    self.loadPolygon();
+			}else{
+				callback && callback(-1);
+			}
+		});
+		//消除选择
+		self.rmInteraction(self.select.select);
+	 }
+	 Map.prototype.getAlphaAreaByClick = function(callback){
+		    var condition = ol.events.condition.singleClick;
+			this.select = this.selectByInteraction([configAlphaAreaLayer],condition);
+			this.select.select.on('select', function(e) {
+				if(e.selected.length != 0) {  
+					var selectInfo = e.selected[0];
+				    callback && callback(selectInfo);
+				}			
+				
+			});
+			//self.rmInteraction(select.select);
+	 }
+	 Map.prototype.deleteAlphaArea = function(area, callback){
+		var newFeature = new ol.Feature();
+		newFeature.setId(area.getId());
+		self.saveFuature([newFeature], 'fence_configalphaarea','remove',function(e){
+			if (e == 4 ){
+				callback && callback(1);
+			    self.loadAlphaPolygon();
 			}else{
 				callback && callback(-1);
 			}
@@ -607,6 +690,47 @@ var Mote = (function()
 		}, this);
 	 }
 	  /*
+	 * 绘制透明面 0 回调函数-1表示失败 0表示成功
+	 */
+	 Map.prototype.drawAlphaArea = function(info, callback){
+		 var s = this;
+		 var drawAlphaArea = s.drawAreaByInteraction(configAlphaAreaSource);
+		 drawAlphaArea.Polygon.on('drawend', function(evt) {
+			var Coordinates = evt.feature.get('geom').getCoordinates()[0];
+			var CoordinatesLength = Coordinates.length;
+			var newCoordinates = [];
+			var oldCoordinates;
+			for (var i=0;i<CoordinatesLength;i++){
+				oldCoordinates = Coordinates[i];
+				newCoordinates[i] = [oldCoordinates[1],oldCoordinates[0]];
+			}
+			var newFeature = new ol.Feature();
+			newFeature.setId('alphaArea');
+			newFeature.setGeometryName('geom');
+			newFeature.set('geom', null);
+			newFeature.set('place_id', info.place_id);
+			newFeature.set('building_id', info.building_id);
+			newFeature.set('floor_id', info.floor_id);
+			newFeature.set('name', info.name);
+			newFeature.set('remarks', info.remarks);
+			newFeature.set('border_color', info.border_color);
+			newFeature.setGeometry(new ol.geom.Polygon([newCoordinates]));
+			//drawArea.setActive(false);
+			// 带信息保存
+			s.saveFuature([newFeature], 'fence_configalphaarea','insert',function(e){
+				if (e ==4){
+					//alert('保存成功');
+					callback && callback(1)
+					s.loadAlphaPolygon();
+				}else{
+					callback && callback(-1);
+				}
+			});
+			
+			s.rmInteraction(drawAlphaArea.Polygon);
+		}, this);
+	 }
+	  /*
 	 * 修改面 0 回调函数-1表示失败 0表示成功
 	 */
 	 Map.prototype.modifyArea = function(info, callback){
@@ -645,6 +769,47 @@ var Mote = (function()
 			});
 			s.rmInteraction(modifyArea.select);
 			s.rmInteraction(modifyArea.modify);
+		}, this);
+	 }
+	 /*
+	 * 修改透明面 0 回调函数-1表示失败 0表示成功
+	 */
+	 Map.prototype.modifyAlphaArea = function(info, callback){
+		 var s = this;
+		 var modifyAlphaArea = s.modifyAreaByInteraction([configAlphaAreaLayer]);
+		 modifyAlphaArea.modify.on('modifyend', function(evt) {
+			var modifyId = evt.features.getArray()[0].getId();
+			var Coordinates = evt.features.getArray()[0].getGeometry().getCoordinates()[0];
+			var CoordinatesLength = Coordinates.length;
+			var newCoordinates = [];
+			var oldCoordinates;
+			for (var i=0;i<CoordinatesLength;i++){
+				oldCoordinates = Coordinates[i];
+				newCoordinates[i] = [oldCoordinates[1],oldCoordinates[0]];
+			}
+			var newFeature = new ol.Feature();
+			newFeature.setId(modifyId);
+			newFeature.setGeometryName('geom');
+			newFeature.set('geom', null);
+			newFeature.set('place_id', info.place_id);
+			newFeature.set('building_id', info.building_id);
+			newFeature.set('floor_id', info.floor_id);
+			newFeature.set('name', info.name);
+			newFeature.set('remarks', info.remarks);
+			newFeature.set('border_color', info.border_color);
+			newFeature.setGeometry(new ol.geom.Polygon([newCoordinates]));
+			//drawPot.setActive(false);
+			// 带信息保存
+			s.saveFuature([newFeature], 'fence_configalphaarea','update',function(e){
+				if (e ==4 ){
+					callback && callback(1);
+					s.loadAlphaPolygon();
+				}else{
+					callback && callback(-1);
+				}
+			});
+			s.rmInteraction(modifyAlphaArea.select);
+			s.rmInteraction(modifyAlphaArea.modify);
 		}, this);
 	 }
 	 
