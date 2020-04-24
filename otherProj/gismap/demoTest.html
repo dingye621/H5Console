@@ -37,6 +37,7 @@ color: black;
 			margin-left:20px;
 			position:fixed; bottom:620px; left:0;
 			border: 1px solid black;
+			display: none;
 		}
 		.leftMenu li{
 background-color: white;
@@ -67,6 +68,9 @@ background-color:skyblue;
 	<button onclick="getAreaByMoveon();">AREA鼠标移入事件</button>
 	<button onclick="getAreaByClick();">AREA鼠标单击事件</button>
 	<button onclick="getAreaByDblclick();">AREA鼠标双击事件</button>
+	<button onclick="getAlphaAreaByMoveon();">透明框鼠标移入事件</button>
+	<button onclick="getAlphaAreaByClick();">透明框鼠标单击事件</button>
+	<button onclick="getAlphaAreaByDblclick();">透明框鼠标双击事件</button>
 	<button onclick="removeMouseEvent()">消除事件</button>
 </div>
 <div>
@@ -78,6 +82,7 @@ background-color:skyblue;
 	<button onclick="drawArea();">标面</button>
 	<button onclick="modifyArea();">修改面</button>
 	<button onclick="deleteArea();">删除面</button>
+	<button onclick="editFrame();">标透明框（属性自定义）</button>
 	<button onclick="drawAlphaArea();">标透明框</button>
 	<button onclick="modifyAlphaArea();">修改透明框</button>
 	<button onclick="deleteAlphaArea();">删除透明框</button>
@@ -106,7 +111,7 @@ background-color:skyblue;
 <script src="src/template.js"></script>
 <script src="src/echarts.min.js"></script>
 <script src="src/config.js"></script>
-<script src="src/ajax.js"></script>
+<script src="src/http.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!--可燃有毒气体监测图览template模版-->
 <script type="text/html" id="template1">
@@ -217,6 +222,34 @@ background-color:skyblue;
     </ul>
 </script>
 
+
+<!--添加边框编辑页-->
+<script type="text/html" id="templateFrame">
+
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+	
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					
+						<div class="panel-body">
+							<table>
+								<tr><td>名称：</td><td>
+									<input type='text' name='name' />
+								</td></tr>
+								<tr>
+									<td>颜色：</td><td><input type='text' name='color' /></td>
+								</tr>
+								<tr><td>备注：</td><td><input type='text' name='remark' /></td></tr>
+								
+							</table>
+							<div class='btn btn-default' id='save'>保存</div>
+						</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
 <script>
 //获取配置文件的ip
 var ip = globalConfig.ip;
@@ -276,10 +309,45 @@ $('.leftMenu').css('bottom',h/2+'px');
   area: ['620px', '420px'], //宽高
   content: '<div id="templatelist'+ info.type+'"></div>'
 });
+		testTemp(info);
+}
+function editFrame()
+ {
+	layer.open({
+			title:'添加透明标框',
+  type: 1,
+  //skin: 'layui-layer-rim', //加上边框
+  area: ['620px', '420px'], //宽高
+  content: '<div id="templatelistFrame"></div>'
+});
+initFrameData();
+}
 
+function initFrameData()
+{
+   var data={};
+ // 模板渲染
+ var template1 = document.getElementById('templateFrame').innerHTML;
+ document.getElementById('templatelistFrame').innerHTML = template(template1,{data:data});
 
-testTemp(info);
- }
+ $('#save').click(function(){
+var name=$('input[name="name"]').val();
+var color=$('input[name="color"]').val();
+var remark=$('input[name="remark"]').val();
+var info = {
+		 name:name,
+		 remarks:remark,
+		 building_id:tmap.getBuilding(),
+		 floor_id:tmap.getFloor(),
+		 place_id:tmap.getPlace(),
+		 border_color:color
+		};
+		layer.close(layer.index);
+		drawAlphaAreaByInfo(info);
+	
+ });
+}
+
 
  function layerOpen2(info)
  {
@@ -290,7 +358,6 @@ testTemp(info);
   maxmin: true,
   content: 'http://www.baidu.com'
 });
-
 testTemp(info);
  }
  
@@ -401,6 +468,9 @@ myChart.setOption(option);
   tmap.loadPoint();
   // 加载面
   tmap.loadPolygon();
+
+   // 加载透明面
+   tmap.loadAlphaPolygon();
   // 新增点&保存
   function drawPot(tp)
   {
@@ -566,8 +636,18 @@ function getPOIByClickReal(){
   }
   loadMapByLonLatZoom();
 
+function editProp()
+{
+	layerOpen(
+
+
+	);
+
+}
+
     // 新增透明框&保存
 	function drawAlphaArea(){
+		
 	var info = {
 	 name:'红色框区域',
 	 remarks:'这是一个测试的区域',
@@ -581,6 +661,14 @@ function getPOIByClickReal(){
 	   alert("绘制区域成功!");
 	});
   }
+
+  function drawAlphaAreaByInfo(info){
+		
+		tmap.drawAlphaArea(info, function(e){
+		 if(e == 1)
+		   alert("绘制区域成功!");
+		});
+	  }
 
     // 删除透明框
   function deleteAlphaArea(){
@@ -596,6 +684,44 @@ function getPOIByClickReal(){
 			});
 	  });
   }
+
+  	// AlphaArea鼠标移入事件
+	function getAlphaAreaByMoveon(){
+		tmap.alphaAreaMouseEvent('move', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
+	// AlphaArea鼠标单击事件
+	function getAlphaAreaByClick(){
+		tmap.alphaAreaMouseEvent('click', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
+	// AlphaArea鼠标双击事件
+	function getAlphaAreaByDblclick(){
+		tmap.alphaAreaMouseEvent('dbclick', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
+
+	function getAlphaAreaByMoveon(){
+		// 自定义边框和填充色
+		var style = {
+			fill: [255,255,0,1],
+			stroke: [255,0,0,1]
+		}
+		// 设置自定义的样式为高亮样式
+		//tmap.setSelectFeatureStyle(style);
+		// 默认高亮样式为元素自带的边框样式
+		tmap.alphaAreaMouseEvent('move', function(info){
+		// alert(JSON.stringify(info));
+			// 高亮样式和消除高亮不能一起用
+			//tmap.rmFeatureSelsct();
+		});
+	}
 </script>
 
 

@@ -94,9 +94,8 @@ var Mote = (function()
 				 var condition = ol.events.condition.pointerMove;
 				 self.select = self.selectByInteraction([configPotLayer],condition);
 				 self.select.select.on('select', function(e) {
-					//alert(e.selected[0].get('name'));
-					
 					var info = new Object();
+					info.fid = e.selected[0].getId();
 					info.name = e.selected[0].get('name');
 					info.remarks = e.selected[0].get('remarks');
 					info.type = e.selected[0].get('icon');
@@ -114,8 +113,8 @@ var Mote = (function()
 				 var condition = ol.events.condition.singleClick;
 				 self.select = tmap.selectByInteraction([configPotLayer],condition);
 				 self.select.select.on('select', function(e) {
-					//alert(e.selected[0].get('name'));
 					var info = new Object();
+					info.fid = e.selected[0].getId();
 					info.name = e.selected[0].get('name');
 					info.remarks = e.selected[0].get('remarks');
 					info.type = e.selected[0].get('icon');
@@ -132,8 +131,8 @@ var Mote = (function()
 				var condition = ol.events.condition.doubleClick;
 				self.select = tmap.selectByInteraction([configPotLayer],condition);
 				self.select.select.on('select', function(e) {
-					
-                    	var info = new Object();
+                    var info = new Object();
+					info.fid = e.selected[0].getId();
 					info.name = e.selected[0].get('name');
 					info.remarks = e.selected[0].get('remarks');
 					info.type = e.selected[0].get('icon');
@@ -161,9 +160,8 @@ var Mote = (function()
 				 var condition = ol.events.condition.pointerMove;
 				 self.select = self.selectByInteraction([configAreaLayer],condition);
 				 self.select.select.on('select', function(e) {
-					//alert(e.selected[0].get('name'));
-					
 					var info = new Object();
+					info.fid = e.selected[0].getId();
 					info.name = e.selected[0].get('name');
 					info.remarks = e.selected[0].get('remarks');
 					//info.type = e.selected[0].get('type');
@@ -180,8 +178,8 @@ var Mote = (function()
 				 var condition = ol.events.condition.singleClick;
 				 self.select = tmap.selectByInteraction([configAreaLayer],condition);
 				 self.select.select.on('select', function(e) {
-					//alert(e.selected[0].get('name'));
 					var info = new Object();
+					info.fid = e.selected[0].getId();
 					info.name = e.selected[0].get('name');
 					info.remarks = e.selected[0].get('remarks');
 					//info.type = e.selected[0].get('type');
@@ -198,8 +196,8 @@ var Mote = (function()
 				var condition = ol.events.condition.doubleClick;
 				self.select = tmap.selectByInteraction([configAreaLayer],condition);
 				self.select.select.on('select', function(e) {
-					
                    	var info = new Object();
+					info.fid = e.selected[0].getId();
 					info.name = e.selected[0].get('name');
 					info.remarks = e.selected[0].get('remarks');
 					//info.type = e.selected[0].get('type');
@@ -223,6 +221,7 @@ var Mote = (function()
 				 self.select = self.selectByInteraction([configAlphaAreaLayer],condition);
 				 self.select.select.on('select', function(e) {
 					var info = new Object();
+					info.fid = e.selected[0].getId();
 					info.name = e.selected[0].get('name');
 					info.remarks = e.selected[0].get('remarks');
 					//info.type = e.selected[0].get('type');
@@ -240,6 +239,7 @@ var Mote = (function()
 				 self.select = tmap.selectByInteraction([configAlphaAreaLayer],condition);
 				 self.select.select.on('select', function(e) {
 					var info = new Object();
+					info.fid = e.selected[0].getId();
 					info.name = e.selected[0].get('name');
 					info.remarks = e.selected[0].get('remarks');
 					//info.type = e.selected[0].get('type');
@@ -257,6 +257,7 @@ var Mote = (function()
 				self.select = tmap.selectByInteraction([configAlphaAreaLayer],condition);
 				self.select.select.on('select', function(e) {
                    	var info = new Object();
+					info.fid = e.selected[0].getId();
 					info.name = e.selected[0].get('name');
 					info.remarks = e.selected[0].get('remarks');
 					//info.type = e.selected[0].get('type');
@@ -276,9 +277,42 @@ var Mote = (function()
 	 Map.prototype.rmFeatureSelsct = function(){
 		 self.select.rmFeatures();
 	 }
-	 /*
-	 * 消除事件
-	 */
+	 Map.prototype.setSelectFeatureStyle = function(info){
+		configAlphaAreaStyleFun =  function(feature) {
+			var featureName = feature.get('name');
+			// 返回数据的style
+			return new ol.style.Style({
+				stroke: new ol.style.Stroke({
+					color: info.stroke,
+					width:2
+				}),
+				fill: new ol.style.Fill({
+					color: info.fill
+				}),
+				image: new ol.style.Circle({
+					radius: 5,
+					fill: new ol.style.Fill({
+						color: info.fill
+					})
+				}),
+				text: new ol.style.Text({
+					text: featureName,
+					font: '0.71em sans-serif',
+					textAlign: 'center',
+					textBaseline: 'bottom',
+					offsetY: -15,
+					fill: new ol.style.Fill({
+						color: [40,40,40,1]
+					}),
+					stroke: new ol.style.Stroke({
+						color: [255,200,100,1],
+						width: 5
+					})
+				}),
+				zIndex: 700
+			});
+		};
+	 }
 	 Map.prototype.rmMouseEvent = function(){
 		 self.rmInteraction(self.select.select);
 	 }
@@ -291,11 +325,13 @@ var Mote = (function()
 			?configPotStyleFun
 			:layers[0] == configAreaLayer
 				?configAreaStyleFun
-				:layers[0] == AssetLocateLayer
-					?assetstylefunction
-					:layers[0] == AssetRoutePointLayer
-						?RouteStyle['geoms']
-						:geojsonstylefunction
+				:layers[0] == configAlphaAreaLayer
+					?configAlphaAreaStyleFun
+					:layers[0] == AssetLocateLayer
+						?assetstylefunction
+						:layers[0] == AssetRoutePointLayer
+							?RouteStyle['geoms']
+							:geojsonstylefunction
 		 this.selectFeature = {
 			init: function() {
 				this.select = new ol.interaction.Select({

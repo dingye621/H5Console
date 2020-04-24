@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>懋特地图Demo</title>
+<!-- 地图 -->
+<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol.css" />
+<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol3-base_3d.css" />
+<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/bootstrap.css" />
+	<script src="http://47.103.35.78:8081/chem/js/global/jquery-2.1.1.min.js"></script>
+	<script src="http://47.103.35.78:8081/chem/js/global/bootstrap.js"></script>
+	<!-- 地图 -->
+	<script src="http://47.103.35.78:8081/chem/js/map/map/ol-debug.js"></script>
+	<script src="src/api_Common.js"></script>
+	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_style.js"></script>
+	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_init.js"></script>
+	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_base_fun.js"></script>
+	<script src="src/Motemap.js"></script>
+	<script src="src/api_PotArea.js"></script>
+	<!-- 弹框 -->
+	<script src="http://47.103.35.78:8081/chem/com/layer/layer.js"></script>
+</head>
+<body>
+
+<div id="map" style="width: 80%;"></div>
+<div>
+	<button onclick="getBuilding();">获取建筑编号</button>
+	<button onclick="getFloor();">获取当前楼层</button>
+	<button onclick="getZoom();">获取当前zoom</button>
+	<button onclick="getLonLatByClick();">获取经纬度</button>
+</div>
+<div>
+	<button onclick="getPOIByType();">根据类型加载POI</button>
+	<button onclick="getPOIByMoveon();">POI鼠标移入事件</button>
+	<button onclick="getPOIByClick();">POI鼠标单击事件</button>
+	<button onclick="getPOIByDblclick();">POI鼠标双击事件</button>
+	<button onclick="getAreaByMoveon();">AREA鼠标移入事件</button>
+	<button onclick="getAreaByClick();">AREA鼠标单击事件</button>
+	<button onclick="getAreaByDblclick();">AREA鼠标双击事件</button>
+	<button onclick="getAlphaAreaByMoveon();">透明框鼠标移入事件</button>
+	<button onclick="getAlphaAreaByClick();">透明框鼠标单击事件</button>
+	<button onclick="getAlphaAreaByDblclick();">透明框鼠标双击事件</button>
+	<button onclick="removeFeatureSelsct()">清除选中</button>
+	<button onclick="removeMouseEvent()">消除事件</button>
+</div>
+<div>
+	<button onclick="drawPot();">标点</button>
+	<button onclick="modifyPot();">修改点</button>
+	<button onclick="deletePot();">删除点</button>
+	<button onclick="drawArea();">标面</button>
+	<button onclick="modifyArea();">修改面</button>
+	<button onclick="deleteArea();">删除面</button>
+	<button onclick="drawAlphaArea();">标透明框</button>
+	<button onclick="modifyAlphaArea();">修改透明框</button>
+	<button onclick="deleteAlphaArea();">删除透明框</button>
+</div>
+<div>
+	<button onclick="loadMapByLonLatZoom();">根据坐标和层级加载地图</button>
+	<button onclick="loadLocate();">定位点显示</button>
+	<button onclick="getLocateByMoveon();">定位点鼠标移入</button>
+	<button onclick="loadLocateMsg();">定位点信息展示</button>
+	<button onclick="loadTrail();">轨迹回放</button>
+	<button onclick="getTrailMsg();">轨迹鼠标事件</button>
+</div>
+
+
+<script>
+	// 初始化
+	var tmap = new Mote.Map({
+		target: "map",
+		place: "61",
+		building: 1,
+		floor: "01",
+		mode: "2d"
+	})
+	// 获取buildingid
+	function getBuilding(){
+		alert("建筑编号是：" + tmap.getBuilding());
+	}
+	// 获取floorid
+	function getFloor(){
+		alert("当前楼层是：" + tmap.getFloor());
+	}
+	// 获取zoom
+	function getZoom(){
+		alert("当前层级是：" + tmap.getZoom());
+	}
+	// 获取lonlat,click
+	function getLonLatByClick(){
+		tmap.getCoordByClick(function(coord){
+		  	alert("lon: " + coord.lon + ", lat:" + coord.lat);
+		});
+		
+	}
+	//消除要素选中状态
+	function removeFeatureSelsct(){
+	   tmap.rmFeatureSelsct();
+	}
+	//消除鼠标单击事件
+	function removeMouseEvent(){
+	   tmap.rmMouseEvent();
+	}
+	// POI鼠标移入事件
+	function getPOIByMoveon(){
+		tmap.poiMouseEvent('move', function(info){
+		   alert(JSON.stringify(info));
+		   tmap.rmFeatureSelsct();
+		});
+	}
+	// POI鼠标单击事件
+	function getPOIByClick(){
+		tmap.poiMouseEvent('click', function(info){
+		   alert(JSON.stringify(info));
+		   tmap.rmFeatureSelsct();
+		});
+	}
+	// POI鼠标双击事件
+	function getPOIByDblclick(){
+		tmap.poiMouseEvent('dbclick', function(info){
+		   alert(JSON.stringify(info));
+		   tmap.rmFeatureSelsct();
+		});
+	}
+	// Area鼠标移入事件
+	function getAreaByMoveon(){
+		tmap.areaMouseEvent('move', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
+	// Area鼠标单击事件
+	function getAreaByClick(){
+		tmap.areaMouseEvent('click', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
+	// Area鼠标双击事件
+	function getAreaByDblclick(){
+		tmap.areaMouseEvent('dbclick', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
+	// AlphaArea鼠标移入事件
+	function getAlphaAreaByMoveon(){
+		// 自定义边框和填充色
+		var style = {
+			fill: [255,255,0,1],
+			stroke: [255,0,0,1]
+		}
+		// 设置自定义的样式为高亮样式
+		//tmap.setSelectFeatureStyle(style);
+		// 默认高亮样式为元素自带的边框样式
+		tmap.alphaAreaMouseEvent('move', function(info){
+		    alert(JSON.stringify(info));
+			// 高亮样式和消除高亮不能一起用
+			//tmap.rmFeatureSelsct();
+		});
+	}
+	// AlphaArea鼠标单击事件
+	function getAlphaAreaByClick(){
+		tmap.alphaAreaMouseEvent('click', function(info){
+		    alert(JSON.stringify(info));
+			//tmap.rmFeatureSelsct();
+		});
+	}
+	// AlphaArea鼠标双击事件
+	function getAlphaAreaByDblclick(){
+		tmap.alphaAreaMouseEvent('dbclick', function(info){
+		    alert(JSON.stringify(info));
+			//tmap.rmFeatureSelsct();
+		});
+	}
+  // 加载点
+  tmap.loadPoint();
+  // 加载面
+  tmap.loadPolygon();
+  // 加载透明面
+  tmap.loadAlphaPolygon();
+  // 新增点&保存
+  function drawPot(){
+	var info = {
+	 name:'有毒汽体',
+	 remarks:'这是一个测试点',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 type:12
+	};
+	tmap.drawPoint(info, function(e){
+	 if(e == 1)
+	   alert("标点成功");
+	});
+  }
+  // 新增面&保存
+  function drawArea(){
+	var info = {
+	 name:'红色区域',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 color:'#FF3030'
+	};
+	tmap.drawArea(info, function(e){
+	 if(e == 1)
+	   alert("绘制区域成功!");
+	});
+  }
+  // 新增透明框&保存
+  function drawAlphaArea(){
+	var info = {
+	 name:'红色框区域',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 border_color:'#FF3030'
+	};
+	tmap.drawAlphaArea(info, function(e){
+	 if(e == 1)
+	   alert("绘制区域成功!");
+	});
+  }
+  // 修改点&保存
+  function modifyPot(){
+	var info = {
+	 name:'有毒汽体_修改',
+	 remarks:'这是一个测试点',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 type:12
+	};
+	tmap.modifyPoint(info, function(e){
+	 if(e == 1)
+	   alert("修改点位成功");
+	});
+  }
+  // 修改面&保存
+  function modifyArea(){
+	var info = {
+	 name:'红色区域_修改',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 color:'#FF3030'
+	};
+	tmap.modifyArea(info, function(e){
+	 if(e == 1)
+	   alert("修改区域成功!");
+	});
+  }
+  // 修改透明框&保存
+  function modifyAlphaArea(){
+	var info = {
+	 name:'绿色框区域_修改',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 border_color:'#30FF30'
+	};
+	tmap.modifyAlphaArea(info, function(e){
+	 if(e == 1)
+	   alert("修改区域成功!");
+	});
+  }
+  // 删除点
+  function deletePot(){
+	  tmap.getPointByClick(function(point){
+	      layer.msg('确认删除？', {
+				  time: 0 //不自动关闭
+				  ,btn: ['确定', '取消']
+				  ,yes: function(index){
+				    layer.close(index);
+					//删除点
+					tmap.deletePoint(point);
+				  }
+			});
+	  });
+  }
+  // 删除面
+  function deleteArea(){
+	 tmap.getAreaByClick(function(area){
+	      layer.msg('确认删除？', {
+				  time: 0 //不自动关闭
+				  ,btn: ['确定', '取消']
+				  ,yes: function(index){
+				    layer.close(index);
+					//删除点
+					tmap.deleteArea(area);
+				  }
+			});
+	  });
+  }
+  // 删除透明框
+  function deleteAlphaArea(){
+	 tmap.getAlphaAreaByClick(function(area){
+	      layer.msg('确认删除？', {
+				  time: 0 //不自动关闭
+				  ,btn: ['确定', '取消']
+				  ,yes: function(index){
+				    layer.close(index);
+					//删除点
+					tmap.deleteAlphaArea(area);
+				  }
+			});
+	  });
+  }
+  // 根据坐标和层级加载地图
+  function loadMapByLonLatZoom(){
+	var lon = 119.02492270,lat = 33.38843574,zoom = 18;// minZoom 15,maxZoom 24
+	var ret = tmap.loadMap(lon, lat,zoom,function(e){
+		 if(e == 1)
+		alert("加载成功");
+	});
+  }
+  // 定位点显示
+  function loadLocate(){
+	var locators = [{
+		bid:'233',
+		placeId:'61',
+		buildingId:1,
+		floorId:'01',
+		lon:119.02492270,
+		lat:33.38843574
+	} ];
+	tmap.loadLocators(locators,function(e){
+		 if(e == 1)
+		alert("加载成功");
+	});
+  }
+  // 定位点鼠标移入
+  function getLocateByMoveon(){
+		tmap.locatorMouseEvent('move', function(info){
+		   alert(JSON.stringify(info));
+		});
+	}
+  // 根据类型加载POI，示例：加载type=12的poi
+  function getPOIByType(){
+	var filter = {
+		type:'12'
+	};
+	// 删除全部pot图层
+	// tmap.rmPoint();
+	// 根据type加载pot图层
+	tmap.loadPointByType(filter,function(e){
+		if(e == 1)
+			alert("加载成功");
+		});
+	}
+  // 定位信息展示
+  function loadLocateMsg(){
+    var iconType = 1;
+	var locators = [{
+		bid:'233',
+		placeId:'61',
+		buildingId:1,
+		floorId:'01',
+		name: '测试',
+		sex: 1,
+		battery: 66, // 电量
+		heartRate: 121, // 心率
+		bloodPressure: '160/133', // 血压
+		steps: 33, // 步数
+		lon:119.02515704934238,
+		lat:33.38909523787314
+	} ];
+	tmap.loadPeopleLocators(iconType,locators,function(e,i){
+		e?alert('点击定位点显示详情'):alert(i)
+	});
+  }
+  // 轨迹回放
+  function loadTrail(){
+    var bid = '233';
+	var o = [{
+	    time: '2020-04-04 09:49:34',
+		placeId:'61',
+		buildingId:1,
+		floorId:'01',
+		lon:119.02492270,
+		lat:33.38843574
+	},{
+	    time: '2020-04-04 09:49:38',
+		placeId:'61',
+		buildingId:1,
+		floorId:'01',
+		lon:119.02432270,
+		lat:33.38853574
+	},{
+	    time: '2020-04-04 09:49:45',
+		placeId:'61',
+		buildingId:1,
+		floorId:'01',
+		lon:119.02432570,
+		lat:33.38862374
+	} ];
+	tmap.trail(bid,o);
+  }
+  // 轨迹鼠标事件
+  function getTrailMsg(){
+		tmap.trailMouseEvent('move', function(info){
+		   alert(JSON.stringify(info));
+		});
+	}
+</script>
+</body>
+</html>

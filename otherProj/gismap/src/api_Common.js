@@ -449,6 +449,52 @@ var configAreaStyleFun = function(feature) {
 	var featureFloor = feature.get('floor_id');
 	var featureName = feature.get('name');
 	var featureStrokeColor = feature.get('border_color')
+		?[255,255,255,0.1]//feature.get('border_color')
+		:feature.get('color')
+		?feature.get('color')
+		:[255,200,100,0.5];
+	var featureFillColor = feature.get('border_color')
+		?[255,255,255,0.1]
+		:feature.get('color')
+		?feature.get('color')
+		:[255,200,100,0.5];
+	// 返回数据的style
+	return new ol.style.Style({
+		stroke: new ol.style.Stroke({
+			color: featureStrokeColor,
+			width:2
+		}),
+		fill: new ol.style.Fill({
+			color: featureFillColor
+		}),
+		image: new ol.style.Circle({
+			radius: 5,
+			fill: new ol.style.Fill({
+				color: featureFillColor
+			})
+		}),
+		text: new ol.style.Text({
+			text: featureName,
+			font: '0.71em sans-serif',
+			textAlign: 'center',
+			textBaseline: 'bottom',
+			offsetY: -15,
+			fill: new ol.style.Fill({
+				color: [40,40,40,1]
+			}),
+			stroke: new ol.style.Stroke({
+				color: [255,200,100,1],
+				width: 5
+			})
+		}),
+		zIndex: 700
+	});
+};
+//config-alphaarea
+var configAlphaAreaStyleFun = function(feature) {
+	var featureFloor = feature.get('floor_id');
+	var featureName = feature.get('name');
+	var featureStrokeColor = feature.get('border_color')
 		?feature.get('border_color')
 		:feature.get('color')
 		?feature.get('color')
