@@ -8,6 +8,7 @@
 <!-- 地图 -->
 <link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol.css" />
 <link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol3-base_3d.css" />
+  <link rel="stylesheet" href="src/component/layui.css"  media="all">
 	<script src="http://10.109.75.228:8091/chem/js/global/jquery-2.1.1.min.js"></script>
 	<script src="http://10.109.75.228:8091/chem/js/global/bootstrap.js"></script>
 	<!-- 地图 -->
@@ -19,12 +20,12 @@
 	<script src="src/Motemap.js"></script>
 	<!-- <script src="src/api_draw.js"></script> -->
 	<script src="src/api_PotArea.js"></script>
-	<script src="src/indextab.js"></script>
+	<script src="src/component/indextab.js"></script>
 	<!-- 弹框 -->
 	<script src="http://10.109.75.228:8091/chem/com/layer/layer.js"></script>
 	<!--css-->
-	<link href="src/bootstrap.min.css" rel="stylesheet" />
-	<link href="src/framework-theme.css" rel="stylesheet" />
+	<link href="src/component/bootstrap.min.css" rel="stylesheet" />
+	<link href="src/component/framework-theme.css" rel="stylesheet" />
 
 	<style>
 .layui-layer{
@@ -108,10 +109,11 @@ background-color:skyblue;
 	</li>
 </ul>
 <!--js-->
-<script src="src/template.js"></script>
-<script src="src/echarts.min.js"></script>
+<script src="src/component/template.js"></script>
+<script src="src/component/echarts.min.js"></script>
 <script src="src/config.js"></script>
 <script src="src/http.js"></script>
+<script src="src/component/layui.js" charset="utf-8"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!--可燃有毒气体监测图览template模版-->
 <script type="text/html" id="template1">
@@ -238,7 +240,18 @@ background-color:skyblue;
 									<input type='text' name='name' />
 								</td></tr>
 								<tr>
-									<td>颜色：</td><td><input type='text' name='color' /></td>
+									<td>颜色：</td><td><div style="margin-left: 30px;">
+										<form class="layui-form" action="">
+										  <div class="layui-form-item">
+											<div class="layui-input-inline" style="width: 120px;">
+											  <input type="text" name='color' value="" placeholder="请选择颜色" class="layui-input" id="test-form-input">
+											</div>
+											<div class="layui-inline" style="left: -11px;">
+											  <div id="test-form"></div>
+											</div>
+										  </div>
+										</form>
+									  </div></td>
 								</tr>
 								<tr><td>备注：</td><td><input type='text' name='remark' /></td></tr>
 								
@@ -346,6 +359,20 @@ var info = {
 		drawAlphaAreaByInfo(info);
 	
  });
+ //加载颜色选择器
+ layui.use('colorpicker', function(){
+  var $ = layui.$
+  ,colorpicker = layui.colorpicker;
+ //表单赋值
+ colorpicker.render({
+    elem: '#test-form'
+    ,color: '#1c97f5'
+    ,done: function(color){
+      $('#test-form-input').val(color);
+    }
+  });
+ });
+
 }
 
 
