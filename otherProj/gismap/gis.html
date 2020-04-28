@@ -186,6 +186,7 @@ background-color:skyblue;
 								<div>工厂同类隐患发生次数：</div>
 								<div id="main" style="width: 600px;height:400px;"></div>
 								<div>区域内各类隐患分布：</div>
+								<div id="mainYear" style="width: 600px;height:400px;"></div>
 						    </div>
 					</div>
 				</div>
@@ -291,19 +292,26 @@ area=['420px', '260px'];
 
 function initEChart()
 {
+	var data={
+    "CldCode": "AA0104",
+    "num": [4,0,0,0],
+    "month": [1,2,3,4],
+    "CldName": "发展部",
+    "ClientDevices": 11065
+  };
  // 基于准备好的dom，初始化echarts实例
  var myChart = echarts.init(document.getElementById('main'));
  //var option=null;
   option = {
     xAxis: {
         type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        data: data.month
     },
     yAxis: {
         type: 'value'
     },
     series: [{
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        data: data.num,
         type: 'line'
     }]
 };

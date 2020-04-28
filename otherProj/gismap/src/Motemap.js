@@ -649,6 +649,35 @@ var Mote = (function()
 			s.rmInteraction(drawPot.Point);
 	   }, this);
 	 }	 
+	 /*
+	 * 根据坐标绘制点 0 回调函数-1表示失败 0表示成功
+	 */
+	 Map.prototype.drawPointByCoords = function(info, callback){
+		 var s = this;
+		 var newCoordinates = [info.lat,info.lon];
+		 var newFeature = new ol.Feature();
+		 newFeature.setId('pot');
+		 newFeature.setGeometryName('geom');
+		 newFeature.set('geom', null);
+		 newFeature.set('place_id', info.place_id);
+		 newFeature.set('building_id', info.building_id);
+		 newFeature.set('floor_id', info.floor_id);
+		 newFeature.set('name', info.name);
+		 newFeature.set('remarks', info.remarks);
+		 newFeature.set('icon', info.type);
+		 newFeature.setGeometry(new ol.geom.Point(newCoordinates));
+		 // 带信息保存
+		 s.saveFuature([newFeature], 'fence_configpot','insert',function(e){
+		 	if (e ==4 ){
+		 		//alert('保存成功');
+		 		callback && callback(1);
+		 		s.loadPoint();
+		 	}else{
+		 		callback && callback(-1);
+		 	}
+		 	
+		 });
+	 }	 
 	  /*
 	 * 修改点 0 回调函数-1表示失败 0表示成功
 	 */
@@ -726,6 +755,38 @@ var Mote = (function()
 		}, this);
 	 }
 	  /*
+	 * 根据坐标绘制面 0 回调函数-1表示失败 0表示成功
+	 */
+	 Map.prototype.drawAreaByCoords = function(info, callback){
+		 var s = this;
+		 var Coordinates = info.coords;
+		 var newCoordinates = [];
+		 for (var i=0;i<info.coords.length;i++){
+		 	newCoordinates[i] = [Coordinates[i].lat,Coordinates[i].lon];
+		 }
+		 var newFeature = new ol.Feature();
+		 newFeature.setId('area');
+		 newFeature.setGeometryName('geom');
+		 newFeature.set('geom', null);
+		 newFeature.set('place_id', info.place_id);
+		 newFeature.set('building_id', info.building_id);
+		 newFeature.set('floor_id', info.floor_id);
+		 newFeature.set('name', info.name);
+		 newFeature.set('remarks', info.remarks);
+		 newFeature.set('color', info.color);
+		 newFeature.setGeometry(new ol.geom.Polygon([newCoordinates]));
+		 // 带信息保存
+		 s.saveFuature([newFeature], 'fence_configarea','insert',function(e){
+		 	if (e ==4){
+		 		//alert('保存成功');
+		 		callback && callback(1)
+		 		s.loadPolygon();
+		 	}else{
+		 		callback && callback(-1);
+		 	}
+		 });
+	 }
+	  /*
 	 * 绘制透明面 0 回调函数-1表示失败 0表示成功
 	 */
 	 Map.prototype.drawAlphaArea = function(info, callback){
@@ -765,6 +826,38 @@ var Mote = (function()
 			
 			s.rmInteraction(drawAlphaArea.Polygon);
 		}, this);
+	 }
+	 /*
+	 * 根据坐标绘制透明面 0 回调函数-1表示失败 0表示成功
+	 */
+	 Map.prototype.drawAlphaAreaByCoords = function(info, callback){
+		 var s = this;
+		 var Coordinates = info.coords;
+		 var newCoordinates = [];
+		 for (var i=0;i<info.coords.length;i++){
+		 	newCoordinates[i] = [Coordinates[i].lat,Coordinates[i].lon];
+		 }
+		 var newFeature = new ol.Feature();
+		 newFeature.setId('alphaArea');
+		 newFeature.setGeometryName('geom');
+		 newFeature.set('geom', null);
+		 newFeature.set('place_id', info.place_id);
+		 newFeature.set('building_id', info.building_id);
+		 newFeature.set('floor_id', info.floor_id);
+		 newFeature.set('name', info.name);
+		 newFeature.set('remarks', info.remarks);
+		 newFeature.set('border_color', info.border_color);
+		 newFeature.setGeometry(new ol.geom.Polygon([newCoordinates]));
+		 // 带信息保存
+		 s.saveFuature([newFeature], 'fence_configalphaarea','insert',function(e){
+		 	if (e ==4){
+		 		//alert('保存成功');
+		 		callback && callback(1)
+		 		s.loadAlphaPolygon();
+		 	}else{
+		 		callback && callback(-1);
+		 	}
+		 });
 	 }
 	  /*
 	 * 修改面 0 回调函数-1表示失败 0表示成功

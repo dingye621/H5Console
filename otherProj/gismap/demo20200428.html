@@ -45,12 +45,15 @@
 </div>
 <div>
 	<button onclick="drawPot();">标点</button>
+	<button onclick="drawPotByCoords();">输入坐标标点</button>
 	<button onclick="modifyPot();">修改点</button>
 	<button onclick="deletePot();">删除点</button>
 	<button onclick="drawArea();">标面</button>
+	<button onclick="drawAreaByCoords();">输入坐标标面</button>
 	<button onclick="modifyArea();">修改面</button>
 	<button onclick="deleteArea();">删除面</button>
 	<button onclick="drawAlphaArea();">标透明框</button>
+	<button onclick="drawAlphaAreaByCoords();">输入坐标标透明框</button>
 	<button onclick="modifyAlphaArea();">修改透明框</button>
 	<button onclick="deleteAlphaArea();">删除透明框</button>
 </div>
@@ -144,23 +147,32 @@
 	}
 	// AlphaArea鼠标移入事件
 	function getAlphaAreaByMoveon(){
+		// 自定义边框和填充色
+		var style = {
+			fill: [255,255,0,1],
+			stroke: [255,0,0,1]
+		}
+		// 设置自定义的样式为高亮样式
+		//tmap.setSelectFeatureStyle(style);
+		// 默认高亮样式为元素自带的边框样式
 		tmap.alphaAreaMouseEvent('move', function(info){
 		    alert(JSON.stringify(info));
-			tmap.rmFeatureSelsct();
+			// 高亮样式和消除高亮不能一起用
+			//tmap.rmFeatureSelsct();
 		});
 	}
 	// AlphaArea鼠标单击事件
 	function getAlphaAreaByClick(){
 		tmap.alphaAreaMouseEvent('click', function(info){
 		    alert(JSON.stringify(info));
-			tmap.rmFeatureSelsct();
+			//tmap.rmFeatureSelsct();
 		});
 	}
 	// AlphaArea鼠标双击事件
 	function getAlphaAreaByDblclick(){
 		tmap.alphaAreaMouseEvent('dbclick', function(info){
 		    alert(JSON.stringify(info));
-			tmap.rmFeatureSelsct();
+			//tmap.rmFeatureSelsct();
 		});
 	}
   // 加载点
@@ -184,6 +196,23 @@
 	   alert("标点成功");
 	});
   }
+  // 新增点&保存(输入坐标)
+  function drawPotByCoords(){
+	var info = {
+	 name:'有毒汽体',
+	 remarks:'这是一个测试点点点点点',
+	 lon: 119.02452270,
+	 lat: 33.38863574,
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 type:12
+	};
+	tmap.drawPointByCoords(info, function(e){
+	 if(e == 1)
+	   alert("区域保存成功!");
+	});
+  }
   // 新增面&保存
   function drawArea(){
 	var info = {
@@ -199,6 +228,28 @@
 	   alert("绘制区域成功!");
 	});
   }
+  // 新增面&保存(输入坐标)
+  function drawAreaByCoords(){
+	var coordList = [
+	{lon:119.02432270,lat:33.3873574},
+	{lon:119.02443270,lat:33.3873574},
+	{lon:119.02443270,lat:33.3877574},
+	{lon:119.02432270,lat:33.3877574},
+	{lon:119.02432270,lat:33.3873574}];
+	var info = {
+	 name:'红色区域',
+	 remarks:'这是一个测试的区域',
+	 coords: coordList,
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 color:'#FF3030'
+	};
+	tmap.drawAreaByCoords(info, function(e){
+	 if(e == 1)
+	   alert("区域保存成功!");
+	});
+  }
   // 新增透明框&保存
   function drawAlphaArea(){
 	var info = {
@@ -212,6 +263,28 @@
 	tmap.drawAlphaArea(info, function(e){
 	 if(e == 1)
 	   alert("绘制区域成功!");
+	});
+  }
+  // 新增透明框&保存(输入坐标)
+  function drawAlphaAreaByCoords(){
+	var coordList = [
+	{lon:119.0242270,lat:33.3883574},
+	{lon:119.0243270,lat:33.3883574},
+	{lon:119.0243270,lat:33.3887574},
+	{lon:119.0242270,lat:33.3887574},
+	{lon:119.0242270,lat:33.3883574}];
+	var info = {
+	 name:'红色框区域',
+	 remarks:'这是一个测试的区域',
+	 coords: coordList,
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 border_color:'#FF3030'
+	};
+	tmap.drawAlphaAreaByCoords(info, function(e){
+	 if(e == 1)
+	   alert("区域保存成功!");
 	});
   }
   // 修改点&保存
@@ -301,7 +374,6 @@
 			});
 	  });
   }
-  
   // 根据坐标和层级加载地图
   function loadMapByLonLatZoom(){
 	var lon = 119.02492270,lat = 33.38843574,zoom = 18;// minZoom 15,maxZoom 24
