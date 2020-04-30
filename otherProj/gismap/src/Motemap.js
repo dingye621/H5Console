@@ -501,22 +501,22 @@ var Mote = (function()
 	 }
 	 
 	 Map.prototype.loadPoint = function(callback){
-		 var cqlFilter = 'place_id=' + placeid;
+		 var cqlFilter = 'place_id=' + this.placeId;
 		   loadConfigPotArea(dbtype_pot,cqlFilter);//加载点的图层
 			callback && callback();
 	 }
 	 Map.prototype.loadPointByType = function(info,callback){
-		 var cqlFilter = 'place_id=' + placeid + ' and icon=' + info.type;
+		 var cqlFilter = 'place_id=' + this.placeId + ' and icon=' + info.type;
 		   loadConfigPotArea(dbtype_pot,cqlFilter);//加载点的图层
 			callback && callback(1);
 	 }
 	 Map.prototype.loadPolygon = function(callback){
-		 var cqlFilter = 'place_id=' + placeid;
+		 var cqlFilter = 'place_id=' + this.placeId;
 		 loadConfigPotArea(dbtype_area,cqlFilter);//加载面的图层
 		 callback && callback();
 	 }
 	 Map.prototype.loadAlphaPolygon = function(callback){
-		 var cqlFilter = 'place_id=' + placeid;
+		 var cqlFilter = 'place_id=' + this.placeId;
 		 loadConfigPotArea(dbtype_alphaArea,cqlFilter);//加载面的图层
 		 callback && callback();
 	 }
@@ -528,7 +528,45 @@ var Mote = (function()
 		configAreaSource.clear();
 			callback && callback();
 	 }
-	 
+	 Map.prototype.clearPot = function(callback){ 
+		var features = configPotSource.getFeatures();
+		if(features.length){
+			self.saveFuature(features, dbtype_pot,'remove',function(e){
+				if (e == 4 ){
+					callback && callback(1);
+					self.loadPoint();
+				}else{
+					callback && callback(-1);
+				}
+			});
+		}
+	 }
+	 Map.prototype.clearArea = function(callback){ 
+		var features = configAreaSource.getFeatures();
+		if(features.length){
+			self.saveFuature(features, dbtype_area,'remove',function(e){
+				if (e == 4 ){
+					callback && callback(1);
+					self.loadPolygon();
+				}else{
+					callback && callback(-1);
+				}
+			});
+		}
+	 }
+	 Map.prototype.clearAlphaArea = function(callback){ 
+		var features = configAlphaAreaSource.getFeatures();
+		if(features.length){
+			self.saveFuature(features, dbtype_alphaArea,'remove',function(e){
+				if (e == 4 ){
+					callback && callback(1);
+					self.loadAlphaPolygon();
+				}else{
+					callback && callback(-1);
+				}
+			});
+		}
+	 }
 	 Map.prototype.getPointByClick = function(callback){
 		    var condition = ol.events.condition.singleClick;
 			this.select = this.selectByInteraction([configPotLayer],condition);
@@ -652,6 +690,11 @@ var Mote = (function()
 	 /*
 	 * 根据坐标绘制点 0 回调函数-1表示失败 0表示成功
 	 */
+	 Map.prototype.drawPointByCoordsCheck = function(info,callback){
+		 var cqlFilter = 'place_id=' + this.placeId + ' and icon=' + info.type;
+		 var check = checkConfigPot(cqlFilter);
+		 callback && callback(check?1:0);
+	 }
 	 Map.prototype.drawPointByCoords = function(info, callback){
 		 var s = this;
 		 var newCoordinates = [info.lat,info.lon];

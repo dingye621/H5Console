@@ -34,6 +34,12 @@ async function getCameraInfo(cameraName)
 
 }
 
+
+async function getHazardList()
+{
+    return await axios.get('http://' + globalConfig.ip + '/api/Hazard/getHazard?current=1&pageSize=10000');
+}
+
 //获取参数的方法
 function GetRequest() {   
     var url = location.search; //获取url中"?"符后的字串   

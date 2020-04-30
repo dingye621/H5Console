@@ -84,6 +84,33 @@ function addConfigAreaPage(info){
 		});
 	}
 
+	// 判断点是否重复
+	function checkConfigPot(filter){
+		var check = true;
+		$.ajax({
+			url: wfsUrl,
+			data: {
+				service: 'WFS',
+				version: '1.1.0',
+				request: 'GetFeature',
+				typename: DBs + ':fence_configpot',
+				outputFormat: 'application/json',
+				cql_filter: filter
+			},
+			type: 'GET',
+			dataType: 'json',	
+			async: false,
+			success: function(response){
+				var features = new ol.format.GeoJSON().readFeatures(response);
+				// TODO
+				
+				
+			},
+		});
+		return check
+	}
+
+
 	// 点击显示围栏
 	function showConfigPotArea(center){
 		view.setZoom(lzoom);

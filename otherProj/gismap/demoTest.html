@@ -1,103 +1,115 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>懋特地图Demo</title>
-<!--47.103.35.78:8081 原测试地址-->
-<!--10.109.75.228:8091 -->
-<!-- 地图 -->
-<link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol.css" />
-<link rel="stylesheet" type="text/css" href="http://10.109.75.228:8091/chem/css/map/ol3-base_3d.css" />
-  <link rel="stylesheet" href="src/component/layui.css"  media="all">
-	<script src="http://10.109.75.228:8091/chem/js/global/jquery-2.1.1.min.js"></script>
-	<script src="http://10.109.75.228:8091/chem/js/global/bootstrap.js"></script>
-	<!-- 地图 -->
-	<script src="http://10.109.75.228:8091/chem/js/map/map/ol-debug.js"></script>
-	<script src="src/api_Common.js"></script>
-	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_style.js"></script>
-	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_init.js"></script>
-	<script src="http://10.109.75.228:8091/chem/js/map/map/asset_base_fun.js"></script>
-	<script src="src/Motemap.js"></script>
-	<!-- <script src="src/api_draw.js"></script> -->
-	<script src="src/api_PotArea.js"></script>
-	<script src="src/component/indextab.js"></script>
-	<!-- 弹框 -->
-	<script src="http://10.109.75.228:8091/chem/com/layer/layer.js"></script>
-	<!--css-->
-	<link href="src/component/bootstrap.min.css" rel="stylesheet" />
-	<link href="src/component/framework-theme.css" rel="stylesheet" />
-
-	<style>
-.layui-layer{
-background-color: white;
-color: black;
+	<head>
+		<meta charset="utf-8">
+		<title>懋特地图Demo</title>
+		<!--47.103.35.78:8081 原测试地址-->
+		<!--10.109.75.228:8091 -->
+		<!-- 地图 -->
+		<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol.css" />
+		<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol3-base_3d.css" />
+		<script src="src/config.js"></script>
+		<script src="src/src_config.js"></script>
+		<!-- <script src="http://10.109.75.228:8091/chem/js/global/jquery-2.1.1.min.js"></script>  -->
+		<script src="src/component/jquery/jquery-2.1.1.min.js"></script>
+		<!-- <script src="http://10.109.75.228:8091/chem/js/global/bootstrap.js"></script> -->
+			
+		<!-- 地图
+		<script src="http://10.109.75.228:8091/chem/js/map/map/ol-debug.js"></script>
+		<script src="src/api_Common.js"></script>
+		<script src="http://10.109.75.228:8091/chem/js/map/map/asset_style.js"></script>
+		<script src="http://10.109.75.228:8091/chem/js/map/map/asset_init.js"></script>
+		<script src="http://10.109.75.228:8091/chem/js/map/map/asset_base_fun.js"></script>
+		<script src="src/Motemap.js"></script>
+		
+		<script src="src/api_PotArea.js"></script>-->
+		<script src="src/component/indextab.js"></script>
+		
+		<!-- <script src="http://10.109.75.228:8091/chem/com/layer/layer.js"></script>  -->
+		
+			<!--css-->
+			<link href="src/component/bootstrap.min.css" rel="stylesheet" />
+			<link href="src/component/framework-theme.css" rel="stylesheet" />
+			<style>
+		.layui-layer{
+		background-color: white;
+		opacity:0.7;
+		color: black;
+		font-size: 16px;
 		}
-		.leftMenu{
-			list-style-type: none;
-			padding: 0px;
-			margin-left:20px;
-			position:fixed; bottom:620px; left:0;
-			border: 1px solid black;
-			display: none;
-		}
-		.leftMenu li{
-background-color: white;
-width: 100px;
-height: 30px;
-line-height: 30px;
-padding: 5px;
-		}
-		.leftMenu li:hover{
-background-color:skyblue;
-
-		}
-	</style>
-</head>
+				.rightMenu{
+					list-style-type: none;
+					padding: 0px;
+					margin-left:40px;
+					position:fixed; bottom:620px; left:0;
+				}
+				.rightMenu li{
+		background-color: white;
+		width:  30px !important;
+		height: 30px !important;
+		line-height: 30px;
+		padding: 5px;
+				}
+				.rightMenu li:hover{
+		background-color:skyblue;
+		
+				}
+			</style>
+	</head>
 <body>
 
 <div id="map">
-<div>
-	<button onclick="getBuilding();">获取建筑编号</button>
-	<button onclick="getFloor();">获取当前楼层</button>
-	<button onclick="getZoom();">获取当前zoom</button>
-	<button onclick="setLonLatByClick();">获取经纬度</button>
-</div>
-<div>
-	<button onclick="getPOIByMoveon();">POI鼠标移入事件</button>
-	<button onclick="getPOIByClick();">POI鼠标单击事件</button>
-	<button onclick="getPOIByDblclick();">POI鼠标双击事件</button>
-	<button onclick="getAreaByMoveon();">AREA鼠标移入事件</button>
-	<button onclick="getAreaByClick();">AREA鼠标单击事件</button>
-	<button onclick="getAreaByDblclick();">AREA鼠标双击事件</button>
-	<button onclick="getAlphaAreaByMoveon();">透明框鼠标移入事件</button>
-	<button onclick="getAlphaAreaByClick();">透明框鼠标单击事件</button>
-	<button onclick="getAlphaAreaByDblclick();">透明框鼠标双击事件</button>
-	<button onclick="removeMouseEvent()">消除事件</button>
-</div>
-<div>
-	<button onclick="drawPot(1);">标点（有毒气体）</button>
-	<button onclick="drawPot(2);">标点（重大危险源）</button>
-	<button onclick="drawPot(3);">标点（隐患排查与治理）</button>
-	<button onclick="modifyPot();">修改点</button>
-	<button onclick="deletePot();">删除点</button>
-	<button onclick="drawArea();">标面</button>
-	<button onclick="modifyArea();">修改面</button>
-	<button onclick="deleteArea();">删除面</button>
-	<button onclick="editFrame();">标透明框（属性自定义）</button>
-	<button onclick="drawAlphaArea();">标透明框</button>
-	<button onclick="modifyAlphaArea();">修改透明框</button>
-	<button onclick="deleteAlphaArea();">删除透明框</button>
-</div>
-<div>
-		<button onclick="loadMapByLonLat();">根据坐标加载地图</button>
+	<div>
+		<button onclick="getBuilding();">获取建筑编号</button>
+		<button onclick="getFloor();">获取当前楼层</button>
+		<button onclick="getZoom();">获取当前zoom</button>
+		<button onclick="getLonLatByClick();">获取经纬度</button>
+	</div>
+	<div>
+		<button onclick="getPOIByType();">根据类型加载POI</button>
+		<button onclick="getPOIByMoveon();">POI鼠标移入事件</button>
+		<button onclick="getPOIByClick();">POI鼠标单击事件</button>
+		<button onclick="getPOIByDblclick();">POI鼠标双击事件</button>
+		<button onclick="getAreaByMoveon();">AREA鼠标移入事件</button>
+		<button onclick="getAreaByClick();">AREA鼠标单击事件</button>
+		<button onclick="getAreaByDblclick();">AREA鼠标双击事件</button>
+		<button onclick="getAlphaAreaByMoveon();">透明框鼠标移入事件</button>
+		<button onclick="getAlphaAreaByClick();">透明框鼠标单击事件</button>
+		<button onclick="getAlphaAreaByDblclick();">透明框鼠标双击事件</button>
+		<button onclick="removeFeatureSelsct()">清除选中</button>
+		<button onclick="removeMouseEvent()">消除事件</button>
+	</div>
+	<div>
+		<button onclick="clearPotArea();">清空点和面</button>
+		<button onclick="drawPot();">标点</button>
+		<button onclick="drawPotByCoords();">输入坐标标点</button>
+		<button onclick="modifyPot();">修改点</button>
+		<button onclick="deletePot();">删除点</button>
+		<button onclick="drawArea();">标面</button>
+		<button onclick="drawAreaByCoords();">输入坐标标面</button>
+		<button onclick="modifyArea();">修改面</button>
+		<button onclick="deleteArea();">删除面</button>
+		<button onclick="drawAlphaArea();">标透明框</button>
+		<button onclick="drawAlphaAreaByCoords();">输入坐标标透明框</button>
+		<button onclick="modifyAlphaArea();">修改透明框</button>
+		<button onclick="deleteAlphaArea();">删除透明框</button>
+	</div>
+	<div>
+		<button onclick="loadMapByLonLatZoom();">根据坐标和层级加载地图</button>
 		<button onclick="loadLocate();">定位点显示</button>
 		<button onclick="getLocateByMoveon();">定位点鼠标移入</button>
-		<button onclick="getPOIByType();">根据类型加载POI</button>
+		<button onclick="loadLocateMsg();">定位点信息展示</button>
+		<button onclick="loadTrail();">轨迹回放</button>
+		<button onclick="getTrailMsg();">轨迹鼠标事件</button>
+		
+<button onclick="editFrame();">标透明框（属性自定义）</button>
 	</div>
+
 </div>
 
+
 <!--左边按钮-->
-<ul class="leftMenu">
+<ul class="leftMenu">
 	<li id="tp1">
 		可燃有毒气体
 	</li>
@@ -111,7 +123,6 @@ background-color:skyblue;
 <!--js-->
 <script src="src/component/template.js"></script>
 <script src="src/component/echarts.min.js"></script>
-<script src="src/config.js"></script>
 <script src="src/http.js"></script>
 <script src="src/component/layui.js" charset="utf-8"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -224,7 +235,6 @@ background-color:skyblue;
     </ul>
 </script>
 
-
 <!--添加边框编辑页-->
 <script type="text/html" id="templateFrame">
 
@@ -262,493 +272,6 @@ background-color:skyblue;
 			</div>
 		</div>
     </ul>
-</script>
-<script>
-//获取配置文件的ip
-var ip = globalConfig.ip;
-
-//浏览器当前窗口可视区域高度
- var h=$(window).height();
-
-$('.leftMenu').css('bottom',h/2+'px');
-
- async function testTemp(info)
- {
- // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
- 
- var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
- if(info.type==1)
- {
-	var res=await getTagInfo(info.name);
-	if(res.data.success)
-	{
-		console.log(res.data);
-		data=res.data.data.length>0?res.data.data[0]:{};
-	}
-	else{
-		layer.alert('数据加载失败');
-		return;
-	}
- }
- else if(info.type==2)
- {
-	var res=await getCameraInfo(info.name);
-	if(res.data.success)
-	{
-		data=res.data.data.length>0?res.data.data[0]:{};
-	}
-	else
-	{
-		layer.alert('数据加载失败');
-		return;
-	}
- }
- 
- // 模板渲染
- var template1 = document.getElementById('template'+info.type).innerHTML;
- document.getElementById('templatelist'+info.type).innerHTML = template(template1,{data:data});
-
- if(info.type==3)
- initEChart();
-  }
-   
-
- function layerOpen(info)
- {
-	layer.open({
-			title:null,
-  type: 1,
-  //skin: 'layui-layer-rim', //加上边框
-  area: ['620px', '420px'], //宽高
-  content: '<div id="templatelist'+ info.type+'"></div>'
-});
-		testTemp(info);
-}
-function editFrame()
- {
-	layer.open({
-			title:'添加透明标框',
-  type: 1,
-  //skin: 'layui-layer-rim', //加上边框
-  area: ['620px', '420px'], //宽高
-  content: '<div id="templatelistFrame"></div>'
-});
-initFrameData();
-}
-
-function initFrameData()
-{
-   var data={};
- // 模板渲染
- var template1 = document.getElementById('templateFrame').innerHTML;
- document.getElementById('templatelistFrame').innerHTML = template(template1,{data:data});
-
- $('#save').click(function(){
-var name=$('input[name="name"]').val();
-var color=$('input[name="color"]').val();
-var remark=$('input[name="remark"]').val();
-var info = {
-		 name:name,
-		 remarks:remark,
-		 building_id:tmap.getBuilding(),
-		 floor_id:tmap.getFloor(),
-		 place_id:tmap.getPlace(),
-		 border_color:color
-		};
-		layer.close(layer.index);
-		drawAlphaAreaByInfo(info);
-	
- });
- //加载颜色选择器
- layui.use('colorpicker', function(){
-  var $ = layui.$
-  ,colorpicker = layui.colorpicker;
- //表单赋值
- colorpicker.render({
-    elem: '#test-form'
-    ,color: '#1c97f5'
-    ,done: function(color){
-      $('#test-form-input').val(color);
-    }
-  });
- });
-
-}
-
-
- function layerOpen2(info)
- {
-	layer.open({
-  type: 2,
-  area: ['700px', '450px'],
-  fixed: false, //不固定
-  maxmin: true,
-  content: 'http://www.baidu.com'
-});
-testTemp(info);
- }
- 
-function initEChart()
-{
- // 基于准备好的dom，初始化echarts实例
- var myChart = echarts.init(document.getElementById('main'));
- //var option=null;
-  option = {
-    xAxis: {
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    },
-    yAxis: {
-        type: 'value'
-    },
-    series: [{
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
-        type: 'line'
-    }]
-};
-// 使用刚指定的配置项和数据显示图表。
-myChart.setOption(option);
-}
-
- 
-</script>
-
-<script>
-
-	// 初始化
-	var tmap = new Mote.Map({
-		target: "map",
-		place: "61",
-			//place: "2",
-		building: 1,
-		floor: "01",
-			//floor: "22",
-		mode: "2d"
-	})
-	// 获取buildingid
-	function getBuilding(){
-		alert("建筑编号是：" + tmap.getBuilding());
-	}
-	// 获取floorid
-	function getFloor(){
-		alert("当前楼层是：" + tmap.getFloor());
-	}
-	// 获取zoom
-	function getZoom(){
-		alert("当前层级是：" + tmap.getZoom());
-	}
-	// 获取lonlat,click
-	function setLonLatByClick(){
-	
-		tmap.getCoordByClick(function(coord){
-		  	alert("lon: " + coord.lon + ", lat:" + coord.lat);
-		});
-		
-	}
-	//消除鼠标单击事件
-	function removeMouseEvent()
-	{
-	   tmap.rmMouseEvent();
-	}
-	// POI鼠标移入事件
-	function getPOIByMoveon(){
-		tmap.poiMouseEvent('move', function(info){
-		   alert(JSON.stringify(info));
-		});
-	}
-	// POI鼠标单击事件
-	function getPOIByClick(){
-		tmap.poiMouseEvent('click', function(info){
-		   alert(JSON.stringify(info));
-		   //layerOpen(1);
-		});
-	}
-	// POI鼠标双击事件
-	function getPOIByDblclick(){
-		tmap.poiMouseEvent('dbclick', function(info){
-		   alert(JSON.stringify(info));
-		   layerOpen(2);
-		});
-	}
-	// Area鼠标移入事件
-	function getAreaByMoveon(){
-		tmap.areaMouseEvent('move', function(info){
-		    alert(JSON.stringify(info));
-		});
-	}
-	// Area鼠标单击事件
-	function getAreaByClick(){
-		tmap.areaMouseEvent('click', function(info){
-			alert(JSON.stringify(info));
-			layerOpen(3);
-			initEChart();
-		});
-	}
-	// Area鼠标双击事件
-	function getAreaByDblclick(){
-		tmap.areaMouseEvent('dbclick', function(info){
-		    alert(JSON.stringify(info));
-			layerOpen(2);
-		});
-	}
-  // 加载点
-  tmap.loadPoint();
-  // 加载面
-  tmap.loadPolygon();
-
-   // 加载透明面
-   tmap.loadAlphaPolygon();
-  // 新增点&保存
-  function drawPot(tp)
-  {
-	var info = {
-	 name:'1123',
-	 remarks:'这是一个测试点',
-	 building_id:tmap.getBuilding(),
-	 floor_id:tmap.getFloor(),
-	 place_id:tmap.getPlace(),
-	 type:tp
-	};
-	tmap.drawPoint(info, function(e){
-	 if(e == 1)
-	   alert("标点成功");
-	});
-  }
-  // 新增面&保存
-  function drawArea(){
-	var info = {
-	 name:'红色区域',
-	 remarks:'这是一个测试的区域',
-	 building_id:tmap.getBuilding(),
-	 floor_id:tmap.getFloor(),
-	 place_id:tmap.getPlace(),
-	 color:'#FF3030'
-	};
-	tmap.drawArea(info, function(e){
-	 if(e == 1)
-	   alert("绘制区域成功!");
-	});
-  }
-  // 修改点&保存
-  function modifyPot(){
-	var info = {
-	 name:'有毒汽体_修改',
-	 remarks:'这是一个测试点',
-	 building_id:tmap.getBuilding(),
-	 floor_id:tmap.getFloor(),
-	 place_id:tmap.getPlace(),
-	 type:12
-	};
-	tmap.modifyPoint(info, function(e){
-	 if(e == 1)
-	   alert("修改点位成功");
-	});
-  }
-  // 修改面&保存
-  function modifyArea(){
-	var info = {
-	 name:'红色区域_修改',
-	 remarks:'这是一个测试的区域',
-	 building_id:tmap.getBuilding(),
-	 floor_id:tmap.getFloor(),
-	 place_id:tmap.getPlace(),
-	 color:'#FF3030'
-	};
-	tmap.modifyArea(info, function(e){
-	 if(e == 1)
-	   alert("修改区域成功!");
-	});
-  }
-  // 删除点
-  function deletePot(){
-	  tmap.getPointByClick(function(point){
-	      layer.msg('确认删除？', {
-				  time: 0 //不自动关闭
-				  ,btn: ['确定', '取消']
-				  ,yes: function(index){
-				    layer.close(index);
-					//删除点
-					tmap.deletePoint(point);
-				  }
-			});
-	  });
-  }
-  // 删除面
-  function deleteArea(){
-	 tmap.getAreaByClick(function(area){
-	      layer.msg('确认删除？', {
-				  time: 0 //不自动关闭
-				  ,btn: ['确定', '取消']
-				  ,yes: function(index){
-				    layer.close(index);
-					//删除点
-					tmap.deleteArea(area);
-				  }
-			});
-	  });
-  }
-
-
-  // 根据坐标加载地图
-  function loadMapByLonLat(){
-	var lon = 119.02492270,lat = 33.38843574;
-	var ret = tmap.loadMap(lon, lat,function(e){
-		 if(e == 1)
-		alert("加载成功");
-	});
-  }
-  // 定位点显示
-  function loadLocate(){
-	var locators = [{
-		bid:'233',
-		placeId:'61',
-		buildingId:1,
-		floorId:'01',
-		lon:119.02492270,
-		lat:119.38843574
-	} ];
-	var ret = tmap.loadLocators(locators,function(e){
-		 if(e == 1)
-		alert("加载成功");
-	});
-  }
-  // 定位点鼠标移入
-  function getLocateByMoveon(){
-		tmap.locatorMouseEvent('move', function(info){
-		   alert(JSON.stringify(info));
-		});
-	}
-  // 根据类型加载POI，示例：加载type=12的poi
-  function getPOIByType(tp){
-	var filter = {
-		type:tp
-	};
-	// 删除全部pot图层
-	// tmap.rmPoint();
-	// 根据type加载pot图层
-	tmap.loadPointByType(filter,function(e){
-		if(e == 1)
-			alert("加载成功");
-		});
-	}
-	//
-  $('#tp1').click(function(){
-
-	getPOIByType(1);
-  });
-  $('#tp2').click(function(){
-
-getPOIByType(2);
-});
-$('#tp3').click(function(){
-
-getPOIByType(3);
-});
-
-function getPOIByClickReal(){
-		tmap.poiMouseEvent('click', function(info){
-			console.log(info);
-		   layerOpen(info);
-		});
-	}
-	//getPOIByClickReal();
-
-	// 根据坐标和层级加载地图
-	function loadMapByLonLatZoom(){
-	var lon = 119.02492270,lat = 33.38843574,zoom = 17;// minZoom 15,maxZoom 24
-	var ret = tmap.loadMap(lon, lat,zoom,function(e){
-		//  if(e == 1)
-		// alert("加载成功");
-	});
-  }
-  loadMapByLonLatZoom();
-
-function editProp()
-{
-	layerOpen(
-
-
-	);
-
-}
-
-    // 新增透明框&保存
-	function drawAlphaArea(){
-		
-	var info = {
-	 name:'红色框区域',
-	 remarks:'这是一个测试的区域',
-	 building_id:tmap.getBuilding(),
-	 floor_id:tmap.getFloor(),
-	 place_id:tmap.getPlace(),
-	 border_color:'#FF3030'
-	};
-	tmap.drawAlphaArea(info, function(e){
-	 if(e == 1)
-	   alert("绘制区域成功!");
-	});
-  }
-
-  function drawAlphaAreaByInfo(info){
-		
-		tmap.drawAlphaArea(info, function(e){
-		 if(e == 1)
-		   alert("绘制区域成功!");
-		});
-	  }
-
-    // 删除透明框
-  function deleteAlphaArea(){
-	 tmap.getAlphaAreaByClick(function(area){
-	      layer.msg('确认删除？', {
-				  time: 0 //不自动关闭
-				  ,btn: ['确定', '取消']
-				  ,yes: function(index){
-				    layer.close(index);
-					//删除点
-					tmap.deleteAlphaArea(area);
-				  }
-			});
-	  });
-  }
-
-  	// AlphaArea鼠标移入事件
-	function getAlphaAreaByMoveon(){
-		tmap.alphaAreaMouseEvent('move', function(info){
-		    alert(JSON.stringify(info));
-			tmap.rmFeatureSelsct();
-		});
-	}
-	// AlphaArea鼠标单击事件
-	function getAlphaAreaByClick(){
-		tmap.alphaAreaMouseEvent('click', function(info){
-		    alert(JSON.stringify(info));
-			tmap.rmFeatureSelsct();
-		});
-	}
-	// AlphaArea鼠标双击事件
-	function getAlphaAreaByDblclick(){
-		tmap.alphaAreaMouseEvent('dbclick', function(info){
-		    alert(JSON.stringify(info));
-			tmap.rmFeatureSelsct();
-		});
-	}
-
-	function getAlphaAreaByMoveon(){
-		// 自定义边框和填充色
-		var style = {
-			fill: [255,255,0,1],
-			stroke: [255,0,0,1]
-		}
-		// 设置自定义的样式为高亮样式
-		//tmap.setSelectFeatureStyle(style);
-		// 默认高亮样式为元素自带的边框样式
-		tmap.alphaAreaMouseEvent('move', function(info){
-		// alert(JSON.stringify(info));
-			// 高亮样式和消除高亮不能一起用
-			//tmap.rmFeatureSelsct();
-		});
-	}
 </script>
 
 
