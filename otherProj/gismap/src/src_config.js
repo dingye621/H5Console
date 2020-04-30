@@ -54,7 +54,6 @@ jsloader(["http://"+globalConfig.src+"/chem/js/global/bootstrap.js",
 "http://"+globalConfig.src+"/chem/js/map/map/asset_base_fun.js",
 "src/Motemap.js",
 "src/api_PotArea.js",
-"http://"+globalConfig.src+"/chem/com/layer/layer.js",
 "src/function.js"
 ], 
 function () {

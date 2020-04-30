@@ -13,15 +13,15 @@ $('.leftMenu').css('bottom',h/2+'px');
 $('.rightMenu').css('bottom',h/2+'px');
 
 //填充弹窗内容
- async function fitContent(info)
- {
- // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
+async function fitContent(info)
+{
+// 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
  
- var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
- var template1='';
+var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
+var template1='';
  
- if(info.type==globalConfig.poison)
- {
+if(info.type==globalConfig.poison)
+{
 	// 模板渲染
     template1 = document.getElementById('templatePosion').innerHTML;
 	var res=await getTagInfo(info.name);
@@ -31,15 +31,14 @@ $('.rightMenu').css('bottom',h/2+'px');
 		data=res.data.data.length>0?res.data.data[0]:{};
 		if(data.equipment==null)
 		data.equipment={equipmentName:'点位未关联主设备',shortName:''}
-		
 	}
 	else{
 		layer.alert('数据加载失败');
 		return;
 	}
- }
- else if(info.type==globalConfig.danger)
- {
+}
+else if(info.type==globalConfig.danger)
+{
 	template1 = document.getElementById('templateDanger').innerHTML;
 	var res=await getCameraInfo(info.name);
 	if(res.data.success&&res.data.data.length>0)
@@ -53,41 +52,41 @@ $('.rightMenu').css('bottom',h/2+'px');
 		layer.alert('数据加载失败');
 		return;
 	}
- }
- else if(info.type==globalConfig.hidden)
- {
+}
+else if(info.type==globalConfig.hidden)
+{
 	template1 = document.getElementById('templateHidden').innerHTML;
- }
- else if(info,type==globalConfig.risk){}
- else if(info,type==globalConfig.work){}
- else if(info,type==globalConfig.emer){}
- else if(info,type==globalConfig.position){}
+}
+else if(info,type==globalConfig.risk){}
+else if(info,type==globalConfig.work){}
+else if(info,type==globalConfig.emer){}
+else if(info,type==globalConfig.position){}
 
- document.getElementById('templatelist'+info.type).innerHTML = template(template1,{data:data});
+document.getElementById('templatelist'+info.type).innerHTML = template(template1,{data:data});
 
- if(info.type==globalConfig.hidden)
- initEChart();
-  }
+if(info.type==globalConfig.hidden)
+ 	initEChart();
+}
    
 
- function layerOpen(info)
- {
-	 var area=['620px', '420px'];
-	 if(info.type==globalConfig.poison)
-area=['420px', '260px'];
+function layerOpen(info)
+{
+	var area=['620px', '420px'];
+	if(info.type==globalConfig.poison)
+	area=['420px', '260px'];
 	layer.open({
-			title:null,
-  type: 1,
-  //skin: 'layui-layer-rim', //加上边框
-  area:area, //宽高
-  shade: 0,//阴影
-  content: '<div id="templatelist'+ info.type+'"></div>',
-  end: function () {
-	removeFeatureSelsct();
-      }
-  });
-  fitContent(info);
- }
+		title:null,
+  		type: 1,
+  		//skin: 'layui-layer-rim', //加上边框
+  		area:area, //宽高
+  		shade: 0,//阴影
+  		content: '<div id="templatelist'+ info.type+'"></div>',
+  		end: function () {
+			removeFeatureSelsct();
+      	}
+  	});
+  	fitContent(info);
+}
 
 
 function initEChart()
@@ -98,11 +97,11 @@ function initEChart()
     "month": [1,2,3,4],
     "CldName": "发展部",
     "ClientDevices": 11065
-  };
- // 基于准备好的dom，初始化echarts实例
- var myChart = echarts.init(document.getElementById('main'));
- //var option=null;
-  option = {
+};
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById('main'));
+//var option=null;
+option = {
     xAxis: {
         type: 'category',
         data: data.month
@@ -255,6 +254,8 @@ clearPotArea();
 resetPOI();
 resetArea();
 resetAlphaArea();
+getPOIByClickReal();
+layer.alert('重置成功');
 }
 async function resetPOI()
 {

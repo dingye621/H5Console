@@ -127,7 +127,7 @@
 <script src="src/component/layui.js" charset="utf-8"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <!--可燃有毒气体监测图览template模版-->
-<script type="text/html" id="template1">
+<script type="text/html" id="templatePosion">
     <ul>
 		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
 			<ul class="nav nav-tabs">
@@ -149,7 +149,7 @@
 							<div class="panel-body">
 									<table>
 										<tr><td>监测点位号：</td><td><%= data.tagName %></td></tr>
-										<tr><td>监测点数值：</td><td><%= data.tagName %></td></tr>
+										<tr><td>监测点数值：</td><td></td></tr>
 									</table>
 								</div>
 					</div>
@@ -167,7 +167,7 @@
     </ul>
 </script>
 <!--重大危险源监控图层template模版-->
-<script type="text/html" id="template2">
+<script type="text/html" id="templateDanger">
 
     <ul>
 		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
@@ -185,8 +185,8 @@
 									<td>品牌：</td><td><%= data.cameraBrand %></td>
 									<td>型号：</td><td><%= data.cameraType %></td>
 								</tr>
-								<tr><td>用途：</td><td><%= data.equipment %></td></tr>
-								<tr><td>监测设备名称：</td><td><%= data.equipment %></td></tr>
+								<tr><td>用途：</td><td>用途</td></tr>
+								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
 							</table>
 						</div>
 					</div>
@@ -200,7 +200,7 @@
 </script>
 
 <!--隐患排查与治理图览-->
-<script type="text/html" id="template3">
+<script type="text/html" id="templateHidden">
 
     <ul>
 		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
@@ -227,6 +227,7 @@
 								<div>工厂同类隐患发生次数：</div>
 								<div id="main" style="width: 600px;height:400px;"></div>
 								<div>区域内各类隐患分布：</div>
+								<div id="mainYear" style="width: 600px;height:400px;"></div>
 						    </div>
 					</div>
 				</div>
@@ -274,6 +275,15 @@
     </ul>
 </script>
 
+<script>
+	// POI鼠标单击事件
+	function getPOIByClick(){
+		tmap.poiMouseEvent('click', function(info){
+		   alert(JSON.stringify(info));
+		   tmap.rmFeatureSelsct();
+		});
+	}
+</script>
 
 </body>
 </html>
