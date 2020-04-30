@@ -11,9 +11,37 @@
 <body>
 <div>div</div>
 <script src="js/body.js"></script>
+<script type="text/javascript" src="js/sea.js"></script>  
 <script>
 console.log('afterbody');
 
+// seajs 的简单配置  
+seajs.config({  
+    //all alias path base on this//所有别名基于本路径  
+    base:"../"  
+      
+    //define each self path//定义paths，本例未启用  
+    //,paths:{  
+    //  "jQueryPath":"jquery"  
+    //}  
+      
+    //define each alias name here  
+    ,alias:{ //auto add suffix .js  
+        "sc":"jsSeLoad/js/sc"  
+        ,"DOM":"jsSeLoad/js/DOM"  
+        ,"onload":"jsSeLoad/js/onload"  
+        //,"hellow":"../hellow/hellow"  
+    }  
+    ,preload:'DOM'
+    ,vars:{  
+       'locale':'zh-cn' //本例未启用,在模块中可用格式{key},即{locale}表示变量  
+    }  
+});  
+//加载入口模块，加载完成后调用模块的方法  
+seajs.use(['sc','DOM','onload'],function($,hm){  
+    hm.initEvent();   
+});  
+//seajs.use(['jQuery1.11','../static/hellow/hellowMain.js']);  
 
 </script>
 </body>

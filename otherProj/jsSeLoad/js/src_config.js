@@ -46,9 +46,9 @@ function jsloader(arr, cb) {
     load(arr[_load_index]);
 }
 
-jsloader(["js/sc.js", "js/DOM.js", "js/onload.js"], function () {
-	console.log('all complete');
-});
+// jsloader(["js/sc.js", "js/DOM.js", "js/onload.js"], function () {
+// 	console.log('all complete');
+// });
 
 function addScript(url) {
 	const script = document.createElement('script')
@@ -61,25 +61,25 @@ function addScript(url) {
 	document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-console.log('sc');
+//console.log('sc');
 //addScript('js/sc.js');
 
 
 $(document).ready(function(){
-	console.log('DOM');
+	//console.log('DOM');
 	//addScript('js/DOM.js');
 });
 
 //不起作用
 window.DOMContentLoaded=function()
 {
-	console.log('DOM');
+	//console.log('DOM');
 	//addScript('js/DOM.js');
 }
 
 
 window.onload=function(){
-	console.log('src..',globalConfig.src);
+	//console.log('src..',globalConfig.src);
 	//addScript('js/onload.js');
 	
 }
