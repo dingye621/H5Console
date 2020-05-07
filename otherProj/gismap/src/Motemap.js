@@ -515,10 +515,20 @@ var Mote = (function()
 		 loadConfigPotArea(dbtype_area,cqlFilter);//加载面的图层
 		 callback && callback();
 	 }
+	 Map.prototype.loadPolygonByType = function(info,callback){
+		 var cqlFilter = 'place_id=' + this.placeId + ' and color=\'' + info.type + '\'';
+		 loadConfigPotArea(dbtype_area,cqlFilter);//加载面的图层
+		 callback && callback(1);
+	 }
 	 Map.prototype.loadAlphaPolygon = function(callback){
 		 var cqlFilter = 'place_id=' + this.placeId;
 		 loadConfigPotArea(dbtype_alphaArea,cqlFilter);//加载面的图层
 		 callback && callback();
+	 }
+	 Map.prototype.loadAlphaPolygonByType = function(info,callback){
+		 var cqlFilter = 'place_id=' + this.placeId + ' and border_color=\'' + info.type + '\'';
+		 loadConfigPotArea(dbtype_alphaArea,cqlFilter);//加载透明框的图层
+		 callback && callback(1);
 	 }
 	 Map.prototype.rmPoint = function(callback){
 		configPotSource.clear();
@@ -526,6 +536,10 @@ var Mote = (function()
 	 }
 	 Map.prototype.rmPolygon = function(callback){
 		configAreaSource.clear();
+			callback && callback();
+	 }
+	 Map.prototype.rmAlphaPolygon = function(callback){
+		configAlphaAreaSource.clear();
 			callback && callback();
 	 }
 	 Map.prototype.clearPot = function(callback){ 

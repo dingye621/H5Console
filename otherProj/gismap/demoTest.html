@@ -283,6 +283,22 @@
 		   tmap.rmFeatureSelsct();
 		});
 	}
+
+	 // 新增点&保存
+	 function drawPot(){
+	var info = {
+	 name:'有毒汽体',
+	 remarks:'这是一个测试点',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 type:12
+	};
+	tmap.drawPoint(info, function(e){
+	 if(e == 1)
+	   alert("标点成功");
+	});
+  }
 </script>
 
 </body>

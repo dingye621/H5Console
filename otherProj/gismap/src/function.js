@@ -1,16 +1,15 @@
 //获取sessionStorage
 var storage = window.sessionStorage;  
-var access_token = storage.getItem("access_token");  
-
-
+var access_token = storage.getItem("access_token"); 
+let fixShow=false; 
+let inn=true;
+let out=false;
 //获取配置文件的ip
 var ip = globalConfig.ip;
 
 //浏览器当前窗口可视区域高度
- var h=$(window).height();
-
-$('.leftMenu').css('bottom',h/2+'px');
-$('.rightMenu').css('bottom',h/2+'px');
+var h=$(window).height();
+$('#fix').css('bottom',h/2+'px');
 
 //填充弹窗内容
 async function fitContent(info)
@@ -20,7 +19,7 @@ async function fitContent(info)
 var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
 var template1='';
  
-if(info.type==globalConfig.poison)
+if(globalConfig.poison.load.includes(info.type))
 {
 	// 模板渲染
     template1 = document.getElementById('templatePosion').innerHTML;
@@ -37,7 +36,7 @@ if(info.type==globalConfig.poison)
 		return;
 	}
 }
-else if(info.type==globalConfig.danger)
+else if(globalConfig.danger.load.includes(info.type))
 {
 	template1 = document.getElementById('templateDanger').innerHTML;
 	var res=await getCameraInfo(info.name);
@@ -53,18 +52,18 @@ else if(info.type==globalConfig.danger)
 		return;
 	}
 }
-else if(info.type==globalConfig.hidden)
+else if(globalConfig.hidden.load.includes(info.type))
 {
 	template1 = document.getElementById('templateHidden').innerHTML;
 }
-else if(info,type==globalConfig.risk){}
-else if(info,type==globalConfig.work){}
-else if(info,type==globalConfig.emer){}
-else if(info,type==globalConfig.position){}
+else if(globalConfig.risk.load.includes(info.type)){}
+else if(globalConfig.work.load.includes(info.type)){}
+else if(globalConfig.emer.load.includes(info.type)){}
+else if(globalConfig.position.load.includes(info.type)){}
 
 document.getElementById('templatelist'+info.type).innerHTML = template(template1,{data:data});
 
-if(info.type==globalConfig.hidden)
+if(globalConfig.hidden.load.includes(info.type))
  	initEChart();
 }
    
@@ -72,7 +71,7 @@ if(info.type==globalConfig.hidden)
 function layerOpen(info)
 {
 	var area=['620px', '420px'];
-	if(info.type==globalConfig.poison)
+	if(globalConfig.poison.load.includes(info.type))
 	area=['420px', '260px'];
 	layer.open({
 		title:null,
@@ -133,11 +132,11 @@ var tmap = new Mote.Map({
 })
 
 // 加载点
-tmap.loadPoint();
+//tmap.loadPoint();
 // 加载面
-tmap.loadPolygon();
+//tmap.loadPolygon();
 // 加载透明面
-tmap.loadAlphaPolygon();
+//tmap.loadAlphaPolygon();
 
 // //消除鼠标单击事件
 // function removeMouseEvent()
@@ -229,8 +228,31 @@ getPOIByType(globalConfig.hidden);
 
 $('#reset').click(function(){
 	resetAll();
-	});
-
+});
+$('.layer-select').hide();
+$('#layer-select').click(function(){
+	if(fixShow)
+	{
+		$('.layer-select').hide();
+		fixShow=false;
+	}
+	else
+	{
+		$('.layer-select').show();
+		fixShow=true;
+	}
+});
+$("input[name='in']").click(function(){
+if(inn)
+{
+	$("input[name='in']").attr('checked','checked');
+	inn=false;
+}
+else{
+	$("input[name='in']").attr('checked','checked');
+		inn=true;
+	}
+});
 // 清空点和面
 function clearPotArea(){
 tmap.clearPot(function(e){
@@ -301,9 +323,17 @@ getPOIByClickReal();
 
 //根据参数加载点位
 var req=GetRequest();
-if(req['tp'])
+var type=req['tp'];
+if(type == globalConfig.poison.type)
 {
-getPOIByType(req['tp']);
+	for(let t of globalConfig.poison.load) //in 是key  , of 是object
+	{
+		getPOIByType(t);
+	}
+}
+else if(type == globalConfig.danger.type)
+{
+
 }
 
 

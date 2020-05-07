@@ -1,0 +1,38 @@
+/*基础控件*/
+ul{
+    list-style-type: none;
+    padding: 0px;
+}
+/*基础图层*/
+.layui-layer{
+    background-color: white;
+    opacity:0.7;
+    color: black;
+    font-size: 16px;
+}
+/*左边功能栏位*/
+#fix{
+    position:fixed; bottom:620px; left:0;
+    margin-left:40px;
+}
+.rightMenu li,.leftMenu li{
+    background-color: white;
+    width:  30px !important;
+    height: 30px !important;
+    line-height: 30px;
+    padding: 5px;
+}
+.rightMenu li:hover,.leftMenu li:hover{
+    background-color:skyblue;
+}
+.layer-select{
+    position: relative;
+    top:0px;
+    left: 5px;
+    border:1px solid black;
+    padding: 5px;
+}
+/*一键重置*/
+#reset{
+    position:fixed; top:10px; left:10px;
+}
