@@ -56,10 +56,15 @@ else if(globalConfig.hidden.load.includes(info.type))
 {
 	template1 = document.getElementById('templateHidden').innerHTML;
 }
-else if(globalConfig.risk.load.includes(info.type)){}
+else if(globalConfig.risk.load.includes(info.type)){
+
+
+}
 else if(globalConfig.work.load.includes(info.type)){}
 else if(globalConfig.emer.load.includes(info.type)){}
-else if(globalConfig.position.load.includes(info.type)){}
+else if(globalConfig.position.load.includes(info.type)){
+	template1 = document.getElementById('templatePosition').innerHTML;
+}
 
 document.getElementById('templatelist'+info.type).innerHTML = template(template1,{data:data});
 
@@ -86,7 +91,6 @@ function layerOpen(info)
   	});
   	fitContent(info);
 }
-
 
 function initEChart()
 {
@@ -178,16 +182,42 @@ function getLocateByMoveon(){
 }
 // 根据类型加载POI，示例：加载type=12的poi
 function getPOIByType(tp){
-var filter = {
+	var filter = {
 	type:tp
-};
+	};
 // 删除全部pot图层
 // tmap.rmPoint();
 // 根据type加载pot图层
-tmap.loadPointByType(filter,function(e){
+	tmap.loadPointByType(filter,function(e){
 	//if(e == 1)
 		//alert("加载成功");
-});
+	});
+}
+// 根据类型加载AREA，示例：加载type=12的AREA
+function getAreaByType(tp){
+	var filter = {
+		type:tp
+	};
+	// 删除全部Area图层
+	// tmap.rmPolygon();
+	// 根据type加载Area图层
+	tmap.loadPolygonByType(filter,function(e){
+		//if(e == 1)
+			//alert("加载成功");
+	});
+}
+// 根据类型加载透明框，示例：加载type=12的AlphaArea
+function getAlphaAreaByType(tp){
+	var filter = {
+		type:tp
+	};
+	// 删除全部透明框图层
+	// tmap.rmAlphaPolygon();
+	// 根据type加载透明框图层
+	tmap.loadAlphaPolygonByType(filter,function(e){
+		//if(e == 1)
+			//alert("加载成功");
+	});
 }
 
 // 根据坐标和层级加载地图
@@ -201,7 +231,7 @@ var ret = tmap.loadMap(lon, lat,zoom,function(e){
 loadMapByLonLatZoom();
 // 新增点&保存(输入坐标)
 function drawPotByCoords(i){
-var info = {
+	var info = {
  name:i.name,
  remarks:'自动添加的点位',
  lon: i.longitude,
@@ -210,12 +240,36 @@ var info = {
  floor_id:tmap.getFloor(),
  place_id:tmap.getPlace(),
  type:i.type
-};
-tmap.drawPointByCoords(info, function(e){
+	};
+	tmap.drawPointByCoords(info, function(e){
 	if(e != 1)
 	layer.alert('[' +i.name + "]点位保存失败!");
-})
+	})
 }
+function drawAreaByCoords(a){
+
+	var coordList = [
+	{lon:a.lon1,lat:a.lat1},
+	{lon:a.lon2,lat:a.lat2},
+	{lon:a.lon3,lat:a.lat3},
+	{lon:a.lon4,lat:a.lat4},
+	{lon:a.lon1,lat:a.lat1}];
+
+	var info = {
+	 name:a.name,
+	 remarks:'自动添加的区域',
+	 coords: a.coordList,
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 color:a.color
+	};
+	tmap.drawAreaByCoords(info, function(e){
+	 if(e != 1)
+	 layer.alert("区域保存失败!");
+	});
+}
+
 $('#tpPoison').click(function(){
 getPOIByType(globalConfig.poison);
 });
@@ -225,7 +279,6 @@ getPOIByType(globalConfig.danger);
 $('#tpHidden').click(function(){
 getPOIByType(globalConfig.hidden);
 });
-
 $('#reset').click(function(){
 	resetAll();
 });
@@ -249,7 +302,7 @@ if(inn)
 	inn=false;
 }
 else{
-	$("input[name='in']").attr('checked','checked');
+	$("input[name='out']").attr('checked','checked');
 		inn=true;
 	}
 });
@@ -281,9 +334,9 @@ layer.alert('重置成功');
 }
 async function resetPOI()
 {
-var res = await getHazardList();
-if(res.data.success && res.data.data.length>0)
-{
+	var res = await getHazardList();
+	if(res.data.success && res.data.data.length>0)
+	{
 	var info = {};
 	var list = res.data.data;
 	for( index in list)
@@ -296,9 +349,9 @@ if(res.data.success && res.data.data.length>0)
 			drawPotByCoords(info);
 	}
 	//data=res.data.data.length>0?res.data.data[0]:{};
-}
-else
-{
+	}	
+	else
+	{
 	layer.alert('点位更新失败');
 	return;
 }
@@ -329,11 +382,40 @@ if(type == globalConfig.poison.type)
 	for(let t of globalConfig.poison.load) //in 是key  , of 是object
 	{
 		getPOIByType(t);
+		//getAreaByType(t);
+		//getAlphaAreaByType(t);
 	}
 }
 else if(type == globalConfig.danger.type)
 {
-
+	
 }
+else if(type == globalConfig.hidden.type)
+{
+	
+}
+else if(type == globalConfig.risk.type)
+{
+	for(let t of globalConfig.risk.load) //in 是key  , of 是object
+	{
+		getAreaByType(t);
+	}
+}
+else if(type == globalConfig.work.type)
+{
+	
+}
+else if(type == globalConfig.emer.type)
+{
+	
+}
+else if(type == globalConfig.position.type)
+{
+	for(let t of globalConfig.position.load) //in 是key  , of 是object
+	{
+		getPOIByType(t);
+	}
+}
+
 
 

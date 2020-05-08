@@ -58,68 +58,76 @@
 	</head>
 <body>
 
-<div id="map">
+	<div id="map" style="width: 70%;height:100%;float:left;"></div>
+	<div>基础：</div>
 	<div>
 		<button onclick="getBuilding();">获取建筑编号</button>
 		<button onclick="getFloor();">获取当前楼层</button>
 		<button onclick="getZoom();">获取当前zoom</button>
 		<button onclick="getLonLatByClick();">获取经纬度</button>
 	</div>
+	<div>POI事件：</div>
 	<div>
 		<button onclick="getPOIByType();">根据类型加载POI</button>
-		<button onclick="getPOIByMoveon();">POI鼠标移入事件</button>
-		<button onclick="getPOIByClick();">POI鼠标单击事件</button>
-		<button onclick="getPOIByDblclick();">POI鼠标双击事件</button>
-		<button onclick="getAreaByMoveon();">AREA鼠标移入事件</button>
-		<button onclick="getAreaByClick();">AREA鼠标单击事件</button>
-		<button onclick="getAreaByDblclick();">AREA鼠标双击事件</button>
-		<button onclick="getAlphaAreaByMoveon();">透明框鼠标移入事件</button>
-		<button onclick="getAlphaAreaByClick();">透明框鼠标单击事件</button>
-		<button onclick="getAlphaAreaByDblclick();">透明框鼠标双击事件</button>
+		<button onclick="getPOIByMoveon();">POI移入事件</button>
+		<button onclick="getPOIByClick();">POI单击事件</button>
+		<button onclick="getPOIByDblclick();">POI双击事件</button>
+	</div>
+	<div>AREA事件：</div>
+	<div>	
+		<button onclick="getAreaByType();">根据类型加载AREA</button>	
+		<button onclick="getAreaByMoveon();">AREA移入事件</button>
+		<button onclick="getAreaByClick();">AREA单击事件</button>
+		<button onclick="getAreaByDblclick();">AREA双击事件</button>
+	</div>
+	<div>透明框事件：</div>
+	<div>	
+		<button onclick="getAlphaAreaByType();">根据类型加载透明框</button>	
+		<button onclick="getAlphaAreaByMoveon();">透明框移入事件</button>
+		<button onclick="getAlphaAreaByClick();">透明框单击事件</button>
+		<button onclick="getAlphaAreaByDblclick();">透明框双击事件</button>
+	</div>
+	<div>消除事件：</div>
+	<div>	
 		<button onclick="removeFeatureSelsct()">清除选中</button>
 		<button onclick="removeMouseEvent()">消除事件</button>
 	</div>
-	<div>
+	<div>绘制POI：
 		<button onclick="clearPotArea();">清空点和面</button>
+	</div>
+	<div>
 		<button onclick="drawPot();">标点</button>
 		<button onclick="drawPotByCoords();">输入坐标标点</button>
 		<button onclick="modifyPot();">修改点</button>
 		<button onclick="deletePot();">删除点</button>
+	</div>
+	<div>绘制AREA：</div>
+	<div>	
 		<button onclick="drawArea();">标面</button>
 		<button onclick="drawAreaByCoords();">输入坐标标面</button>
 		<button onclick="modifyArea();">修改面</button>
 		<button onclick="deleteArea();">删除面</button>
+	</div>
+	<div>绘制透明框：</div>
+	<div>
 		<button onclick="drawAlphaArea();">标透明框</button>
 		<button onclick="drawAlphaAreaByCoords();">输入坐标标透明框</button>
 		<button onclick="modifyAlphaArea();">修改透明框</button>
 		<button onclick="deleteAlphaArea();">删除透明框</button>
 	</div>
+	<div>定位：</div>
 	<div>
 		<button onclick="loadMapByLonLatZoom();">根据坐标和层级加载地图</button>
 		<button onclick="loadLocate();">定位点显示</button>
 		<button onclick="getLocateByMoveon();">定位点鼠标移入</button>
 		<button onclick="loadLocateMsg();">定位点信息展示</button>
+	</div>
+	<div>轨迹：</div>
+	<div>
 		<button onclick="loadTrail();">轨迹回放</button>
 		<button onclick="getTrailMsg();">轨迹鼠标事件</button>
-		
-<button onclick="editFrame();">标透明框（属性自定义）</button>
 	</div>
-
-</div>
-
-
-<!--左边按钮-->
-<ul class="leftMenu">
-	<li id="tp1">
-		可燃有毒气体
-	</li>
-	<li id="tp2">
-		重大危险源
-	</li>
-	<li id="tp3">
-		隐患排查与治理
-	</li>
-</ul>
+	
 <!--js-->
 <script src="src/component/template.js"></script>
 <script src="src/component/echarts.min.js"></script>
@@ -299,6 +307,28 @@
 	   alert("标点成功");
 	});
   }
+// 新增面&保存(输入坐标)
+function drawAreaByCoords(){
+	var coordList = [
+	{lon:119.02431533,lat:33.38726279},
+	{lon:119.02484239,lat:33.38726011},
+	{lon:119.02484239,lat:33.38703078},
+	{lon:119.02431667,lat:33.38702944},
+	{lon:119.02431533,lat:33.38726279}];
+	var info = {
+	 name:'红色区域',
+	 remarks:'这是一个测试的区域',
+	 coords: coordList,
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 color:'#FF3030'
+	};
+	tmap.drawAreaByCoords(info, function(e){
+	 if(e == 1)
+	   alert("区域保存成功!");
+	});
+}
 </script>
 
 </body>
