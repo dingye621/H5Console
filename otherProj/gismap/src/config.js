@@ -11,6 +11,10 @@
 			work:{type:5,load:['8'],name:'work'},//作业许可
 			emer:{type:6,load:['9'],name:'emer'},//应急物资
 			position:{type:7,load:['6'],name:'position'},//重大危险源点位
+			esCode:'ES',//东南角
+			wnCode:'WN',//西北角
+			wsCode:'WS',//西南角
+			enCode:'EN',//东北角
 	};
 	return w;
 })(window || {});

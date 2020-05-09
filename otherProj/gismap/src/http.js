@@ -1,3 +1,17 @@
+//获取参数的方法
+function GetRequest() {   
+    var url = location.search; //获取url中"?"符后的字串   
+    var theRequest = new Object();   
+    if (url.indexOf("?") != -1) {   
+       var str = url.substr(1);   
+       strs = str.split("&");   
+       for(var i = 0; i < strs.length; i ++) {   
+          theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);   
+       }   
+    }   
+    return theRequest;   
+} 
+
 // function getTagInfo(tagName)
 // {
 //     $.ajax({  
@@ -40,16 +54,10 @@ async function getHazardList()
     return await axios.get('http://' + globalConfig.ip + '/api/Hazard/getHazard?current=1&pageSize=10000');
 }
 
-//获取参数的方法
-function GetRequest() {   
-    var url = location.search; //获取url中"?"符后的字串   
-    var theRequest = new Object();   
-    if (url.indexOf("?") != -1) {   
-       var str = url.substr(1);   
-       strs = str.split("&");   
-       for(var i = 0; i < strs.length; i ++) {   
-          theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);   
-       }   
-    }   
-    return theRequest;   
-} 
+
+async function getAreas()
+{
+    return await axios.get('http://' + globalConfig.ip + '/api/Org/getAreas');
+}
+
+

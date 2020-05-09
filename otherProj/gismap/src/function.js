@@ -1,3 +1,15 @@
+function groupBy(array, f) {
+    //debugger;
+    const groups = {};
+    array.forEach(function (o) {
+        const group = JSON.stringify(f(o));
+        groups[group] = groups[group] || [];
+        groups[group].push(o);
+    });
+    return Object.keys(groups).map(function (group) {
+        return groups[group];
+    });
+}
 //获取sessionStorage
 var storage = window.sessionStorage;  
 var access_token = storage.getItem("access_token"); 
@@ -15,7 +27,6 @@ $('#fix').css('bottom',h/2+'px');
 async function fitContent(info)
 {
 // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
- 
 var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
 var template1='';
  
@@ -77,7 +88,7 @@ function layerOpen(info)
 {
 	var area=['620px', '420px'];
 	if(globalConfig.poison.load.includes(info.type))
-	area=['420px', '260px'];
+		area=['420px', '260px'];
 	layer.open({
 		title:null,
   		type: 1,
@@ -86,7 +97,7 @@ function layerOpen(info)
   		shade: 0,//阴影
   		content: '<div id="templatelist'+ info.type+'"></div>',
   		end: function () {
-			removeFeatureSelsct();
+			tmap.rmFeatureSelsct();
       	}
   	});
   	fitContent(info);
@@ -147,10 +158,7 @@ var tmap = new Mote.Map({
 // 	{
 // 	   tmap.rmMouseEvent();
 // 	}
-//消除要素选中状态
-function removeFeatureSelsct(){
-   tmap.rmFeatureSelsct();
-}
+
 // 根据坐标加载地图
 function loadMapByLonLat(){
 var lon = 119.02492270,lat = 33.38843574;
@@ -232,41 +240,33 @@ loadMapByLonLatZoom();
 // 新增点&保存(输入坐标)
 function drawPotByCoords(i){
 	var info = {
- name:i.name,
- remarks:'自动添加的点位',
- lon: i.longitude,
- lat: i.latitude,
- building_id:tmap.getBuilding(),
- floor_id:tmap.getFloor(),
- place_id:tmap.getPlace(),
- type:i.type
+ 		name:i.name,
+ 		remarks:'自动添加的点位',
+ 		lon: i.longitude,
+ 		lat: i.latitude,
+ 		building_id:tmap.getBuilding(),
+ 		floor_id:tmap.getFloor(),
+ 		place_id:tmap.getPlace(),
+ 		type:i.type
 	};
 	tmap.drawPointByCoords(info, function(e){
 	if(e != 1)
-	layer.alert('[' +i.name + "]点位保存失败!");
+		layer.alert('[' +i.name + "]点位保存失败!");
 	})
 }
 function drawAreaByCoords(a){
-
-	var coordList = [
-	{lon:a.lon1,lat:a.lat1},
-	{lon:a.lon2,lat:a.lat2},
-	{lon:a.lon3,lat:a.lat3},
-	{lon:a.lon4,lat:a.lat4},
-	{lon:a.lon1,lat:a.lat1}];
-
 	var info = {
-	 name:a.name,
-	 remarks:'自动添加的区域',
-	 coords: a.coordList,
-	 building_id:tmap.getBuilding(),
-	 floor_id:tmap.getFloor(),
-	 place_id:tmap.getPlace(),
-	 color:a.color
+	 	name:a.name,
+	 	remarks:'自动添加的区域',
+	 	coords: a.coords,
+	 	building_id:tmap.getBuilding(),
+	 	floor_id:tmap.getFloor(),
+	 	place_id:tmap.getPlace(),
+	 	color:a.color
 	};
 	tmap.drawAreaByCoords(info, function(e){
-	 if(e != 1)
-	 layer.alert("区域保存失败!");
+	if(e != 1)
+	 	layer.alert('[' +a.name + "]区域保存失败!");
 	});
 }
 
@@ -308,72 +308,125 @@ else{
 });
 // 清空点和面
 function clearPotArea(){
-tmap.clearPot(function(e){
+	tmap.clearPot(function(e){
  //if(e == 1)
   // alert("清除点成功");
-});
-tmap.clearArea(function(e){
+	});
+	tmap.clearArea(function(e){
  //if(e == 1)
    //alert("清除面成功");
-});
-tmap.clearAlphaArea(function(e){
+	});
+	tmap.clearAlphaArea(function(e){
  //if(e == 1)
    //alert("清除透明框成功");
-});
+	});
 }
 //重置所有点位面框
 function resetAll()
 {
-//清除所有点位
-clearPotArea();
-resetPOI();
-resetArea();
-resetAlphaArea();
-getPOIByClickReal();
-layer.alert('重置成功');
+	//清除所有点位
+	clearPotArea();
+	resetPOI();
+	resetArea();
+	resetAlphaArea();
+	getPOIByClickReal();
+	getAreasByClickReal();
+	layer.alert('重置成功');
 }
 async function resetPOI()
 {
 	var res = await getHazardList();
 	if(res.data.success && res.data.data.length>0)
 	{
-	var info = {};
-	var list = res.data.data;
-	for( index in list)
-	{
-		info.longitude=list[index].longitude;
-		info.latitude=list[index].latitude;
-		info.name=list[index].tag.tagName;
-		info.type='29';
-		if(info.longitude && info.latitude )
-			drawPotByCoords(info);
-	}
-	//data=res.data.data.length>0?res.data.data[0]:{};
+		var info = {};
+		var list = res.data.data;
+		for(let index in list)
+		{
+			info.longitude=list[index].longitude;
+			info.latitude=list[index].latitude;
+			info.name=list[index].tag.tagName;
+			info.type='29';
+			if(info.longitude && info.latitude )
+				drawPotByCoords(info);
+		}
+		//data=res.data.data.length>0?res.data.data[0]:{};
 	}	
 	else
 	{
-	layer.alert('点位更新失败');
-	return;
+		layer.alert('点位更新失败');
+		return;
+	}
 }
-}
-function resetArea()
+async function resetArea()
 {
+	var res = await getAreas();
+	if(res.data && res.data.length>0)
+	{
+		var info = {};
+		var coordList= [];
+		var wn= '';
+		var en= '';
+		var es= '';
+		var ws= '';
+		var name='';
+		console.log('resdata...',res.data);
+		var group = groupBy(res.data, (org) => {
+			return org.orgCode
+		});
+		console.log('group...',group);
 
+		for(let data of group)
+		{
+			if(data.length!=4)
+				continue;
+			for(var o of data)
+			{
+				if(o.typeCode==globalConfig.wnCode)
+					wn = o.value;
+				if(o.typeCode==globalConfig.enCode)
+					en = o.value;
+				if(o.typeCode==globalConfig.esCode)
+					es = o.value;
+				if(o.typeCode==globalConfig.wsCode)
+					ws = o.value;
+				name = o.orgName;
+			}
+			coordList = [
+				{lon:en.split(',')[0],lat:en.split(',')[1]},
+				{lon:wn.split(',')[0],lat:wn.split(',')[1]},
+				{lon:ws.split(',')[0],lat:ws.split(',')[1]},
+				{lon:es.split(',')[0],lat:es.split(',')[1]},
+				{lon:en.split(',')[0],lat:en.split(',')[1]},];
+			
+			info = {
+				 name:name,
+				 coords: coordList,
+				 color:'#FFFF3030'
+				};
+			drawAreaByCoords(info);
+		}
+	}
 }
-function resetAlphaArea()
+async function resetAlphaArea()
 {
 
 }
 
 function getPOIByClickReal(){
-tmap.poiMouseEvent('click', function(info){
-	console.log(info);
-	layerOpen(info);
-});
+	tmap.poiMouseEvent('click', function(info){
+		console.log(info);
+		layerOpen(info);
+	});
+}
+function getAreasByClickReal(){
+	tmap.areaMouseEvent('click', function(info){
+
+	});
 }
 //给点位加上事件
 getPOIByClickReal();
-
+//给区域加上事件
+getAreasByClickReal();
 //根据参数加载点位
 var req=GetRequest();
 var type=req['tp'];
