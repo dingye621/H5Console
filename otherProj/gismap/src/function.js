@@ -146,12 +146,17 @@ var tmap = new Mote.Map({
 	mode: "2d"
 })
 
-// 加载点
-//tmap.loadPoint();
+
+
+function loadAll()
+{
+ // 加载点
+	tmap.loadPoint();
 // 加载面
-//tmap.loadPolygon();
+	tmap.loadPolygon();
 // 加载透明面
-//tmap.loadAlphaPolygon();
+	tmap.loadAlphaPolygon();
+}
 
 // //消除鼠标单击事件
 // function removeMouseEvent()
@@ -250,8 +255,8 @@ function drawPotByCoords(i){
  		type:i.type
 	};
 	tmap.drawPointByCoords(info, function(e){
-	if(e != 1)
-		layer.alert('[' +i.name + "]点位保存失败!");
+	//if(e != 1)
+		//layer.alert('[' +i.name + "]点位保存失败!");
 	})
 }
 function drawAreaByCoords(a){
@@ -265,8 +270,8 @@ function drawAreaByCoords(a){
 	 	color:a.color
 	};
 	tmap.drawAreaByCoords(info, function(e){
-	if(e != 1)
-	 	layer.alert('[' +a.name + "]区域保存失败!");
+	///if(e != 1)
+	 	//layer.alert('[' +a.name + "]区域保存失败!");
 	});
 }
 
@@ -281,6 +286,9 @@ getPOIByType(globalConfig.hidden);
 });
 $('#reset').click(function(){
 	resetAll();
+});
+$('#clear').click(function(){
+	clearPotArea();
 });
 $('.layer-select').hide();
 $('#layer-select').click(function(){
@@ -308,30 +316,36 @@ else{
 });
 // 清空点和面
 function clearPotArea(){
+	var msg='';
 	tmap.clearPot(function(e){
- //if(e == 1)
-  // alert("清除点成功");
+ 		if(e == 1)
+ 			msg+=" 清除点成功";
+   //layer.alert("清除点成功");
 	});
 	tmap.clearArea(function(e){
- //if(e == 1)
-   //alert("清除面成功");
+ 		if(e == 1)
+ 			msg+=" 清除面成功";
+   //layer.alert("清除面成功");
 	});
 	tmap.clearAlphaArea(function(e){
- //if(e == 1)
-   //alert("清除透明框成功");
+ 		if(e == 1)
+ 			msg+=" 清除透明框成功";
+   //layer.alert("清除透明框成功");
 	});
+	//layer.alert(msg);
+	layer.alert('清除成功');
 }
 //重置所有点位面框
 function resetAll()
 {
 	//清除所有点位
-	clearPotArea();
+	//clearPotArea();
 	resetPOI();
 	resetArea();
 	resetAlphaArea();
-	getPOIByClickReal();
-	getAreasByClickReal();
-	layer.alert('重置成功');
+	//getPOIByClickReal();
+	//getAreasByClickReal();
+	layer.alert('生成成功');
 }
 async function resetPOI()
 {
@@ -468,6 +482,10 @@ else if(type == globalConfig.position.type)
 	{
 		getPOIByType(t);
 	}
+}
+else
+{
+	loadAll();
 }
 
 
