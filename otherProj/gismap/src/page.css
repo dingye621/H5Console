@@ -34,9 +34,9 @@ ul{
 }
 /*一键重置*/
 #reset{
-    position:fixed; top:10px; left:10px;
+    position:fixed; top:10px; left:100px;
 }
 /*一键清除*/
 #clear{
-    position:fixed; top:40px; left:10px;
+    position:fixed; top:10px; left:10px;
 }
