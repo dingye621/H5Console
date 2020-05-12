@@ -45,19 +45,20 @@ async function getTagInfo(tagName)
 async function getCameraInfo(cameraName)
 {
     return await axios.get('http://' + globalConfig.ip + '/api/Camera/getObject?cameraName='+cameraName+'&current=1&pageSize=1');
-
 }
-
 
 async function getHazardList()
 {
     return await axios.get('http://' + globalConfig.ip + '/api/Hazard/getHazard?current=1&pageSize=10000');
 }
 
-
 async function getAreas()
 {
     return await axios.get('http://' + globalConfig.ip + '/api/Org/getAreas');
 }
 
+async function getCameraList()
+{
+    return await axios.get('http://' + globalConfig.ip + '/api/Camera/getObject&current=1&pageSize=1000');
+}
 

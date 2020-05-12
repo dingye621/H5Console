@@ -94,17 +94,19 @@ var Mote = (function()
 				 var condition = ol.events.condition.pointerMove;
 				 self.select = self.selectByInteraction([configPotLayer],condition);
 				 self.select.select.on('select', function(e) {
-					var info = new Object();
-					info.fid = e.selected[0].getId();
-					info.name = e.selected[0].get('name');
-					info.remarks = e.selected[0].get('remarks');
-					info.type = e.selected[0].get('icon');
-					info.building_id = e.selected[0].get('building_id');
-					info.floor_id = e.selected[0].get('floor_id');
-					info.place_id = e.selected[0].get('place_id');
-					var geom = e.selected[0].get('geometry');
-					
-					callback && callback(info);
+					if(e.selected.length != 0){
+						var info = new Object();
+						info.fid = e.selected[0].getId();
+						info.name = e.selected[0].get('name');
+						info.remarks = e.selected[0].get('remarks');
+						info.type = e.selected[0].get('icon');
+						info.building_id = e.selected[0].get('building_id');
+						info.floor_id = e.selected[0].get('floor_id');
+						info.place_id = e.selected[0].get('place_id');
+						var geom = e.selected[0].getGeometry().getCoordinates();
+						
+						callback && callback(info);	
+					}
 		        });
 				//self.rmInteraction(select.select);
 			 }break;
@@ -113,17 +115,19 @@ var Mote = (function()
 				 var condition = ol.events.condition.singleClick;
 				 self.select = tmap.selectByInteraction([configPotLayer],condition);
 				 self.select.select.on('select', function(e) {
-					var info = new Object();
-					info.fid = e.selected[0].getId();
-					info.name = e.selected[0].get('name');
-					info.remarks = e.selected[0].get('remarks');
-					info.type = e.selected[0].get('icon');
-					info.building_id = e.selected[0].get('building_id');
-					info.floor_id = e.selected[0].get('floor_id');
-					info.place_id = e.selected[0].get('place_id');
-					var geom = e.selected[0].get('geometry');
-					
-					callback && callback(info);
+					if(e.selected.length != 0){
+						var info = new Object();
+						info.fid = e.selected[0].getId();
+						info.name = e.selected[0].get('name');
+						info.remarks = e.selected[0].get('remarks');
+						info.type = e.selected[0].get('icon');
+						info.building_id = e.selected[0].get('building_id');
+						info.floor_id = e.selected[0].get('floor_id');
+						info.place_id = e.selected[0].get('place_id');
+						var geom = e.selected[0].getGeometry().getCoordinates();
+						
+						callback && callback(info);	
+					}
 				});
 			}break;
 			case 'dbclick':
@@ -131,17 +135,19 @@ var Mote = (function()
 				var condition = ol.events.condition.doubleClick;
 				self.select = tmap.selectByInteraction([configPotLayer],condition);
 				self.select.select.on('select', function(e) {
-                    var info = new Object();
-					info.fid = e.selected[0].getId();
-					info.name = e.selected[0].get('name');
-					info.remarks = e.selected[0].get('remarks');
-					info.type = e.selected[0].get('icon');
-					info.building_id = e.selected[0].get('building_id');
-					info.floor_id = e.selected[0].get('floor_id');
-					info.place_id = e.selected[0].get('place_id');
-					var geom = e.selected[0].get('geometry');
-					
-					callback && callback(info);
+					if(e.selected.length != 0){
+						var info = new Object();
+						info.fid = e.selected[0].getId();
+						info.name = e.selected[0].get('name');
+						info.remarks = e.selected[0].get('remarks');
+						info.type = e.selected[0].get('icon');
+						info.building_id = e.selected[0].get('building_id');
+						info.floor_id = e.selected[0].get('floor_id');
+						info.place_id = e.selected[0].get('place_id');
+						var geom = e.selected[0].getGeometry().getCoordinates();
+						
+						callback && callback(info);	
+					}
 				});
 			}break;
 			 
@@ -160,17 +166,19 @@ var Mote = (function()
 				 var condition = ol.events.condition.pointerMove;
 				 self.select = self.selectByInteraction([configAreaLayer],condition);
 				 self.select.select.on('select', function(e) {
-					var info = new Object();
-					info.fid = e.selected[0].getId();
-					info.name = e.selected[0].get('name');
-					info.remarks = e.selected[0].get('remarks');
-					//info.type = e.selected[0].get('type');
-					info.building_id = e.selected[0].get('building_id');
-					info.floor_id = e.selected[0].get('floor_id');
-					info.place_id = e.selected[0].get('place_id');
-					info.color = e.selected[0].get('color');
-					
-					callback && callback(info);
+					if(e.selected.length != 0){
+						var info = new Object();
+						info.fid = e.selected[0].getId();
+						info.name = e.selected[0].get('name');
+						info.remarks = e.selected[0].get('remarks');
+						//info.type = e.selected[0].get('type');
+						info.building_id = e.selected[0].get('building_id');
+						info.floor_id = e.selected[0].get('floor_id');
+						info.place_id = e.selected[0].get('place_id');
+						info.color = e.selected[0].get('color');
+						
+						callback && callback(info);	
+					}
 		        });
 			 }break;
 			case 'click':
@@ -178,17 +186,19 @@ var Mote = (function()
 				 var condition = ol.events.condition.singleClick;
 				 self.select = tmap.selectByInteraction([configAreaLayer],condition);
 				 self.select.select.on('select', function(e) {
-					var info = new Object();
-					info.fid = e.selected[0].getId();
-					info.name = e.selected[0].get('name');
-					info.remarks = e.selected[0].get('remarks');
-					//info.type = e.selected[0].get('type');
-					info.building_id = e.selected[0].get('building_id');
-					info.floor_id = e.selected[0].get('floor_id');
-					info.place_id = e.selected[0].get('place_id');
-					info.color = e.selected[0].get('color');
-					
-					callback && callback(info);
+					if(e.selected.length != 0){
+						var info = new Object();
+						info.fid = e.selected[0].getId();
+						info.name = e.selected[0].get('name');
+						info.remarks = e.selected[0].get('remarks');
+						//info.type = e.selected[0].get('type');
+						info.building_id = e.selected[0].get('building_id');
+						info.floor_id = e.selected[0].get('floor_id');
+						info.place_id = e.selected[0].get('place_id');
+						info.color = e.selected[0].get('color');
+						
+						callback && callback(info);	
+					}
 				});
 			}break;
 			case 'dbclick':
@@ -196,17 +206,19 @@ var Mote = (function()
 				var condition = ol.events.condition.doubleClick;
 				self.select = tmap.selectByInteraction([configAreaLayer],condition);
 				self.select.select.on('select', function(e) {
-                   	var info = new Object();
-					info.fid = e.selected[0].getId();
-					info.name = e.selected[0].get('name');
-					info.remarks = e.selected[0].get('remarks');
-					//info.type = e.selected[0].get('type');
-					info.building_id = e.selected[0].get('building_id');
-					info.floor_id = e.selected[0].get('floor_id');
-					info.place_id = e.selected[0].get('place_id');
-					info.color = e.selected[0].get('color');
-					
-					callback && callback(info);
+					if(e.selected.length != 0){
+						var info = new Object();
+						info.fid = e.selected[0].getId();
+						info.name = e.selected[0].get('name');
+						info.remarks = e.selected[0].get('remarks');
+						//info.type = e.selected[0].get('type');
+						info.building_id = e.selected[0].get('building_id');
+						info.floor_id = e.selected[0].get('floor_id');
+						info.place_id = e.selected[0].get('place_id');
+						info.color = e.selected[0].get('color');
+						
+						callback && callback(info);	
+					}
 				});
 			}break;
 			 
@@ -220,17 +232,19 @@ var Mote = (function()
 				 var condition = ol.events.condition.pointerMove;
 				 self.select = self.selectByInteraction([configAlphaAreaLayer],condition);
 				 self.select.select.on('select', function(e) {
-					var info = new Object();
-					info.fid = e.selected[0].getId();
-					info.name = e.selected[0].get('name');
-					info.remarks = e.selected[0].get('remarks');
-					//info.type = e.selected[0].get('type');
-					info.building_id = e.selected[0].get('building_id');
-					info.floor_id = e.selected[0].get('floor_id');
-					info.place_id = e.selected[0].get('place_id');
-					info.border_color = e.selected[0].get('border_color');
-					
-					callback && callback(info);
+					if(e.selected.length != 0){
+						var info = new Object();
+						info.fid = e.selected[0].getId();
+						info.name = e.selected[0].get('name');
+						info.remarks = e.selected[0].get('remarks');
+						//info.type = e.selected[0].get('type');
+						info.building_id = e.selected[0].get('building_id');
+						info.floor_id = e.selected[0].get('floor_id');
+						info.place_id = e.selected[0].get('place_id');
+						info.border_color = e.selected[0].get('border_color');
+						
+						callback && callback(info);
+					}
 		        });
 			 }break;
 			case 'click':
@@ -238,17 +252,19 @@ var Mote = (function()
 				 var condition = ol.events.condition.singleClick;
 				 self.select = tmap.selectByInteraction([configAlphaAreaLayer],condition);
 				 self.select.select.on('select', function(e) {
-					var info = new Object();
-					info.fid = e.selected[0].getId();
-					info.name = e.selected[0].get('name');
-					info.remarks = e.selected[0].get('remarks');
-					//info.type = e.selected[0].get('type');
-					info.building_id = e.selected[0].get('building_id');
-					info.floor_id = e.selected[0].get('floor_id');
-					info.place_id = e.selected[0].get('place_id');
-					info.border_color = e.selected[0].get('border_color');
-					
-					callback && callback(info);
+					if(e.selected.length != 0){
+						var info = new Object();
+						info.fid = e.selected[0].getId();
+						info.name = e.selected[0].get('name');
+						info.remarks = e.selected[0].get('remarks');
+						//info.type = e.selected[0].get('type');
+						info.building_id = e.selected[0].get('building_id');
+						info.floor_id = e.selected[0].get('floor_id');
+						info.place_id = e.selected[0].get('place_id');
+						info.border_color = e.selected[0].get('border_color');
+						
+						callback && callback(info);
+					}
 				});
 			}break;
 			case 'dbclick':
@@ -256,17 +272,19 @@ var Mote = (function()
 				var condition = ol.events.condition.doubleClick;
 				self.select = tmap.selectByInteraction([configAlphaAreaLayer],condition);
 				self.select.select.on('select', function(e) {
-                   	var info = new Object();
-					info.fid = e.selected[0].getId();
-					info.name = e.selected[0].get('name');
-					info.remarks = e.selected[0].get('remarks');
-					//info.type = e.selected[0].get('type');
-					info.building_id = e.selected[0].get('building_id');
-					info.floor_id = e.selected[0].get('floor_id');
-					info.place_id = e.selected[0].get('place_id');
-					info.border_color = e.selected[0].get('border_color');
-					
-					callback && callback(info);
+					if(e.selected.length != 0){
+						var info = new Object();
+						info.fid = e.selected[0].getId();
+						info.name = e.selected[0].get('name');
+						info.remarks = e.selected[0].get('remarks');
+						//info.type = e.selected[0].get('type');
+						info.building_id = e.selected[0].get('building_id');
+						info.floor_id = e.selected[0].get('floor_id');
+						info.place_id = e.selected[0].get('place_id');
+						info.border_color = e.selected[0].get('border_color');
+						
+						callback && callback(info);
+					}
 				});
 			}break;
 			 

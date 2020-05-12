@@ -1,3 +1,6 @@
+var req = GetRequest();
+var type = req['tp'];  
+
 function groupBy(array, f) {
     //debugger;
     const groups = {};
@@ -148,14 +151,14 @@ var tmap = new Mote.Map({
 
 
 
-function loadAll()
+async function loadAll()
 {
  // 加载点
-	tmap.loadPoint();
+await tmap.loadPoint();
 // 加载面
-	tmap.loadPolygon();
+await tmap.loadPolygon();
 // 加载透明面
-	tmap.loadAlphaPolygon();
+await tmap.loadAlphaPolygon();
 }
 
 // //消除鼠标单击事件
@@ -194,14 +197,14 @@ function getLocateByMoveon(){
 	});
 }
 // 根据类型加载POI，示例：加载type=12的poi
-function getPOIByType(tp){
+async function getPOIByType(tp){
 	var filter = {
 	type:tp
 	};
 // 删除全部pot图层
 // tmap.rmPoint();
 // 根据type加载pot图层
-	tmap.loadPointByType(filter,function(e){
+	await tmap.loadPointByType(filter,function(e){
 	//if(e == 1)
 		//alert("加载成功");
 	});
@@ -392,7 +395,14 @@ async function resetPOI()
 	}	
 	else
 	{
-		layer.alert('点位更新失败');
+		layer.alert('危险源点位更新失败');
+		return;
+	}
+	var res= await getCameraList();
+	if(res.data.success && res.data.data.length>0)
+	{}
+	else{
+		layer.alert('监控点位更新失败');
 		return;
 	}
 }
@@ -455,33 +465,36 @@ function getPOIByClickReal(){
 	tmap.poiMouseEvent('click', function(info){
 		console.log(info);
 		layerOpen(info);
+		tmap.rmFeatureSelsct();
 	});
 }
+
 function getAreasByClickReal(){
 	console.log('执行区域添加单击事件');
 	tmap.areaMouseEvent('click', function(info){
 		layer.alert('区域弹出框');
+		tmap.rmFeatureSelsct();
 	});
 }
-//给点位加上事件
-getPOIByClickReal();
-//给区域加上事件
-getAreasByClickReal();
+
 //根据参数加载点位
-var req=GetRequest();
-var type=req['tp'];
-if(type == globalConfig.poison.type)
+async function loadPointByParams()
 {
-	for(let t of globalConfig.poison.load) //in 是key  , of 是object
+	if(type == globalConfig.poison.type)
 	{
-		getPOIByType(t);
+		for(let t of globalConfig.poison.load) //in 是key  , of 是object
+		{
+		await getPOIByType(t);
 		//getAreaByType(t);
 		//getAlphaAreaByType(t);
-	}
+		}
 }
 else if(type == globalConfig.danger.type)
 {
-	
+	for(let t of globalConfig.poison.danger) 
+	{
+		await getPOIByType(t);
+	}
 }
 else if(type == globalConfig.hidden.type)
 {
@@ -491,7 +504,7 @@ else if(type == globalConfig.risk.type)
 {
 	for(let t of globalConfig.risk.load) //in 是key  , of 是object
 	{
-		getAreaByType(t);
+		await getAreaByType(t);
 	}
 }
 else if(type == globalConfig.work.type)
@@ -506,13 +519,27 @@ else if(type == globalConfig.position.type)
 {
 	for(let t of globalConfig.position.load) //in 是key  , of 是object
 	{
-		getPOIByType(t);
+		await getPOIByType(t);
 	}
 }
 else
 {
-	loadAll();
+	await loadAll();
+}
 }
 
+loadPointByParams();
+
+if(type == globalConfig.poison.type)
+{
+	//给点位加上事件
+	getPOIByClickReal();
+}
+else
+{
+	//给区域加上事件
+	getAreasByClickReal();
+}
+$('#fix').hide();
 
 

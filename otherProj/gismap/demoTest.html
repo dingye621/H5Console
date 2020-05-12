@@ -329,6 +329,28 @@ function drawAreaByCoords(){
 	   alert("区域保存成功!");
 	});
 }
+
+	// Area鼠标单击事件
+	function getAreaByClick(){
+		tmap.areaMouseEvent('click', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
+	 function drawArea(){
+	var info = {
+	 name:'红色区域',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 color:'#FF3030'
+	};
+	tmap.drawArea(info, function(e){
+	 if(e == 1)
+	   alert("绘制区域成功!");
+	});
+  }
 </script>
 
 </body>
