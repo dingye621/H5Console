@@ -19,6 +19,8 @@ var access_token = storage.getItem("access_token");
 let fixShow=false; 
 let inn=true;
 let out=false;
+let posion=false;
+let fire=true;
 //获取配置文件的ip
 var ip = globalConfig.ip;
 
@@ -37,7 +39,7 @@ if(globalConfig.poison.load.includes(info.type))
 {
 	// 模板渲染
     template1 = document.getElementById('templatePosion').innerHTML;
-	var res=await getTagInfo(info.name);
+	var res=await getTagInfo(info.remarks);
 	console.log(res);
 	if(res.data.success&&res.data.data.length>0)
 	{
@@ -249,7 +251,7 @@ loadMapByLonLatZoom();
 async function drawPotByCoords(i){
 	var info = {
  		name:i.name,
- 		remarks:'自动添加的点位',
+ 		remarks:i.remarks,
  		lon: i.longitude,
  		lat: i.latitude,
  		building_id:tmap.getBuilding(),
@@ -294,15 +296,15 @@ async function drawAreaByCoords(a){
 	});
 }
 
-$('#tpPoison').click(function(){
-getPOIByType(globalConfig.poison);
-});
-$('#tpDanger').click(function(){
-getPOIByType(globalConfig.danger);
-});
-$('#tpHidden').click(function(){
-getPOIByType(globalConfig.hidden);
-});
+// $('#tpPoison').click(function(){
+// getPOIByType(globalConfig.poison);
+// });
+// $('#tpDanger').click(function(){
+// getPOIByType(globalConfig.danger);
+// });
+// $('#tpHidden').click(function(){
+// getPOIByType(globalConfig.hidden);
+// });
 $('#reset').click(function(){
 	resetAll();
 });
@@ -332,6 +334,14 @@ else{
 	$("input[name='out']").attr('checked','checked');
 		inn=true;
 	}
+});
+$('#fireBtn').click(function(){
+	getPOIByType(globalConfig.poison.load[0]);
+	$('.layer-select').hide();
+});
+$('#poisonBtn').click(function(){
+	getPOIByType(globalConfig.poison.load[1]);
+	$('.layer-select').hide();
 });
 // 清空点和面
 function clearPotArea(){
@@ -379,9 +389,12 @@ async function resetPOI()
 		{
 			info.longitude=poi.longitude;
 			info.latitude=poi.latitude;
-			info.name=poi.tag.tagName;
-			if(poi.hazardUdc.code==globalConfig.poison.code)
-				tp='29';
+			info.name=poi.tag.tagDescription;
+			info.remarks=poi.tag.tagName;
+			if(poi.hazardUdc.code==globalConfig.poison.code[0])
+				tp=globalConfig.poison.load[0];
+			else if(poi.hazardUdc.code==globalConfig.poison.code[1])
+				tp=globalConfig.poison.load[1];
 			else
 				tp='';
 			info.type=tp;
@@ -480,52 +493,56 @@ function getAreasByClickReal(){
 //根据参数加载点位
 async function loadPointByParams()
 {
+	$('.layer-select li').hide();
 	if(type == globalConfig.poison.type)
 	{
-		for(let t of globalConfig.poison.load) //in 是key  , of 是object
+		await getPOIByType(globalConfig.poison.load[0]);
+
+		// for(let t of globalConfig.poison.load) //in 是key  , of 是object
+		// {
+		// 	await getPOIByType(t);
+		// //getAreaByType(t);
+		// //getAlphaAreaByType(t);
+		// }
+		$('.poison-li').show();
+	}
+	else if(type == globalConfig.danger.type)
+	{
+		for(let t of globalConfig.poison.danger) 
 		{
-		await getPOIByType(t);
-		//getAreaByType(t);
-		//getAlphaAreaByType(t);
+			await getPOIByType(t);
 		}
-}
-else if(type == globalConfig.danger.type)
-{
-	for(let t of globalConfig.poison.danger) 
-	{
-		await getPOIByType(t);
 	}
-}
-else if(type == globalConfig.hidden.type)
-{
-	
-}
-else if(type == globalConfig.risk.type)
-{
-	for(let t of globalConfig.risk.load) //in 是key  , of 是object
+	else if(type == globalConfig.hidden.type)
 	{
-		await getAreaByType(t);
+	
 	}
-}
-else if(type == globalConfig.work.type)
-{
-	
-}
-else if(type == globalConfig.emer.type)
-{
-	
-}
-else if(type == globalConfig.position.type)
-{
-	for(let t of globalConfig.position.load) //in 是key  , of 是object
+	else if(type == globalConfig.risk.type)
 	{
-		await getPOIByType(t);
+		for(let t of globalConfig.risk.load) //in 是key  , of 是object
+		{
+			await getAreaByType(t);
+		}
 	}
-}
-else
-{
-	await loadAll();
-}
+	else if(type == globalConfig.work.type)
+	{
+	
+	}
+	else if(type == globalConfig.emer.type)
+	{
+	
+	}
+	else if(type == globalConfig.position.type)
+	{
+		for(let t of globalConfig.position.load) //in 是key  , of 是object
+		{
+			await getPOIByType(t);
+		}
+	}
+	else
+	{
+		await loadAll();
+	}
 }
 
 loadPointByParams();
@@ -540,6 +557,5 @@ else
 	//给区域加上事件
 	getAreasByClickReal();
 }
-$('#fix').hide();
 
 

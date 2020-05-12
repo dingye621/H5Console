@@ -40,7 +40,7 @@
 </div>
 <!--左边按钮-->
 <div id='fix'>
-	<ul class="rightMenu btn-group-vertical hidden">
+	<!-- <ul class="rightMenu btn-group-vertical hidden">
 		<li id="tpPoison" class="btn btn-default"  >
 			<span class="glyphicon glyphicon-heart"></span>
 		</li>
@@ -50,13 +50,19 @@
 		<li id="tpHidden" class="btn btn-default">
 			<span class="glyphicon glyphicon-music"></span>
 		</li>
-	</ul>
+	</ul> -->
 	<ul class="leftMenu btn-group-vertical">
 		<li id="layer-select" class="btn btn-default"  >
 			<span class="glyphicon glyphicon-heart"></span>
 		</li>
 	</ul>
 	<ul class="layer-select btn-group-vertical">
+		<li class="poison-li">
+			<div class="btn btn-default" id='fireBtn'>可燃</div>
+		</li>
+		<li class="poison-li">
+			<div class="btn btn-default" id='poisonBtn'>有毒</div>
+		</li>
 		<li>
 			<input  type="checkbox" name="in" value=""/>内部
 		</li>
@@ -119,7 +125,7 @@
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
 				<li><a href="#tab-2" data-toggle="tab">监测信息</a></li>
-				<li><a href="#tab-3" data-toggle="tab">历史报警数据</a></li>
+				<!-- <li><a href="#tab-3" data-toggle="tab">历史报警数据</a></li> -->
 			</ul>
 			<div style="padding-top: 20px; margin-right: 30px;">
 				<div class="tab-content">
