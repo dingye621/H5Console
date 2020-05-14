@@ -311,16 +311,16 @@ $('#reset').click(function(){
 $('#clear').click(function(){
 	clearPotArea();
 });
-$('.layer-select').hide();
+layerSelectHide();
 $('#layer-select').click(function(){
 	if(fixShow)
 	{
-		$('.layer-select').hide();
+		layerSelectHide();
 		fixShow=false;
 	}
 	else
 	{
-		$('.layer-select').show();
+		layerSelectShow();
 		fixShow=true;
 	}
 });
@@ -335,13 +335,23 @@ else{
 		inn=true;
 	}
 });
+function layerSelectHide()
+{
+	//$('.layer-select').hide();
+	$('.layer-select').css('visibility','hidden');
+}
+function layerSelectShow()
+{
+	//$('.layer-select').hide();
+	$('.layer-select').css('visibility','visible');
+}
 $('#fireBtn').click(function(){
 	getPOIByType(globalConfig.poison.load[0]);
-	$('.layer-select').hide();
+	layerSelectHide();
 });
 $('#poisonBtn').click(function(){
 	getPOIByType(globalConfig.poison.load[1]);
-	$('.layer-select').hide();
+	layerSelectHide();
 });
 // 清空点和面
 function clearPotArea(){
@@ -379,12 +389,13 @@ function resetAll()
 }
 async function resetPOI()
 {
+	var tp='';
+	var info = {};
 	var res = await getHazardList();
+	var list = {};
 	if(res.data.success && res.data.data.length>0)
 	{
-		var tp='';
-		var info = {};
-		var list = res.data.data;
+		list = res.data.data;
 		for(let poi of list)
 		{
 			info.longitude=poi.longitude;
@@ -413,7 +424,22 @@ async function resetPOI()
 	}
 	var res= await getCameraList();
 	if(res.data.success && res.data.data.length>0)
-	{}
+	{
+		list = res.data.data;
+		for(let poi of list)
+		{
+			info.longitude=poi.videoLongitude;
+			info.latitude=poi.videoLatitude;
+			info.name=poi.cameraName;
+			info.remarks='';
+			info.type=globalConfig.danger.load[0];
+			if(info.longitude && info.latitude )
+			{
+				console.log('drawPoi',info);
+				drawPotByCoords(info);
+			}
+		}
+	}
 	else{
 		layer.alert('监控点位更新失败');
 		return;
@@ -476,7 +502,6 @@ async function resetAlphaArea()
 function getPOIByClickReal(){
 	console.log('执行点位添加单击事件');
 	tmap.poiMouseEvent('click', function(info){
-		console.log(info);
 		layerOpen(info);
 		tmap.rmFeatureSelsct();
 	});

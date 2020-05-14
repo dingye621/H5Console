@@ -14,7 +14,7 @@ var mapMode = 2.5;//parseFloat(assignment("mapMode", 2));// 控制2,3d切换
 var Linterval = 2;//assignment("Linterval", 2);// 定位时间间隔
 var DBs = "prison";//0 ? 'coges' : 'prison'; // 数据源选择（UWB：coges；其他：mote）
 var comIp = "http://114.215.83.3:8090";//assignment("GeoServer", 3);
-//var comIp = "http://10.109.75.228:8090";
+
 var wfsUrl = comIp + '/geoserver/wfs';
 // var wmsUrl = comIp + '/geoserver/' + DBs + '/wms';
 var locateAssetUrl = locateIp + '/location/getPersonLocation';// get
@@ -135,6 +135,12 @@ var view = new ol.View({
 	maxZoom : 24,
 	minZoom : 15
 });
+// 设置控件
+var controls = new Array();
+var rotateControl = new ol.control.Rotate();// 指北针
+controls.push(rotateControl);
+var scaleLineControl = new ol.control.ScaleLine();// 比例尺
+controls.push(scaleLineControl);
 
 
 // 室内图对应数据显示

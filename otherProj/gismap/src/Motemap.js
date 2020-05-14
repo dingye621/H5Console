@@ -8,7 +8,8 @@ var Mote = (function()
 	 this.floorId = e.floor;
 	 this.target = e.target;
 	 this.moveRoute = false;
-	 
+	 this.scaleLine = e.scaleLine?e.scaleLine:false;
+
 	 var self = this;
 
 	 const dbtype_pot = 'fence_configpot'; 
@@ -17,6 +18,9 @@ var Mote = (function()
 	 
 	 Map.prototype.init = function(target){
 		 initLoadMap(target);
+		 if(!this.scaleLine){
+			 map.removeControl(scaleLineControl);
+		 }
 	 }
 	 Map.prototype.refresh = function(placeId, buildingId, floorId){	
 		placeid = placeId;
@@ -355,7 +359,8 @@ var Mote = (function()
 				this.select = new ol.interaction.Select({
 					layers: layers,
 					style : style,
-					condition: condition
+					condition: condition,
+						//hitTolerance: 5,
 				}); 
 				map.addInteraction(this.select);
 				this.setEvents();

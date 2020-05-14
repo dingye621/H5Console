@@ -1,4 +1,5 @@
-var version = 1;
+//var version = 1;
+var version = Math.random();
 
 function jsloader(arr, cb) {
     var head = document.getElementsByTagName('head')[0];
