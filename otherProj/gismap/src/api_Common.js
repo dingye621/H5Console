@@ -14,7 +14,7 @@ var mapMode = 2.5;//parseFloat(assignment("mapMode", 2));// 控制2,3d切换
 var Linterval = 2;//assignment("Linterval", 2);// 定位时间间隔
 var DBs = "prison";//0 ? 'coges' : 'prison'; // 数据源选择（UWB：coges；其他：mote）
 var comIp = "http://114.215.83.3:8090";//assignment("GeoServer", 3);
-
+//var comIp = "http://192.168.18.3:8090";
 var wfsUrl = comIp + '/geoserver/wfs';
 // var wmsUrl = comIp + '/geoserver/' + DBs + '/wms';
 var locateAssetUrl = locateIp + '/location/getPersonLocation';// get

@@ -59,6 +59,6 @@ async function getAreas()
 
 async function getCameraList()
 {
-    return await axios.get('http://' + globalConfig.ip + '/api/Camera/getObject&current=1&pageSize=1000');
+    return await axios.get('http://' + globalConfig.ip + '/api/Camera/getObject?current=1&pageSize=1000');
 }
 

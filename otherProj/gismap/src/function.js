@@ -533,7 +533,7 @@ async function loadPointByParams()
 	}
 	else if(type == globalConfig.danger.type)
 	{
-		for(let t of globalConfig.poison.danger) 
+		for(let t of globalConfig.danger.load) 
 		{
 			await getPOIByType(t);
 		}
@@ -572,7 +572,7 @@ async function loadPointByParams()
 
 loadPointByParams();
 
-if(type == globalConfig.poison.type)
+if(type == globalConfig.poison.type || type == globalConfig.danger.type)
 {
 	//给点位加上事件
 	getPOIByClickReal();

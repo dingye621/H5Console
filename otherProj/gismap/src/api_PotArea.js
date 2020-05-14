@@ -47,7 +47,7 @@ function addConfigAreaPage(info){
 				var htm = "";
 				switch (type){
 				case 'fence_configpot':
-					configPotSource.clear();
+					//configPotSource.clear();
 					configPotSource.addFeatures(features);
 					htm += "<div>";
 					for(var i=0;i<features.length;i++){
@@ -61,7 +61,7 @@ function addConfigAreaPage(info){
 					$('#potarea').html(htm);
 					break;
 				case 'fence_configarea':
-					configAreaSource.clear();
+					//configAreaSource.clear();
 					configAreaSource.addFeatures(features);
 					htm += "<div>";
 					for(var i=0;i<features.length;i++){
@@ -76,7 +76,7 @@ function addConfigAreaPage(info){
 					$('#modelarea').html(htm);
 					break;
 				case 'fence_configalphaarea':
-					configAlphaAreaSource.clear();
+					//configAlphaAreaSource.clear();
 					configAlphaAreaSource.addFeatures(features);
 					break;
 				}
