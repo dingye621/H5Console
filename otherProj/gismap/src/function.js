@@ -40,41 +40,52 @@ async function playFlvFunc(cameraId)
 		layer.alert(res.data.msg);
 	}
 }
-//playFlvFunc('1589556389752');
 
 //填充弹窗内容
-async function fitContent(info)
+async function fitContent(info,layerName,layerType)
 {
 // 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
 var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
-var template1='';
+// 模板渲染
+var template1= document.getElementById('template'+layerName).innerHTML;
  
-if(globalConfig.poison.load.includes(info.type))
+if(globalConfig.poison.type==layerType)
 {
-	// 模板渲染
-    template1 = document.getElementById('templatePosion').innerHTML;
 	var res=await getTagInfo(info.remarks);
 	console.log(res);
 	if(res.data.success&&res.data.data.length>0)
 	{
 		data=res.data.data.length>0?res.data.data[0]:{};
-		if(data.equipment==null)
-		data.equipment={equipmentName:'点位未关联主设备',shortName:''}
+		if(!data.equipment)
+		{
+			data.equipment={equipmentName:'点位未关联主设备',shortName:'',org:{orgName:'点位未关联区域'}};
+		}
 	}
 	else{
 		layer.alert('数据加载失败');
 		return;
 	}
 }
-else if(globalConfig.danger.load.includes(info.type))
+else if(globalConfig.danger.type==layerType)
 {
-	template1 = document.getElementById('templateDanger').innerHTML;
 	var res=await getCameraInfo(info.name);
 	if(res.data.success&&res.data.data.length>0)
 	{
 		data=res.data.data.length>0?res.data.data[0]:{};
-		if(data.equipment==null)
-		data.equipment={equipmentName:'点位未关联主设备',shortName:'',org:{orgName:'点位未关联区域'}}
+		console.log('datacamera',data);
+		if(!data.equipment)
+		{
+			data.equipment={equipmentName:'点位未关联主设备',shortName:''};
+		}
+		if(data.rtspUrl)
+		{
+			try{playFlvFunc(data.rtspUrl);}catch{
+				layer.alert('视频加载失败');
+			}
+		}
+		else{
+				layer.alert('视频绑定ID为空');
+			}
 	}
 	else
 	{
@@ -96,7 +107,7 @@ else if(globalConfig.position.load.includes(info.type)){
 	template1 = document.getElementById('templatePosition').innerHTML;
 }
 
-document.getElementById('templatelist'+info.type).innerHTML = template(template1,{data:data});
+document.getElementById('templatelist'+layerName).innerHTML = template(template1,{data:data});
 
 if(globalConfig.hidden.load.includes(info.type))
  	initEChart();
@@ -105,21 +116,33 @@ if(globalConfig.hidden.load.includes(info.type))
 
 function layerOpen(info)
 {
+	var layerType=0;
+	var layerName='';
 	var area=['620px', '420px'];
 	if(globalConfig.poison.load.includes(info.type))
+	{
+		layerType=globalConfig.poison.type;
+		layerName=globalConfig.poison.name;
 		area=['420px', '260px'];
+	}
+	if(globalConfig.danger.load.includes(info.type))
+	{
+		layerType=globalConfig.danger.type;
+		layerName=globalConfig.danger.name;
+	}
+		
 	layer.open({
 		title:null,
   		type: 1,
   		//skin: 'layui-layer-rim', //加上边框
   		area:area, //宽高
   		shade: 0,//阴影
-  		content: '<div id="templatelist'+ info.type+'"></div>',
+  		content: '<div id="templatelist'+ layerName +'"></div>',
   		end: function () {
 			tmap.rmFeatureSelsct();
       	}
-  	});
-  	fitContent(info);
+	  });
+  	fitContent(info,layerName,layerType);
 }
 
 function initEChart()
@@ -242,7 +265,7 @@ function getLocateByMoveon(){
 // 根据类型加载POI，示例：加载type=12的poi 参数传数组就是数组
 function getPOIByType(tp){
 	var filter = {
-	type:tp
+	types:tp
 	};
 // 删除全部pot图层
 tmap.rmPoint();
@@ -256,7 +279,7 @@ tmap.rmPoint();
 // 根据类型加载AREA，示例：加载type=12的AREA
 function getAreaByType(tp){
 	var filter = {
-		type:tp
+		types:tp
 	};
 	// 删除全部Area图层
 	// tmap.rmPolygon();
@@ -572,7 +595,13 @@ async function resetAlphaArea()
 function getPOIByClickReal(){
 	console.log('执行点位添加单击事件');
 	tmap.poiMouseEvent('click', function(info){
-		layerOpen(info);
+		if(info && info.length>0)
+		{
+			layerOpen(info[0]);
+		}
+		else{
+			layer.alert('未获取到任何点或区域');
+		}
 		tmap.rmFeatureSelsct();
 	});
 }

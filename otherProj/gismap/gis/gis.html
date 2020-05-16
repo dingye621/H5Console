@@ -39,7 +39,6 @@
 </style>
 </head>
 <body>
-<div id="player-flv"></div>
 <div id="map">
 </div>
 <!--左边按钮-->
@@ -123,7 +122,7 @@
     </ul>
 </script>
 <!--可燃有毒气体监测图览template模版-->
-<script type="text/html" id="templatePosion">
+<script type="text/html" id="templatePoison">
     <ul>
 		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
 			<ul class="nav nav-tabs">
@@ -183,13 +182,13 @@
 									<td>品牌：</td><td><%= data.cameraBrand %></td>
 									<td>型号：</td><td><%= data.cameraType %></td>
 								</tr>
-								<tr><td>用途：</td><td>用途</td></tr>
+								<tr><td>用途：</td><td>未指定</td></tr>
 								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
 							</table>
 						</div>
 					</div>
 					<div id="tab-2" class="tab-pane">
-						<!-- <div id="player-flv"></div> -->
+						<div id="player-flv"></div>
 					</div>
 				</div>
 			</div>
