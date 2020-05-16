@@ -196,7 +196,7 @@ function playFlv(url) {
 	  "id": "player-flv",
 	  "source": url,
 	  "width": "100%",
-	  "height": "700px",
+	  "height": "340px",
 	  "autoplay": true,
 	  "isLive": true,
 	  "rePlay": false,
@@ -628,6 +628,7 @@ function loadPointByParams()
 	else if(type == globalConfig.danger.type)
 	{
 		getPOIByType( globalConfig.danger.load);
+		$('#layer-select').hide();
 	}
 	else if(type == globalConfig.hidden.type)
 	{
