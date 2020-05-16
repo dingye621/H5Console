@@ -8,11 +8,11 @@
 <!-- 地图 -->
 <link rel="stylesheet" type="text/css" href="http://192.168.18.3:8091/chem/css/map/ol.css" />
 <link rel="stylesheet" type="text/css" href="http://192.168.18.3:8091/chem/css/map/ol3-base_3d.css" />
-<link rel="stylesheet" type="text/css" href="src/page.css" />
-<script src="src/config.js"></script>
-<script src="src/src_config.js"></script>
+<link rel="stylesheet" type="text/css" href="../src/page.css" />
+<script src="../src/config.js"></script>
+<script src="../src/src_config.js"></script>
 <!-- <script src="http://10.109.75.228:8091/chem/js/global/jquery-2.1.1.min.js"></script>  -->
-<script src="src/component/jquery/jquery-2.1.1.min.js"></script>
+<script src="../src/component/jquery/jquery-2.1.1.min.js"></script>
 <!-- <script src="http://10.109.75.228:8091/chem/js/global/bootstrap.js"></script> -->
 	
 <!-- 地图
@@ -24,18 +24,22 @@
 <script src="src/Motemap.js"></script>
 
 <script src="src/api_PotArea.js"></script>-->
-<script src="src/component/indextab.js"></script>
-<script src="src/component/layer/layer.js"></script> 
+<script src="../src/component/indextab.js"></script>
+<script src="../src/component/layer/layer.js"></script> 
 <!-- <script src="http://47.103.35.78:8081/chem/com/layer/layer.js"></script>  -->
 
 <!--css-->
-<link href="src/component/bootstrap.min.css" rel="stylesheet" />
-<link href="src/component/framework-theme.css" rel="stylesheet" />
+<link href="../src/component/bootstrap.min.css" rel="stylesheet" />
+<link href="../src/component/framework-theme.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.8/skins/default/aliplayer-min.css" />
+<script type="text/javascript" charset="utf-8"
+  src="https://g.alicdn.com/de/prismplayer/2.8.8/aliplayer-min.js"></script>
 <style>
 
 </style>
 </head>
 <body>
+<div id="player-flv"></div>
 <div id="map">
 </div>
 <!--左边按钮-->
@@ -53,15 +57,15 @@
 	</ul> -->
 	<ul class="leftMenu btn-group-vertical">
 		<li id="layer-select" class="btn btn-default"  >
-			<span class="glyphicon glyphicon-heart"></span>
+			<span class="glyphicon glyphicon-retweet"></span>
 		</li>
 	</ul>
 	<ul class="layer-select btn-group-vertical">
 		<li class="poison-li">
-			<div class="btn btn-default" id='fireBtn'>可燃</div>
+			<input  type="checkbox" name="poison" value=""/>有毒
 		</li>
 		<li class="poison-li">
-			<div class="btn btn-default" id='poisonBtn'>有毒</div>
+			<input  type="checkbox" name="fire" value=""/>可燃
 		</li>
 		<li>
 			<input  type="checkbox" name="in" value=""/>内部
@@ -75,13 +79,13 @@
 <div id="clear" class="btn btn-default hidden">一键清除</div>
 <!--js-->
 
-<script src="src/component/template.js"></script>
-<script src="src/component/echarts.min.js"></script>
+<script src="../src/component/template.js"></script>
+<script src="../src/component/echarts.min.js"></script>
 
 <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
-<script src="src/component/axios.min.js"></script>
+<script src="../src/component/axios.min.js"></script>
 <!-- <script src="src/oidc-client.js"></script> -->
-<script src="src/http.js"></script>
+<script src="../src/http.js"></script>
 <!-- <script src="src/axiosex.js"></script> -->
 
 
@@ -134,6 +138,8 @@
 							<table>
 								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
 								<tr><td>监测设备点简称：</td><td><%= data.equipment.shortName %></td></tr>
+								<tr><td>区域名称：</td><td><%= data.equipment.org.orgName %></td></tr>
+								<!-- <tr><td>区域类型</td><td><%= data.equipment.shortName %></td></tr> -->
 							</table>
 						</div>
 					</div>
@@ -183,7 +189,7 @@
 						</div>
 					</div>
 					<div id="tab-2" class="tab-pane">
-						<iframe src="http://10.105.16.61:8080/ws.html?token=c123&autoplay=1" style="width:100%;height:100%;"></iframe>
+						<!-- <div id="player-flv"></div> -->
 					</div>
 				</div>
 			</div>

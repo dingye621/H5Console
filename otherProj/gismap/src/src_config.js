@@ -49,13 +49,13 @@ function jsloader(arr, cb) {
 
 jsloader(["http://"+globalConfig.src+"/chem/js/global/bootstrap.js", 
 "http://"+globalConfig.src+"/chem/js/map/map/ol-debug.js", 
-"src/api_Common.js",
+"../src/api_Common.js",
 "http://"+globalConfig.src+"/chem/js/map/map/asset_style.js",
 "http://"+globalConfig.src+"/chem/js/map/map/asset_init.js",
 "http://"+globalConfig.src+"/chem/js/map/map/asset_base_fun.js",
-"src/Motemap.js",
-"src/api_PotArea.js",
-"src/function.js"
+"../src/Motemap.js",
+"../src/api_PotArea.js",
+"../src/function.js"
 ], 
 function () {
 	console.log('all complete');

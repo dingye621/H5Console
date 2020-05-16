@@ -29,9 +29,11 @@
 	<button onclick="getFloor();">获取当前楼层</button>
 	<button onclick="getZoom();">获取当前zoom</button>
 	<button onclick="getLonLatByClick();">获取经纬度</button>
+	<button onclick="hideLayer();">隐藏图层</button>
 </div>
 <div>POI事件：</div>
 <div>
+	<button onclick="getPOIAll();">加载全部POI</button>
 	<button onclick="getPOIByType();">根据类型加载POI</button>
 	<button onclick="getPOIByMoveon();">POI移入事件</button>
 	<button onclick="getPOIByClick();">POI单击事件</button>
@@ -39,6 +41,7 @@
 </div>
 <div>AREA事件：</div>
 <div>	
+	<button onclick="getAreaAll();">加载全部AREA</button>	
 	<button onclick="getAreaByType();">根据类型加载AREA</button>	
 	<button onclick="getAreaByMoveon();">AREA移入事件</button>
 	<button onclick="getAreaByClick();">AREA单击事件</button>
@@ -46,6 +49,7 @@
 </div>
 <div>透明框事件：</div>
 <div>	
+	<button onclick="getAlphaAreaAll();">加载全部透明框</button>	
 	<button onclick="getAlphaAreaByType();">根据类型加载透明框</button>	
 	<button onclick="getAlphaAreaByMoveon();">透明框移入事件</button>
 	<button onclick="getAlphaAreaByClick();">透明框单击事件</button>
@@ -100,7 +104,8 @@
 		place: "61",
 		building: 1,
 		floor: "01",
-		mode: "2d"
+		mode: "2d",
+		scaleLine: true//默认false
 	})
 	// 获取buildingid
 	function getBuilding(){
@@ -125,7 +130,7 @@
 	function removeFeatureSelsct(){
 	   tmap.rmFeatureSelsct();
 	}
-	//消除鼠标单击事件
+	//消除鼠标事件
 	function removeMouseEvent(){
 	   tmap.rmMouseEvent();
 	}
@@ -222,6 +227,12 @@
 	   alert("清除透明框成功");
 	});
   }
+  // 隐藏图层
+  function hideLayer(){
+	tmap.setPotVisible(!tmap.getPotVisible());
+	tmap.setAreaVisible(!tmap.getAreaVisible());
+	//tmap.setAlphaAreaVisible(!tmap.getAlphaAreaVisible());
+  }
   // 新增点&保存
   function drawPot(){
 	var info = {
@@ -289,7 +300,7 @@
 	 building_id:tmap.getBuilding(),
 	 floor_id:tmap.getFloor(),
 	 place_id:tmap.getPlace(),
-	 color:'#FF3030'
+	 color:'#FFFF3030'
 	};
 	tmap.drawAreaByCoords(info, function(e){
 	 if(e == 1)
@@ -449,41 +460,62 @@
 		   alert(JSON.stringify(info));
 		});
 	}
+	function getPOIAll(){
+		// 加载点
+		tmap.loadPoint();
+	}
+	function getAreaAll(){
+		// 加载面
+		tmap.loadPolygon();
+	}
+	function getAlphaAreaAll(){
+		  // 加载透明面
+		tmap.loadAlphaPolygon();
+	}
   // 根据类型加载POI，示例：加载type=12的POI
   function getPOIByType(){
-	var filter = {
+	var filter1 = {
 		type:'12'
+	}
+	var filter2 = {
+		types:['11','29']
 	};
 	// 删除全部pot图层
-	// tmap.rmPoint();
+	tmap.rmPoint();
 	// 根据type加载pot图层
-	tmap.loadPointByType(filter,function(e){
+	tmap.loadPointByType(filter2,function(e){
 		if(e == 1)
 			alert("加载成功");
 		});
 	}
   // 根据类型加载AREA，示例：加载type=12的AREA
   function getAreaByType(){
-	var filter = {
+	var filter1 = {
 		type:'#FFFF3030'
 	};
+	var filter2 = {
+		types:['#FFFF3030']
+	}
 	// 删除全部Area图层
 	// tmap.rmPolygon();
 	// 根据type加载Area图层
-	tmap.loadPolygonByType(filter,function(e){
+	tmap.loadPolygonByType(filter2,function(e){
 		if(e == 1)
 			alert("加载成功");
 		});
 	}
   // 根据类型加载透明框，示例：加载type=12的AlphaArea
   function getAlphaAreaByType(){
-	var filter = {
+	var filter1 = {
 		type:'#30FF30'
 	};
+	var filter2 = {
+		types:['#30FF30']
+	}
 	// 删除全部透明框图层
 	// tmap.rmAlphaPolygon();
 	// 根据type加载透明框图层
-	tmap.loadAlphaPolygonByType(filter,function(e){
+	tmap.loadAlphaPolygonByType(filter2,function(e){
 		if(e == 1)
 			alert("加载成功");
 		});

@@ -18,8 +18,8 @@ ul{
 .rightMenu li,.leftMenu li{
     background-color: white;
     width:  30px !important;
-    height: 30px !important;
-    line-height: 30px;
+    height: 25px !important;
+    line-height: 25px;
     padding: 5px;
 }
 .rightMenu li:hover,.leftMenu li:hover{
@@ -29,8 +29,12 @@ ul{
     position: relative;
     top:0px;
     left: 5px;
-    border:0px solid black;
+    border:1px solid black;
     padding: 5px;
+    background-color: white;
+}
+.layer-select li{
+    float: left;
 }
 /*一键重置*/
 #reset{

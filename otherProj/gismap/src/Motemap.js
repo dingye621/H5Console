@@ -86,77 +86,73 @@ var Mote = (function()
 			  }
 	 }
 	
+	 Map.prototype.getSelectCondition = function(eventType){
+		 var condition;
+		  switch(eventType){
+			 case 'move':
+			 {
+				condition = ol.events.condition.pointerMove;
+			 }break;
+			case 'click':
+			{
+				condition = ol.events.condition.singleClick;
+			}break;
+			case 'dbclick':
+			{
+				condition = ol.events.condition.doubleClick;
+			}break;
+		 }
+		 return condition
+	 }
+	 Map.prototype.setSelectInfo = function(features){
+		 var infos = [];
+		 for(var i=0; i<features.length; i++){
+			 var layer = self.select.select.getLayer(features[i]).get('title');
+			 var info = new Object();
+			 info.fid = features[i].getId();
+			 info.name = features[i].get('name');
+			 info.remarks = features[i].get('remarks');
+			 info.building_id = features[i].get('building_id');
+			 info.floor_id = features[i].get('floor_id');
+			 info.place_id = features[i].get('place_id');		
+			 switch(layer){
+			 	case 'POI':
+				{
+					info.type = features[i].get('icon');
+					//var geom = feature.getGeometry().getCoordinates();
+				}break;
+				case 'AREA':
+				{
+					info.color = features[i].get('color');
+				}break;
+				case 'AlphaAREA':
+				{
+					info.border_color = features[i].get('border_color');
+				}break;
+			}
+			infos.push(info);
+		}
+		 return infos
+	 }
+	 	 
 	 /*
 	  *处理鼠标事件
 	  *eventType 参数类型，单击'click',双击"dbclick"，移入'move'
 	  *callback 返回的回调函数，info为返回的对象，对象定义{name:"", type:"", remarks:"", building_id:"", floor_id:"", place_id:"", lon:"", lat:""}
 	 */
 	 Map.prototype.poiMouseEvent = function(eventType, callback){
-		 switch(eventType){
-			 case 'move':
-			 {
-				 var condition = ol.events.condition.pointerMove;
-				 self.select = self.selectByInteraction([configPotLayer],condition);
-				 self.select.select.on('select', function(e) {
-					if(e.selected.length != 0){
-						var info = new Object();
-						info.fid = e.selected[0].getId();
-						info.name = e.selected[0].get('name');
-						info.remarks = e.selected[0].get('remarks');
-						info.type = e.selected[0].get('icon');
-						info.building_id = e.selected[0].get('building_id');
-						info.floor_id = e.selected[0].get('floor_id');
-						info.place_id = e.selected[0].get('place_id');
-						var geom = e.selected[0].getGeometry().getCoordinates();
-						
-						callback && callback(info);	
-					}
-		        });
-				//self.rmInteraction(select.select);
-			 }break;
-			case 'click':
-			{
-				 var condition = ol.events.condition.singleClick;
-				 self.select = tmap.selectByInteraction([configPotLayer],condition);
-				 self.select.select.on('select', function(e) {
-					if(e.selected.length != 0){
-						var info = new Object();
-						info.fid = e.selected[0].getId();
-						info.name = e.selected[0].get('name');
-						info.remarks = e.selected[0].get('remarks');
-						info.type = e.selected[0].get('icon');
-						info.building_id = e.selected[0].get('building_id');
-						info.floor_id = e.selected[0].get('floor_id');
-						info.place_id = e.selected[0].get('place_id');
-						var geom = e.selected[0].getGeometry().getCoordinates();
-						
-						callback && callback(info);	
-					}
-				});
-			}break;
-			case 'dbclick':
-			{
-				var condition = ol.events.condition.doubleClick;
-				self.select = tmap.selectByInteraction([configPotLayer],condition);
-				self.select.select.on('select', function(e) {
-					if(e.selected.length != 0){
-						var info = new Object();
-						info.fid = e.selected[0].getId();
-						info.name = e.selected[0].get('name');
-						info.remarks = e.selected[0].get('remarks');
-						info.type = e.selected[0].get('icon');
-						info.building_id = e.selected[0].get('building_id');
-						info.floor_id = e.selected[0].get('floor_id');
-						info.place_id = e.selected[0].get('place_id');
-						var geom = e.selected[0].getGeometry().getCoordinates();
-						
-						callback && callback(info);	
-					}
-				});
-			}break;
-			 
-		 }
-		 
+		 var condition = self.getSelectCondition(eventType);
+		 if(self.select){
+			 self.select.setLayers(configPotLayer);
+		 }else{
+			 self.select = self.selectByInteraction([configPotLayer],condition);
+			 self.select.select.on('select', function(e) {
+				if(e.selected.length != 0){
+					var info = self.setSelectInfo(e.selected)
+					callback && callback(info);	
+				}
+			});
+		}
 	 }
 	  /*
 	  *处理框的鼠标事件
@@ -164,136 +160,32 @@ var Mote = (function()
 	  *callback 返回的回调函数，info为返回的对象，对象定义{name:"", type:"", memo:"", lon:"", lat:""}
 	 */
 	 Map.prototype.areaMouseEvent = function(eventType, callback){
-		 switch(eventType){
-			 case 'move':
-			 {
-				 var condition = ol.events.condition.pointerMove;
-				 self.select = self.selectByInteraction([configAreaLayer],condition);
-				 self.select.select.on('select', function(e) {
-					if(e.selected.length != 0){
-						var info = new Object();
-						info.fid = e.selected[0].getId();
-						info.name = e.selected[0].get('name');
-						info.remarks = e.selected[0].get('remarks');
-						//info.type = e.selected[0].get('type');
-						info.building_id = e.selected[0].get('building_id');
-						info.floor_id = e.selected[0].get('floor_id');
-						info.place_id = e.selected[0].get('place_id');
-						info.color = e.selected[0].get('color');
-						
-						callback && callback(info);	
-					}
-		        });
-			 }break;
-			case 'click':
-			{
-				 var condition = ol.events.condition.singleClick;
-				 self.select = tmap.selectByInteraction([configAreaLayer],condition);
-				 self.select.select.on('select', function(e) {
-					if(e.selected.length != 0){
-						var info = new Object();
-						info.fid = e.selected[0].getId();
-						info.name = e.selected[0].get('name');
-						info.remarks = e.selected[0].get('remarks');
-						//info.type = e.selected[0].get('type');
-						info.building_id = e.selected[0].get('building_id');
-						info.floor_id = e.selected[0].get('floor_id');
-						info.place_id = e.selected[0].get('place_id');
-						info.color = e.selected[0].get('color');
-						
-						callback && callback(info);	
-					}
-				});
-			}break;
-			case 'dbclick':
-			{
-				var condition = ol.events.condition.doubleClick;
-				self.select = tmap.selectByInteraction([configAreaLayer],condition);
-				self.select.select.on('select', function(e) {
-					if(e.selected.length != 0){
-						var info = new Object();
-						info.fid = e.selected[0].getId();
-						info.name = e.selected[0].get('name');
-						info.remarks = e.selected[0].get('remarks');
-						//info.type = e.selected[0].get('type');
-						info.building_id = e.selected[0].get('building_id');
-						info.floor_id = e.selected[0].get('floor_id');
-						info.place_id = e.selected[0].get('place_id');
-						info.color = e.selected[0].get('color');
-						
-						callback && callback(info);	
-					}
-				});
-			}break;
-			 
-		 }
-		 
+		  var condition = self.getSelectCondition(eventType);
+		  if(self.select){
+			 self.select.setLayers(configAreaLayer);
+		  }else{
+			 self.select = self.selectByInteraction([configAreaLayer],condition);
+			 self.select.select.on('select', function(e) {
+				if(e.selected.length != 0){
+					var info = self.setSelectInfo(e.selected)
+					callback && callback(info);	
+				}
+			});
+		}  
 	 }
 	 Map.prototype.alphaAreaMouseEvent = function(eventType, callback){
-		 switch(eventType){
-			 case 'move':
-			 {
-				 var condition = ol.events.condition.pointerMove;
-				 self.select = self.selectByInteraction([configAlphaAreaLayer],condition);
-				 self.select.select.on('select', function(e) {
-					if(e.selected.length != 0){
-						var info = new Object();
-						info.fid = e.selected[0].getId();
-						info.name = e.selected[0].get('name');
-						info.remarks = e.selected[0].get('remarks');
-						//info.type = e.selected[0].get('type');
-						info.building_id = e.selected[0].get('building_id');
-						info.floor_id = e.selected[0].get('floor_id');
-						info.place_id = e.selected[0].get('place_id');
-						info.border_color = e.selected[0].get('border_color');
-						
-						callback && callback(info);
-					}
-		        });
-			 }break;
-			case 'click':
-			{
-				 var condition = ol.events.condition.singleClick;
-				 self.select = tmap.selectByInteraction([configAlphaAreaLayer],condition);
-				 self.select.select.on('select', function(e) {
-					if(e.selected.length != 0){
-						var info = new Object();
-						info.fid = e.selected[0].getId();
-						info.name = e.selected[0].get('name');
-						info.remarks = e.selected[0].get('remarks');
-						//info.type = e.selected[0].get('type');
-						info.building_id = e.selected[0].get('building_id');
-						info.floor_id = e.selected[0].get('floor_id');
-						info.place_id = e.selected[0].get('place_id');
-						info.border_color = e.selected[0].get('border_color');
-						
-						callback && callback(info);
-					}
-				});
-			}break;
-			case 'dbclick':
-			{
-				var condition = ol.events.condition.doubleClick;
-				self.select = tmap.selectByInteraction([configAlphaAreaLayer],condition);
-				self.select.select.on('select', function(e) {
-					if(e.selected.length != 0){
-						var info = new Object();
-						info.fid = e.selected[0].getId();
-						info.name = e.selected[0].get('name');
-						info.remarks = e.selected[0].get('remarks');
-						//info.type = e.selected[0].get('type');
-						info.building_id = e.selected[0].get('building_id');
-						info.floor_id = e.selected[0].get('floor_id');
-						info.place_id = e.selected[0].get('place_id');
-						info.border_color = e.selected[0].get('border_color');
-						
-						callback && callback(info);
-					}
-				});
-			}break;
-			 
-		 }
-		 
+		 var condition = self.getSelectCondition(eventType);
+		 if(self.select){
+			 self.select.setLayers(configAlphaAreaLayer);
+		 }else{
+			 self.select = self.selectByInteraction([configAlphaAreaLayer],condition);
+			 self.select.select.on('select', function(e) {
+				if(e.selected.length != 0){
+					var info = self.setSelectInfo(e.selected)
+					callback && callback(info);	
+				}
+			});
+	    }
 	 }
 	 
 	 Map.prototype.rmFeatureSelsct = function(){
@@ -337,30 +229,32 @@ var Mote = (function()
 	 }
 	 Map.prototype.rmMouseEvent = function(){
 		 self.rmInteraction(self.select.select);
+		 self.select = null;
 	 }
 	 
 	 Map.prototype.getClickEventFlag = function(){
 		 return this.clickEvent?Object.keys(this.clickEvent).length:false
 	 }
 	 Map.prototype.selectByInteraction = function(layers,condition){
-		 var style = layers[0] == configPotLayer
-			?configPotStyleFun
-			:layers[0] == configAreaLayer
-				?configAreaStyleFun
-				:layers[0] == configAlphaAreaLayer
-					?configAlphaAreaStyleFun
-					:layers[0] == AssetLocateLayer
-						?assetstylefunction
-						:layers[0] == AssetRoutePointLayer
-							?RouteStyle['geoms']
-							:geojsonstylefunction
+		 // var style = layers[0] == configPotLayer
+			// ?configPotStyleFun
+			// :layers[0] == configAreaLayer
+				// ?configAreaStyleFun
+				// :layers[0] == configAlphaAreaLayer
+					// ?configAlphaAreaStyleFun
+					// :layers[0] == AssetLocateLayer
+						// ?assetstylefunction
+						// :layers[0] == AssetRoutePointLayer
+							// ?RouteStyle['geoms']
+							// :geojsonstylefunction
 		 this.selectFeature = {
 			init: function() {
 				this.select = new ol.interaction.Select({
 					layers: layers,
-					style : style,
+					style : false,
 					condition: condition,
-						//hitTolerance: 5,
+					multi: true,
+					//hitTolerance: 5,
 				}); 
 				map.addInteraction(this.select);
 				this.setEvents();
@@ -375,9 +269,28 @@ var Mote = (function()
 			setActive: function(active) {
 				this.select.setActive(active);
 			},
+			setLayers: function(layer){
+				var flag = true;
+				for(var i=0; i<layers.length; i++){
+					if(layer == layers[i]){
+						flag = !flag
+						break
+					}
+				}
+				if(flag){layers.push(layer);}
+			},
+			getLayers: function(){
+				return layers;
+			},
 			rmFeatures: function() {
 				var selectedFeatures = this.select.getFeatures();
-				selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
+				var eachs = [];
+				selectedFeatures.forEach(function(each){
+					eachs.push(each)
+				});
+				for(var i=0;i<eachs.length;i++){
+					selectedFeatures.remove(eachs[i])
+				}
 			}
 		 };
 		 this.selectFeature.init();
@@ -529,7 +442,16 @@ var Mote = (function()
 			callback && callback();
 	 }
 	 Map.prototype.loadPointByType = function(info,callback){
-		 var cqlFilter = 'place_id=' + this.placeId + ' and icon=' + info.type;
+		 var cqlFilter = 'place_id=' + this.placeId;
+		 if(info.types){
+			 cqlFilter = cqlFilter + ' and icon in ('
+			 for(var i=0;i<info.types.length;i++){
+				 cqlFilter = cqlFilter + info.types[i] + ',';
+			 }
+			 cqlFilter = cqlFilter + '\'\')';
+		 }else{
+			 cqlFilter = cqlFilter + ' and icon=' + info.type;
+		 }
 		   loadConfigPotArea(dbtype_pot,cqlFilter);//加载点的图层
 			callback && callback(1);
 	 }
@@ -539,8 +461,17 @@ var Mote = (function()
 		 callback && callback();
 	 }
 	 Map.prototype.loadPolygonByType = function(info,callback){
-		 var cqlFilter = 'place_id=' + this.placeId + ' and color=\'' + info.type + '\'';
-		 loadConfigPotArea(dbtype_area,cqlFilter);//加载面的图层
+		  var cqlFilter = 'place_id=' + this.placeId;
+		 if(info.types){
+			 cqlFilter = cqlFilter + ' and color in ('
+			 for(var i=0;i<info.types.length;i++){
+				 cqlFilter = cqlFilter + '\'' + info.types[i] + '\',';
+			 }
+			 cqlFilter = cqlFilter + '\'\')';
+		 }else{
+			 cqlFilter = cqlFilter + ' and color=\'' + info.type + '\'';
+		 }
+		loadConfigPotArea(dbtype_area,cqlFilter);//加载面的图层
 		 callback && callback(1);
 	 }
 	 Map.prototype.loadAlphaPolygon = function(callback){
@@ -549,7 +480,16 @@ var Mote = (function()
 		 callback && callback();
 	 }
 	 Map.prototype.loadAlphaPolygonByType = function(info,callback){
-		 var cqlFilter = 'place_id=' + this.placeId + ' and border_color=\'' + info.type + '\'';
+		 var cqlFilter = 'place_id=' + this.placeId;
+		 if(info.types){
+			 cqlFilter = cqlFilter + ' and border_color in ('
+			 for(var i=0;i<info.types.length;i++){
+				 cqlFilter = cqlFilter + '\'' + info.types[i] + '\',';
+			 }
+			 cqlFilter = cqlFilter + '\'\')';
+		 }else{
+			 cqlFilter = cqlFilter + ' and border_color=\'' + info.type + '\'';
+		 }
 		 loadConfigPotArea(dbtype_alphaArea,cqlFilter);//加载透明框的图层
 		 callback && callback(1);
 	 }
@@ -603,6 +543,24 @@ var Mote = (function()
 				}
 			});
 		}
+	 }
+	 Map.prototype.setPotVisible = function(active){ 
+		 configPotLayer.setVisible(active)
+	 }
+	 Map.prototype.getPotVisible = function(){ 
+		 return configPotLayer.getVisible()
+	 }
+	 Map.prototype.setAreaVisible = function(active){ 
+		 configAreaLayer.setVisible(active)
+	 }
+	 Map.prototype.getAreaVisible = function(){ 
+		 return configAreaLayer.getVisible()
+	 }
+	 Map.prototype.setAlphaAreaVisible = function(active){ 
+		 configAlphaAreaLayer.setVisible(active)
+	 }
+	 Map.prototype.getAlphaAreaVisible = function(){ 
+		 return configAlphaAreaLayer.getVisible()
 	 }
 	 Map.prototype.getPointByClick = function(callback){
 		    var condition = ol.events.condition.singleClick;

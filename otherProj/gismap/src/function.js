@@ -1,6 +1,7 @@
 var req = GetRequest();
 var type = req['tp'];  
 
+
 function groupBy(array, f) {
     //debugger;
     const groups = {};
@@ -19,7 +20,7 @@ var access_token = storage.getItem("access_token");
 let fixShow=false; 
 let inn=true;
 let out=false;
-let posion=false;
+let poison=true;
 let fire=true;
 //获取配置文件的ip
 var ip = globalConfig.ip;
@@ -27,6 +28,19 @@ var ip = globalConfig.ip;
 //浏览器当前窗口可视区域高度
 var h=$(window).height();
 $('#fix').css('bottom',h/2+'px');
+
+//播放视频监控
+async function playFlvFunc(cameraId)
+{
+	var res = await getGameraUrl(cameraId);
+	if(res.data.Flag){
+		playFlv(res.data.data);
+	}
+	else{
+		layer.alert(res.data.msg);
+	}
+}
+//playFlvFunc('1589556389752');
 
 //填充弹窗内容
 async function fitContent(info)
@@ -60,7 +74,7 @@ else if(globalConfig.danger.load.includes(info.type))
 	{
 		data=res.data.data.length>0?res.data.data[0]:{};
 		if(data.equipment==null)
-		data.equipment={equipmentName:'点位未关联主设备',shortName:''}
+		data.equipment={equipmentName:'点位未关联主设备',shortName:'',org:{orgName:'点位未关联区域'}}
 	}
 	else
 	{
@@ -152,15 +166,42 @@ var tmap = new Mote.Map({
 })
 
 
+//视频播放
+function playFlv(url) {
+   
+	var player = new Aliplayer({
+	  "id": "player-flv",
+	  "source": url,
+	  "width": "100%",
+	  "height": "700px",
+	  "autoplay": true,
+	  "isLive": true,
+	  "rePlay": false,
+	  "playsinline": false,
+	  "preload": true,
+	  "controlBarVisibility": "hover",
+	  "useH5Prism": true
+	}, function (player) {
+	  console.log("The player is created");
+	}
+	);
+}
 
-async function loadAll()
+function loadAll()
 {
  // 加载点
-await tmap.loadPoint();
+tmap.loadPoint();
 // 加载面
-await tmap.loadPolygon();
+tmap.loadPolygon();
 // 加载透明面
-await tmap.loadAlphaPolygon();
+tmap.loadAlphaPolygon();
+}
+
+// 隐藏图层
+function hideLayer(){
+	tmap.setPotVisible(!tmap.getPotVisible());
+	tmap.setAreaVisible(!tmap.getAreaVisible());
+	//tmap.setAlphaAreaVisible(!tmap.getAlphaAreaVisible());
 }
 
 // //消除鼠标单击事件
@@ -198,15 +239,16 @@ function getLocateByMoveon(){
 	   alert(JSON.stringify(info));
 	});
 }
-// 根据类型加载POI，示例：加载type=12的poi
-async function getPOIByType(tp){
+// 根据类型加载POI，示例：加载type=12的poi 参数传数组就是数组
+function getPOIByType(tp){
 	var filter = {
 	type:tp
 	};
 // 删除全部pot图层
-// tmap.rmPoint();
+tmap.rmPoint();
 // 根据type加载pot图层
-	await tmap.loadPointByType(filter,function(e){
+	tmap.loadPointByType(filter,function(e){
+		console.log('e',e);
 	//if(e == 1)
 		//alert("加载成功");
 	});
@@ -248,7 +290,7 @@ var ret = tmap.loadMap(lon, lat,zoom,function(e){
 }
 loadMapByLonLatZoom();
 // 新增点&保存(输入坐标)
-async function drawPotByCoords(i){
+function drawPotByCoords(i){
 	var info = {
  		name:i.name,
  		remarks:i.remarks,
@@ -259,7 +301,7 @@ async function drawPotByCoords(i){
  		place_id:tmap.getPlace(),
  		type:i.type
 	};
-	await tmap.drawPointByCoords(info, function(e){
+	tmap.drawPointByCoords(info, function(e){
 		let msg='[' +info.name + ']点位保存';
 		if(e == 1)
 		{
@@ -272,7 +314,7 @@ async function drawPotByCoords(i){
 		//layer.alert(msg);
 	})
 }
-async function drawAreaByCoords(a){
+function drawAreaByCoords(a){
 	var info = {
 	 	name:a.name,
 	 	remarks:'自动添加的区域',
@@ -282,7 +324,7 @@ async function drawAreaByCoords(a){
 	 	place_id:tmap.getPlace(),
 	 	color:a.color
 	};
-	await tmap.drawAreaByCoords(info, function(e){
+	tmap.drawAreaByCoords(info, function(e){
 		let msg='[' +info.name + ']区域保存';
 		if(e == 1)
 		{
@@ -345,6 +387,34 @@ function layerSelectShow()
 	//$('.layer-select').hide();
 	$('.layer-select').css('visibility','visible');
 }
+$("input[name='poison']").click(function(){
+	if(poison)
+	{
+		hideLayer();
+		getPOIByType(globalConfig.poison.load[0]);
+		poison=false;
+	}
+	else
+	{
+		hideLayer();
+		getPOIByType(globalConfig.poison.load[1]);
+		poison=true;
+	}
+});
+$("input[name='fire']").click(function(){
+	if(fire)
+	{
+		hideLayer();
+		getPOIByType(globalConfig.poison.load[1]);
+		fire=false;
+	}
+	else
+	{
+		hideLayer();
+		getPOIByType(globalConfig.poison.load[0]);
+		fire=true;
+	}
+});
 $('#fireBtn').click(function(){
 	getPOIByType(globalConfig.poison.load[0]);
 	layerSelectHide();
@@ -516,27 +586,19 @@ function getAreasByClickReal(){
 }
 
 //根据参数加载点位
-async function loadPointByParams()
+function loadPointByParams()
 {
 	$('.layer-select li').hide();
 	if(type == globalConfig.poison.type)
 	{
-		await getPOIByType(globalConfig.poison.load[0]);
-
-		// for(let t of globalConfig.poison.load) //in 是key  , of 是object
-		// {
-		// 	await getPOIByType(t);
-		// //getAreaByType(t);
-		// //getAlphaAreaByType(t);
-		// }
+		getPOIByType(globalConfig.poison.load); //可传数组也可传单个字符串
+		//getAreaByType(t);
+		//getAlphaAreaByType(t);
 		$('.poison-li').show();
 	}
 	else if(type == globalConfig.danger.type)
 	{
-		for(let t of globalConfig.danger.load) 
-		{
-			await getPOIByType(t);
-		}
+		getPOIByType( globalConfig.danger.load);
 	}
 	else if(type == globalConfig.hidden.type)
 	{
@@ -546,7 +608,7 @@ async function loadPointByParams()
 	{
 		for(let t of globalConfig.risk.load) //in 是key  , of 是object
 		{
-			await getAreaByType(t);
+			 getAreaByType(t);
 		}
 	}
 	else if(type == globalConfig.work.type)
@@ -561,26 +623,26 @@ async function loadPointByParams()
 	{
 		for(let t of globalConfig.position.load) //in 是key  , of 是object
 		{
-			await getPOIByType(t);
+			 getPOIByType(t);
 		}
 	}
 	else
 	{
-		await loadAll();
+		 loadAll();
 	}
 }
 
 loadPointByParams();
 
-if(type == globalConfig.poison.type || type == globalConfig.danger.type)
-{
+// if(type == globalConfig.poison.type || type == globalConfig.danger.type)
+// {
 	//给点位加上事件
 	getPOIByClickReal();
-}
-else
-{
+// }
+// else
+// {
 	//给区域加上事件
 	getAreasByClickReal();
-}
+//}
 
 

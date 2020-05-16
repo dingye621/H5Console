@@ -62,3 +62,8 @@ async function getCameraList()
     return await axios.get('http://' + globalConfig.ip + '/api/Camera/getObject?current=1&pageSize=1000');
 }
 
+async function getGameraUrl(cameraId)
+{
+    return await axios.get('http://' + globalConfig.cameraDomain + '/api/MediaService/GetCamera?id='+cameraId);
+}
+

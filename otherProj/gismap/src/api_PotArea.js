@@ -44,39 +44,17 @@ function addConfigAreaPage(info){
 			async: false,
 			success: function(response){
 				var features = new ol.format.GeoJSON().readFeatures(response);
-				var htm = "";
 				switch (type){
 				case 'fence_configpot':
-					//configPotSource.clear();
+					configPotSource.clear();
 					configPotSource.addFeatures(features);
-					htm += "<div>";
-					for(var i=0;i<features.length;i++){
-						htm += "<div class='cont'>";
-						htm += "<div class='col-md-7' style='color:#fff;' onclick=showConfigPotArea([" + features[i].getGeometry().getCoordinates() + "])>";
-						htm += "	<img src='images/fence/fence1.png'/>";
-						htm += "	<span> " + features[i].get('name') + "</span></div>";
-						htm += "	<span id='" + features[i].getId() + "' onclick=deleteConfigPotArea(this); class='editdelete'>删除</span></div>";
-					}
-					htm += "</div>";
-					$('#potarea').html(htm);
 					break;
 				case 'fence_configarea':
-					//configAreaSource.clear();
+					configAreaSource.clear();
 					configAreaSource.addFeatures(features);
-					htm += "<div>";
-					for(var i=0;i<features.length;i++){
-						htm += "<div class='cont'>";
-						htm += "<div class='col-md-7' style='color:#fff;' onclick=showConfigPotArea([" + features[i].getGeometry().getInteriorPoint().getCoordinates() + "])>";
-						htm += "<img src='images/fence/fence2.png'/>";
-						htm += "<span>" + features[i].get('name') + "</span></div>";
-						htm += "<span id='" + features[i].getId() + "' onclick=deleteConfigPotArea(this); class='editdelete'>删除</span></div>";
-						 
-					}
-					htm += "</div>";
-					$('#modelarea').html(htm);
 					break;
 				case 'fence_configalphaarea':
-					//configAlphaAreaSource.clear();
+					configAlphaAreaSource.clear();
 					configAlphaAreaSource.addFeatures(features);
 					break;
 				}

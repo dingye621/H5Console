@@ -1,8 +1,9 @@
 (function(w){
 	w.globalConfig = {
 			//ip:"192.168.18.12:7000",
-		ip:"localhost:7000",
+			ip:"localhost:7000",
 			src:"192.168.18.3:8091",
+			cameraDomain:"cam.hse.upneep.com",
 			//src:"47.103.35.78:8081",
 			poison:{type:1,load:['11','29'],name:['fire','poison'],code:['K03','K02']},//可燃(load[0])有毒(load[1])
 			danger:{type:2,load:['32'],name:['danger'],code:['32']},//重大危险源监控
