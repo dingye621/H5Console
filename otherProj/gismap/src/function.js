@@ -117,8 +117,20 @@ async function fitContent(info,layerName,layerType)
 	}
 	else if(globalConfig.hidden.type==layerType)
 	{
-
-		
+		 var res = await getLineChartData();
+		 if(res.data&&res.data.msg=='success')
+		 {
+			for(var item in res.data.data)
+			{
+				if(item.CldName==info.name){
+					data.equipment=info.name;
+					break;
+				}
+			}
+		 }
+		 else{
+			 layer.alert('数据加载失败');
+		 }	
 	}
 	else if(globalConfig.risk.load.includes(info.type)){
 
@@ -441,7 +453,7 @@ function drawPotByCoords(i){
 function drawAreaByCoords(a){
 	var info = {
 	 	name:a.name,
-	 	remarks:'自动添加的区域',
+	 	remarks:a.code,
 	 	coords: a.coords,
 	 	building_id:tmap.getBuilding(),
 	 	floor_id:tmap.getFloor(),
@@ -637,6 +649,7 @@ function initArea(areaList,color)
 	var es= '';
 	var ws= '';
 	var name='';
+	var code='';
 	var group=[];
 	group = groupBy(areaList, (org) => {
 		return org.orgCode
@@ -657,6 +670,7 @@ function initArea(areaList,color)
 			if(o.typeCode==globalConfig.wsCode)
 				ws = o.value;
 			name = o.orgName;
+			code = o.orgCode;
 		}
 		coordList = [
 			{lon:en.split(',')[0],lat:en.split(',')[1]},
@@ -668,7 +682,8 @@ function initArea(areaList,color)
 		info = {
 			 name:name,
 			 coords: coordList,
-			 color:color
+			 color:color,
+			 code:code
 			};
 		console.log('drawArea',info);
 		drawAreaByCoords(info);
