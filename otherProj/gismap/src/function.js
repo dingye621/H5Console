@@ -20,8 +20,7 @@ var access_token = storage.getItem("access_token");
 let fixShow=false; 
 let inn=true;
 let out=false;
-let poison=true;
-let fire=true;
+
 //获取配置文件的ip
 var ip = globalConfig.ip;
 
@@ -37,80 +36,77 @@ async function playFlvFunc(cameraId)
 		playFlv(res.data.data);
 	}
 	else{
-		layer.alert(res.data.msg);
+		layer.alert(res.data.Msg);
 	}
 }
 
 //填充弹窗内容
 async function fitContent(info,layerName,layerType)
 {
-// 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
-var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
-// 模板渲染
-var template1= document.getElementById('template'+layerName).innerHTML;
+	// 准备好的数据源，可以是通过网络获取的json数据，也可以是通过ajax从后台拿到的数据
+	var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
+	// 模板渲染
+	var template1= document.getElementById('template'+layerName).innerHTML;
  
-if(globalConfig.poison.type==layerType)
-{
-	var res=await getTagInfo(info.remarks);
-	console.log(res);
-	if(res.data.success&&res.data.data.length>0)
+	if(globalConfig.poison.type==layerType)
 	{
-		data=res.data.data.length>0?res.data.data[0]:{};
-		if(!data.equipment)
+		var res=await getTagInfo(info.remarks);
+		console.log(res);
+		if(res.data.success&&res.data.data.length>0)
 		{
-			data.equipment={equipmentName:'点位未关联主设备',shortName:'',org:{orgName:'点位未关联区域'}};
-		}
-	}
-	else{
-		layer.alert('数据加载失败');
-		return;
-	}
-}
-else if(globalConfig.danger.type==layerType)
-{
-	var res=await getCameraInfo(info.name);
-	if(res.data.success&&res.data.data.length>0)
-	{
-		data=res.data.data.length>0?res.data.data[0]:{};
-		console.log('datacamera',data);
-		if(!data.equipment)
-		{
-			data.equipment={equipmentName:'点位未关联主设备',shortName:''};
-		}
-		if(data.rtspUrl)
-		{
-			try{playFlvFunc(data.rtspUrl);}catch{
-				layer.alert('视频加载失败');
+			data=res.data.data.length>0?res.data.data[0]:{};
+			if(!data.equipment)
+			{
+				data.equipment={equipmentName:'点位未关联主设备',shortName:'',org:{orgName:'点位未关联区域'}};
 			}
 		}
 		else{
+			layer.alert('数据加载失败');
+			return;
+		}
+	}
+	else if(globalConfig.danger.type==layerType)
+	{
+		var res=await getCameraInfo(info.name);
+		if(res.data.success&&res.data.data.length>0)
+		{
+			data=res.data.data.length>0?res.data.data[0]:{};
+			if(!data.equipment)
+			{
+				data.equipment={equipmentName:'点位未关联主设备',shortName:''};
+			}
+			if(data.rtspUrl)
+			{
+				try{playFlvFunc(data.rtspUrl);}catch{
+				layer.alert('视频加载失败');
+				}
+			}
+			else
+			{
 				layer.alert('视频绑定ID为空');
 			}
+		}
+		else
+		{
+			layer.alert('数据加载失败');
+			return;
+		}
 	}
-	else
+	else if(globalConfig.hidden.type==layerType)
 	{
-		layer.alert('数据加载失败');
-		return;
+
+		//initEChart();
 	}
-}
-else if(globalConfig.hidden.load.includes(info.type))
-{
-	template1 = document.getElementById('templateHidden').innerHTML;
-}
-else if(globalConfig.risk.load.includes(info.type)){
+	else if(globalConfig.risk.load.includes(info.type)){
 
 
-}
-else if(globalConfig.work.load.includes(info.type)){}
-else if(globalConfig.emer.load.includes(info.type)){}
-else if(globalConfig.position.load.includes(info.type)){
-	template1 = document.getElementById('templatePosition').innerHTML;
-}
-
-document.getElementById('templatelist'+layerName).innerHTML = template(template1,{data:data});
-
-if(globalConfig.hidden.load.includes(info.type))
- 	initEChart();
+	}
+	else if(globalConfig.work.load.includes(info.type)){}
+	else if(globalConfig.emer.load.includes(info.type)){}
+	else if(globalConfig.position.load.includes(info.type)){
+	
+	}
+	document.getElementById('templatelist'+layerName).innerHTML = template(template1,{data:data});
 }
    
 
@@ -130,6 +126,11 @@ function layerOpen(info)
 		layerType=globalConfig.danger.type;
 		layerName=globalConfig.danger.name;
 	}
+	if(globalConfig.hidden.load.includes(info.color))
+	{
+		layerType=globalConfig.hidden.type;
+		layerName=globalConfig.hidden.name;
+	}
 		
 	layer.open({
 		title:null,
@@ -148,16 +149,16 @@ function layerOpen(info)
 function initEChart()
 {
 	var data={
-    "CldCode": "AA0104",
-    "num": [4,0,0,0],
-    "month": [1,2,3,4],
-    "CldName": "发展部",
-    "ClientDevices": 11065
-};
-// 基于准备好的dom，初始化echarts实例
-var myChart = echarts.init(document.getElementById('main'));
-//var option=null;
-option = {
+    	"CldCode": "AA0104",
+    	"num": [4,0,0,0],
+    	"month": [1,2,3,4],
+    	"CldName": "发展部",
+    	"ClientDevices": 11065
+	};
+	// 基于准备好的dom，初始化echarts实例
+	var myChart = echarts.init(document.getElementById('main'));
+	//var option=null;
+	option = {
     xAxis: {
         type: 'category',
         data: data.month
@@ -168,14 +169,11 @@ option = {
     series: [{
         data: data.num,
         type: 'line'
-    }]
-};
-// 使用刚指定的配置项和数据显示图表。
-myChart.setOption(option);
+    	}]
+	};
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
 }
-
-
-
 
 // 初始化
 var tmap = new Mote.Map({
@@ -410,32 +408,30 @@ function layerSelectShow()
 	//$('.layer-select').hide();
 	$('.layer-select').css('visibility','visible');
 }
-$("input[name='poison']").click(function(){
-	if(poison)
+//多选框属性默认为选中
+$("input[name='poison'],input[name='fire']").prop('checked', true);
+
+$("input[name='poison'],input[name='fire']").click(function(){
+	
+	//先清除所有的
+	tmap.rmPoint();
+	//选中状态可参考下列2类
+	//console.log('ch1',$("input[name='poison']").prop('checked'));  
+	//console.log('ch2f',$("input[name='fire']").is(':checked'));
+	//判断选中状态
+	var fireStatus=$("input[name='fire']").is(':checked');
+	var poisonStatus=$("input[name='poison']").is(':checked');
+	if($("input[name='fire']").is(':checked'))
 	{
-		hideLayer();
-		getPOIByType(globalConfig.poison.load[0]);
-		poison=false;
+		getPOIByType([globalConfig.poison.load[0]]);
 	}
-	else
+	if($("input[name='poison']").is(':checked'))
 	{
-		hideLayer();
-		getPOIByType(globalConfig.poison.load[1]);
-		poison=true;
+		getPOIByType([globalConfig.poison.load[1]]);
 	}
-});
-$("input[name='fire']").click(function(){
-	if(fire)
+	if(fireStatus&&poisonStatus)
 	{
-		hideLayer();
-		getPOIByType(globalConfig.poison.load[1]);
-		fire=false;
-	}
-	else
-	{
-		hideLayer();
-		getPOIByType(globalConfig.poison.load[0]);
-		fire=true;
+		getPOIByType(globalConfig.poison.load);
 	}
 });
 $('#fireBtn').click(function(){
@@ -609,7 +605,7 @@ function getPOIByClickReal(){
 function getAreasByClickReal(){
 	console.log('执行区域添加单击事件');
 	tmap.areaMouseEvent('click', function(info){
-		layer.alert('区域弹出框');
+		layerOpen(info);
 		tmap.rmFeatureSelsct();
 	});
 }
@@ -618,28 +614,27 @@ function getAreasByClickReal(){
 function loadPointByParams()
 {
 	$('.layer-select li').hide();
+	$('#layer-select').hide();
 	if(type == globalConfig.poison.type)
 	{
 		getPOIByType(globalConfig.poison.load); //可传数组也可传单个字符串
 		//getAreaByType(t);
 		//getAlphaAreaByType(t);
 		$('.poison-li').show();
+		$('#layer-select').show();
 	}
 	else if(type == globalConfig.danger.type)
 	{
-		getPOIByType( globalConfig.danger.load);
-		$('#layer-select').hide();
+		getPOIByType(globalConfig.danger.load);
 	}
 	else if(type == globalConfig.hidden.type)
 	{
-	
+		getAreaByType(globalConfig.hidden.load);
 	}
 	else if(type == globalConfig.risk.type)
 	{
-		for(let t of globalConfig.risk.load) //in 是key  , of 是object
-		{
-			 getAreaByType(t);
-		}
+		//for(let t of globalConfig.risk.load) //in 是key  , of 是object
+		getAreaByType(globalConfig.risk.load);
 	}
 	else if(type == globalConfig.work.type)
 	{
@@ -664,15 +659,9 @@ function loadPointByParams()
 
 loadPointByParams();
 
-// if(type == globalConfig.poison.type || type == globalConfig.danger.type)
-// {
-	//给点位加上事件
-	getPOIByClickReal();
-// }
-// else
-// {
-	//给区域加上事件
-	getAreasByClickReal();
-//}
+getPOIByClickReal();
+
+getAreasByClickReal();
+
 
 

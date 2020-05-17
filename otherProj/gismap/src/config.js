@@ -7,7 +7,7 @@
 			//src:"47.103.35.78:8081",
 			poison:{type:1,load:['11','29'],name:'Poison',code:['K03','K02']},//可燃(load[0])有毒(load[1])
 			danger:{type:2,load:['32'],name:'Danger',code:['32']},//重大危险源监控
-			hidden:{type:3,load:['14'],name:'Hidden'},//隐患排查
+			hidden:{type:3,load:['#FFFF3030'],name:'Hidden'},//隐患排查
 			risk:{type:4,load:['#FFFF3030'],name:'Risk'},//风险分区四色图
 			work:{type:5,load:['8'],name:'Work'},//作业许可
 			emer:{type:6,load:['9'],name:'Emer'},//应急物资
