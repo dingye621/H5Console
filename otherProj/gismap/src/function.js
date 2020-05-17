@@ -95,7 +95,7 @@ async function fitContent(info,layerName,layerType)
 	else if(globalConfig.hidden.type==layerType)
 	{
 
-		//initEChart();
+		
 	}
 	else if(globalConfig.risk.load.includes(info.type)){
 
@@ -107,6 +107,10 @@ async function fitContent(info,layerName,layerType)
 	
 	}
 	document.getElementById('templatelist'+layerName).innerHTML = template(template1,{data:data});
+	if(globalConfig.hidden.type==layerType)
+	{
+		initEChart();
+	}
 }
    
 
@@ -158,7 +162,11 @@ function initEChart()
 	// 基于准备好的dom，初始化echarts实例
 	var myChart = echarts.init(document.getElementById('main'));
 	//var option=null;
-	option = {
+	var option = {
+		title: {
+			text: '工厂同类隐患发生次数：',
+			left: 'left'
+		},
     xAxis: {
         type: 'category',
         data: data.month
@@ -173,6 +181,78 @@ function initEChart()
 	};
 	// 使用刚指定的配置项和数据显示图表。
 	myChart.setOption(option);
+	var myChartYear = echarts.init(document.getElementById('mainYear'));
+	var yearData=[];
+	var pif= [
+		{
+		  "PitfallName": "资质证照",
+		  "PitfallTypex": 14197,
+		  "cn": 2
+		},
+		{
+		  "PitfallName": "安全规章制度",
+		  "PitfallTypex": 14205,
+		  "cn": 1
+		},
+		{
+		  "PitfallName": "安全培训教育",
+		  "PitfallTypex": 14211,
+		  "cn": 1
+		},
+		{
+		  "PitfallName": "相关方管理",
+		  "PitfallTypex": 14220,
+		  "cn": 2
+		},
+		{
+		  "PitfallName": "重大危险源管理",
+		  "PitfallTypex": 14225,
+		  "cn": 2
+		},
+		{
+		  "PitfallName": "个体防护装备",
+		  "PitfallTypex": 14230,
+		  "cn": 3
+		},
+		{
+		  "PitfallName": "职业健康",
+		  "PitfallTypex": 14234,
+		  "cn": 1
+		}
+	  ];
+	for(var item of pif)
+	{
+		yearData.push({value: item.cn, name: item.PitfallName});
+	}
+	option = {
+		title: {
+			text: '区域内各类隐患分布：',
+			left: 'left'
+		},
+		tooltip: {
+			trigger: 'item',
+			formatter: '{a} <br/>{b} : {c} ({d}%)'
+		},
+		
+		series: [
+			{
+				name: '',
+				type: 'pie',
+				radius: '55%',
+				center: ['50%', '60%'],
+				data: yearData,
+				emphasis: {
+					itemStyle: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				}
+			}
+		]
+	};
+	myChartYear.setOption(option);
+	
 }
 
 // 初始化
