@@ -14,6 +14,19 @@ function groupBy(array, f) {
         return groups[group];
     });
 }
+//扩展js方法
+//案例
+//var alertCount = data.ArrivalRatesList.select(function (t) { return t.AlertCount });
+//var li=list.select((t)=>t.xx);
+Array.prototype.select = Array.prototype.map || function (selector, context) {
+    context = context || window;
+    var arr = [];
+    var l = this.length;
+    for (var i = 0; i < l; i++)
+        arr.push(selector.call(context, this[i], i, this));
+    return arr;
+};
+
 //获取sessionStorage
 var storage = window.sessionStorage;  
 var access_token = storage.getItem("access_token"); 
@@ -39,7 +52,17 @@ async function playFlvFunc(cameraId)
 		layer.alert(res.data.Msg);
 	}
 }
-
+//过滤区域
+function filterArea(areaList,areaStrList)
+{
+	var areaRes=[];
+	for(var area of areaList)
+	{
+		if(areaStrList.includes(area.orgName)||areaStrList.includes(area.orgCode))
+			areaRes.push(area);
+	}
+	return areaRes;
+}
 //填充弹窗内容
 async function fitContent(info,layerName,layerType)
 {
@@ -439,15 +462,6 @@ function drawAreaByCoords(a){
 	});
 }
 
-// $('#tpPoison').click(function(){
-// getPOIByType(globalConfig.poison);
-// });
-// $('#tpDanger').click(function(){
-// getPOIByType(globalConfig.danger);
-// });
-// $('#tpHidden').click(function(){
-// getPOIByType(globalConfig.hidden);
-// });
 $('#reset').click(function(){
 	resetAll();
 });
@@ -614,53 +628,88 @@ async function resetPOI()
 		return;
 	}
 }
+function initArea(areaList,color)
+{
+	var info = {};
+	var coordList= [];
+	var wn= '';
+	var en= '';
+	var es= '';
+	var ws= '';
+	var name='';
+	var group=[];
+	group = groupBy(areaList, (org) => {
+		return org.orgCode
+	});
+	
+	for(let data of group)
+	{
+		if(data.length!=4)
+			continue;
+		for(var o of data)
+		{
+			if(o.typeCode==globalConfig.wnCode)
+				wn = o.value;
+			if(o.typeCode==globalConfig.enCode)
+				en = o.value;
+			if(o.typeCode==globalConfig.esCode)
+				es = o.value;
+			if(o.typeCode==globalConfig.wsCode)
+				ws = o.value;
+			name = o.orgName;
+		}
+		coordList = [
+			{lon:en.split(',')[0],lat:en.split(',')[1]},
+			{lon:wn.split(',')[0],lat:wn.split(',')[1]},
+			{lon:ws.split(',')[0],lat:ws.split(',')[1]},
+			{lon:es.split(',')[0],lat:es.split(',')[1]},
+			{lon:en.split(',')[0],lat:en.split(',')[1]},];
+		
+		info = {
+			 name:name,
+			 coords: coordList,
+			 color:color
+			};
+		console.log('drawArea',info);
+		drawAreaByCoords(info);
+	}
+}
+
 async function resetArea()
 {
+	//reset基础区域
 	var res = await getAreas();
 	if(res.data && res.data.length>0)
 	{
-		var info = {};
-		var coordList= [];
-		var wn= '';
-		var en= '';
-		var es= '';
-		var ws= '';
-		var name='';
-		var group = groupBy(res.data, (org) => {
-			return org.orgCode
-		});
+		initArea(res.data,'#FFFF3030');
+	}
 
-		for(let data of group)
-		{
-			if(data.length!=4)
-				continue;
-			for(var o of data)
+	//reset隐患区域
+	var resLine = await getLineChartData();
+	if(resLine.data && resLine.data.msg=='success')
+	{
+		var list = resLine.data.data;
+		list=[
 			{
-				if(o.typeCode==globalConfig.wnCode)
-					wn = o.value;
-				if(o.typeCode==globalConfig.enCode)
-					en = o.value;
-				if(o.typeCode==globalConfig.esCode)
-					es = o.value;
-				if(o.typeCode==globalConfig.wsCode)
-					ws = o.value;
-				name = o.orgName;
+			  "CldCode": "AA0104",
+			  "num": [4,0,0,0],
+			  "month": [1,2,3,4],
+			  "CldName": "发展部",
+			  "ClientDevices": 11065
+			},
+			{
+		 
+			  "CldCode": "AA010701",
+			  "num": [1,2,9,0],
+			  "month": [1,2,3,4],
+			  "CldName": "丙烯酸装置",
+			  "ClientDevices": 11069
 			}
-			coordList = [
-				{lon:en.split(',')[0],lat:en.split(',')[1]},
-				{lon:wn.split(',')[0],lat:wn.split(',')[1]},
-				{lon:ws.split(',')[0],lat:ws.split(',')[1]},
-				{lon:es.split(',')[0],lat:es.split(',')[1]},
-				{lon:en.split(',')[0],lat:en.split(',')[1]},];
-			
-			info = {
-				 name:name,
-				 coords: coordList,
-				 color:'#FFFF3030'
-				};
-			console.log('drawArea',info);
-			drawAreaByCoords(info);
-		}
+		  ];
+		var orgNameList = list.select((t)=>t.CldName);
+		var flist = filterArea(res.data,orgNameList); //经过筛选的area
+		console.log('flist',flist);
+		initArea(flist,globalConfig.hidden.load[0]);
 	}
 }
 async function resetAlphaArea()
@@ -685,7 +734,13 @@ function getPOIByClickReal(){
 function getAreasByClickReal(){
 	console.log('执行区域添加单击事件');
 	tmap.areaMouseEvent('click', function(info){
-		layerOpen(info);
+		if(info && info.length>0)
+		{
+			layerOpen(info[0]);
+		}
+		else{
+			layer.alert('未获取到任何点或区域');
+		}
 		tmap.rmFeatureSelsct();
 	});
 }

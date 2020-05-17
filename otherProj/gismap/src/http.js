@@ -66,4 +66,9 @@ async function getGameraUrl(cameraId)
 {
     return await axios.get('http://' + globalConfig.cameraDomain + '/api/MediaService/GetCamera?id='+cameraId);
 }
+//hse 接口
+async function getLineChartData()
+{
+    return await axios.get('http://' + globalConfig.hseDomain + '/bpm/getpitfalltypedata.action');
+}
 
