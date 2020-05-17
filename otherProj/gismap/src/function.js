@@ -2,6 +2,12 @@ var req = GetRequest();
 var type = req['tp'];  
 
 
+window.onresize = function () {
+	var height =$(window).height();
+	$("#videoElement").height(height);
+	$("#mainContainer").height(height);
+}
+
 function groupBy(array, f) {
     //debugger;
     const groups = {};
@@ -46,7 +52,7 @@ async function playFlvFunc(cameraId)
 {
 	var res = await getGameraUrl(cameraId);
 	if(res.data.Flag){
-		playFlv(res.data.data);
+		playFlv(res.data.Data);
 	}
 	else{
 		layer.alert(res.data.Msg);
@@ -372,7 +378,7 @@ var tmap = new Mote.Map({
 
 
 function playFlv(url) {
-    var height = '340px';
+	var height = $(window).height;
      $("#videoElement").height(height);
      $("#mainContainer").height(height);
     if (flvjs.isSupported()) {
