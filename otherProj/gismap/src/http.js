@@ -77,3 +77,9 @@ async function getPieChartData()
     return await axios.get('http://' + globalConfig.hseDomain + '/bpm/getpitfalltypedata.action');
 }
 
+async function getEmer()
+{
+    return await axios.get('http://' + globalConfig.hseDomain + '/bpm/getsupplies.action');
+}
+
+

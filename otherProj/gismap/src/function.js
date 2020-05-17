@@ -149,15 +149,35 @@ async function fitContent(info,layerName,layerType)
 			 layer.alert('数据加载失败');
 		 }	
 	}
-	else if(globalConfig.risk.load.includes(info.type)){
+	else if(globalConfig.risk.type==layerType){
 
 
 	}
-	else if(globalConfig.work.load.includes(info.type)){}
-	else if(globalConfig.emer.load.includes(info.type)){}
-	else if(globalConfig.position.load.includes(info.type)){
+	else if(globalConfig.work.type==layerType){
+		
+	}
+	else if(globalConfig.emer.type==layerType){
+		var emerRes=await getEmer();
+		if(emerRes.data && emerRes.data.msg=='success')
+		{
+			var ppList=filterEmerList(emerRes.data.data);
+			for(var p of ppList)
+			{
+				if(p.ID==info.remarks)
+				{
+					data=p;
+					break;
+				}
+			}
+		}
+		else{
+			layer.alert('数据加载失败');
+		}
+	}
+	else if(globalConfig.position.type==layerType){
 	
 	}
+	console.log(data);
 	document.getElementById('templatelist'+layerName).innerHTML = template(template1,{data:data});
 	if(globalConfig.hidden.type==layerType)
 	{
@@ -166,7 +186,6 @@ async function fitContent(info,layerName,layerType)
 		//{
 			initEChart(lineChartData,pieChartData);
 		//}
-		
 	}
 }
    
@@ -191,6 +210,17 @@ function layerOpen(info)
 	{
 		layerType=globalConfig.hidden.type;
 		layerName=globalConfig.hidden.name;
+	}
+	if(globalConfig.emer.load.includes(info.type))
+	{
+		layerType=globalConfig.emer.type;
+		layerName=globalConfig.emer.name;
+		area=['320px', '300px'];
+	}
+	if(globalConfig.work.load.includes(info.color))
+	{
+		layerType=globalConfig.work.type;
+		layerName=globalConfig.work.name;
 	}
 		
 	layer.open({
@@ -570,6 +600,31 @@ $('#poisonBtn').click(function(){
 	getPOIByType(globalConfig.poison.load[1]);
 	layerSelectHide();
 });
+
+//hse的应急物资List重组
+function filterEmerList(list)
+{
+	var ppList=[];
+	for(let l of list)
+	{
+		for (let det of l.detail)
+		{
+			ppList.push({Organization:l.Organization,
+				Supplies:l.Supplies,
+				Stocks:det.Stocks,
+				Coordinate:det.Coordinate,
+				ID:l.VERID+','+det.VERID,
+				Address:l.Address,
+				Unit:l.Unit,
+				Principal:l.Principal,
+				RegPerson:det.RegPerson,
+				RegDate:det.RegDate
+			});
+		}
+	}
+	return ppList;
+}
+
 // 清空点和面
 function clearPotArea(){
 	var msg='';
@@ -639,6 +694,7 @@ async function resetPOI()
 		layer.alert('危险源点位更新失败');
 		return;
 	}
+	//监控
 	var res= await getCameraList();
 	if(res.data.success && res.data.data.length>0)
 	{
@@ -650,6 +706,35 @@ async function resetPOI()
 			info.name=poi.cameraName;
 			info.remarks='';
 			info.type=globalConfig.danger.load[0];
+			if(info.longitude && info.latitude )
+			{
+				console.log('drawPoi',info);
+				drawPotByCoords(info);
+			}
+		}
+	}
+	else{
+		layer.alert('监控点位更新失败');
+		return;
+	}
+	//应急物资点位
+	var res = await getEmer();
+	if(res.data && res.data.msg=='success')
+	{
+		list = res.data.data;
+		var ppList=filterEmerList(list);
+		for(let poi of ppList)
+		{
+			//判断点位属性是否为空
+			if(!poi.Coordinate||poi.Coordinate.split(',').length<2)
+			{
+				continue;
+			}
+			info.longitude=poi.Coordinate.split(',')[0];
+			info.latitude=poi.Coordinate.split(',')[1];
+			info.name=poi.Supplies;
+			info.remarks=poi.ID;
+			info.type=globalConfig.emer.load[0];
 			if(info.longitude && info.latitude )
 			{
 				console.log('drawPoi',info);
@@ -718,7 +803,7 @@ async function resetArea()
 	var res = await getAreas();
 	if(res.data && res.data.length>0)
 	{
-		initArea(res.data,'#FFFF3030');
+		//initArea(res.data,'#FFFF3030');
 	}
 
 	//reset隐患区域
@@ -810,11 +895,11 @@ function loadPointByParams()
 	}
 	else if(type == globalConfig.work.type)
 	{
-	
+		getAreaByType(globalConfig.work.load);
 	}
 	else if(type == globalConfig.emer.type)
 	{
-	
+		getPOIByType(globalConfig.emer.load);
 	}
 	else if(type == globalConfig.position.type)
 	{

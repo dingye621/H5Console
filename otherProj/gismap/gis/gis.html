@@ -244,12 +244,16 @@
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
 							<table>
-								<tr><td>监测设备名称：</td><td>未指定</td></tr>
+								<tr><td>组织：</td><td><%= data.Organization %></td></tr>
 								<tr>
-									<td>监测设备点简称：</td><td>未指定</td>
+									<td>位置：</td><td><%= data.Address %></td>
 								</tr>
-								<tr><td>用区域名称：</td><td><%= data.equipment %></td></tr>
-								
+								<tr><td>单位：</td><td><%= data.Unit %></td></tr>
+								<tr><td>补给：</td><td><%= data.Supplies %></td></tr>
+								<tr><td>库存：</td><td><%= data.Stocks %></td></tr>
+								<tr><td>材质：</td><td><%= data.Principal %></td></tr>
+								<tr><td>注册人：</td><td><%= data.RegPerson %></td></tr>
+								<tr><td>注册日期：</td><td><%= data.RegDate %></td></tr>
 							</table>
 						</div>
 					</div>
