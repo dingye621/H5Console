@@ -70,7 +70,9 @@ async function fitContent(info,layerName,layerType)
 	var data = {name:"张三",sex:"男",equipment:"测试数据demo"};
 	// 模板渲染
 	var template1= document.getElementById('template'+layerName).innerHTML;
- 
+	var lineChartData={};
+	var pieChartData={};
+
 	if(globalConfig.poison.type==layerType)
 	{
 		var res=await getTagInfo(info.remarks);
@@ -118,12 +120,27 @@ async function fitContent(info,layerName,layerType)
 	else if(globalConfig.hidden.type==layerType)
 	{
 		 var res = await getLineChartData();
+		 var pieRes = await getPieChartData();
 		 if(res.data&&res.data.msg=='success')
 		 {
 			for(var item in res.data.data)
 			{
 				if(item.CldName==info.name){
 					data.equipment=info.name;
+					lineChartData=item;
+					break;
+				}
+			}
+		 }
+		 else{
+			 layer.alert('数据加载失败');
+		 }
+		 if(pieRes.data&&pieRes.data.msg=='success')
+		 {
+			for(var item in pieRes.data.data)
+			{
+				if(item.CldName==info.name){
+					pieChartData=item;
 					break;
 				}
 			}
@@ -144,7 +161,12 @@ async function fitContent(info,layerName,layerType)
 	document.getElementById('templatelist'+layerName).innerHTML = template(template1,{data:data});
 	if(globalConfig.hidden.type==layerType)
 	{
-		initEChart();
+		var pieRes=await getPieChartData();
+		//if(lineChartData&&pieChartData)
+		//{
+			initEChart(lineChartData,pieChartData);
+		//}
+		
 	}
 }
    
@@ -185,9 +207,9 @@ function layerOpen(info)
   	fitContent(info,layerName,layerType);
 }
 
-function initEChart()
+function initEChart(lineData,pieData)
 {
-	var data={
+	lineData={
     	"CldCode": "AA0104",
     	"num": [4,0,0,0],
     	"month": [1,2,3,4],
@@ -204,13 +226,13 @@ function initEChart()
 		},
     xAxis: {
         type: 'category',
-        data: data.month
+        data: lineData.month
     },
     yAxis: {
         type: 'value'
     },
     series: [{
-        data: data.num,
+        data: lineData.num,
         type: 'line'
     	}]
 	};
@@ -218,7 +240,7 @@ function initEChart()
 	myChart.setOption(option);
 	var myChartYear = echarts.init(document.getElementById('mainYear'));
 	var yearData=[];
-	var pif= [
+	pieData.pif= [
 		{
 		  "PitfallName": "资质证照",
 		  "PitfallTypex": 14197,
@@ -255,7 +277,7 @@ function initEChart()
 		  "cn": 1
 		}
 	  ];
-	for(var item of pif)
+	for(var item of pieData.pif)
 	{
 		yearData.push({value: item.cn, name: item.PitfallName});
 	}
@@ -271,7 +293,7 @@ function initEChart()
 		
 		series: [
 			{
-				name: '',
+				name: pieData.CldName,
 				type: 'pie',
 				radius: '55%',
 				center: ['50%', '60%'],
