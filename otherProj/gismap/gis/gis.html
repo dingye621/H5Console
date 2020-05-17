@@ -80,7 +80,7 @@
 
 <script src="../src/component/template.js"></script>
 <script src="../src/component/echarts.min.js"></script>
-
+<script src="../src/component/flv.min.js"></script>
 <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
 <script src="../src/component/axios.min.js"></script>
 <!-- <script src="src/oidc-client.js"></script> -->
@@ -134,7 +134,7 @@
 				<div class="tab-content">
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
-							<table>
+							<table class="table table-striped">
 								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
 								<tr><td>监测设备点简称：</td><td><%= data.equipment.shortName %></td></tr>
 								<tr><td>区域名称：</td><td><%= data.equipment.org.orgName %></td></tr>
@@ -144,7 +144,7 @@
 					</div>
 					<div id="tab-2" class="tab-pane">
 							<div class="panel-body">
-								<table>
+								<table class="table table-striped">
 									<tr><td>监测点位号：</td><td><%= data.tagName %></td></tr>
 									<tr><td>监测点数值：</td><td></td></tr>
 								</table>
@@ -176,19 +176,24 @@
 				<div class="tab-content">
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
-							<table>
+							<table class="table table-striped">
 								<tr><td>监控名称：</td><td><%= data.cameraName %></td></tr>
 								<tr>
 									<td>品牌：</td><td><%= data.cameraBrand %></td>
-									<td>型号：</td><td><%= data.cameraType %></td>
 								</tr>
+								<tr><td>型号：</td><td><%= data.cameraType %></td></tr>
 								<tr><td>用途：</td><td>未指定</td></tr>
 								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
 							</table>
 						</div>
 					</div>
 					<div id="tab-2" class="tab-pane">
-						<div id="player-flv"></div>
+						<!-- <div id="player-flv"></div> -->
+						<div class="mainContainer" id="mainContainer" style="width: 100%;">
+							<video name="videoElement" class="centeredVideo" id="videoElement"  playsinline="true"  style="width: 100%;height:100%;object-fit: fill;" autoplay>
+								Your browser is too old which doesn't support HTML5 video.
+							</video>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -208,7 +213,7 @@
 				<div class="tab-content">
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
-							<table>
+							<table class="table table-striped">
 								<tr><td>监测设备名称：</td><td>未指定</td></tr>
 								<tr>
 									<td>监测设备点简称：</td><td>未指定</td>
@@ -243,7 +248,7 @@
 				<div class="tab-content">
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
-							<table>
+							<table class="table table-striped">
 								<tr><td>组织：</td><td><%= data.Organization %></td></tr>
 								<tr>
 									<td>位置：</td><td><%= data.Address %></td>
@@ -274,13 +279,25 @@
 				<div class="tab-content">
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
-							<table>
-								<tr><td>监测设备名称：</td><td>未指定</td></tr>
+							<table class="table table-striped">
 								<tr>
-									<td>监测设备点简称：</td><td>未指定</td>
+								<th>区域</th>
+								<th>管理员</th>
+								<th>开始日期</th>
+								<th>截止日期</th>
+								<th>操作</th>
+								<th>作业名称</th>
 								</tr>
-								<tr><td>用区域名称：</td><td><%= data.equipment %></td></tr>
-								
+								<%for(var i = 0; i < data.length; i++) {%>
+									<tr>
+										<td><%:=data[i].AreaName%></td>
+										<td><%:=data[i].JobLeaderx%></td>
+										<td><%:=data[i].Timestart%></td>
+										<td><%:=data[i].Timeend%></td>
+										<td><%:=data[i].Operation%></td>
+										<td><%:=data[i].Name%></td>
+									</tr>
+									<%}%>
 							</table>
 						</div>
 					</div>

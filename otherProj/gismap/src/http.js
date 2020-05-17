@@ -82,4 +82,11 @@ async function getEmer()
     return await axios.get('http://' + globalConfig.hseDomain + '/bpm/getsupplies.action');
 }
 
+async function getPermit()
+{
+    return await axios.get('http://' + globalConfig.hseDomain + '/bpm/gislicense.action');
+}
+
+
+
 

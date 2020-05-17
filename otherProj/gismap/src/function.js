@@ -52,6 +52,7 @@ async function playFlvFunc(cameraId)
 		layer.alert(res.data.Msg);
 	}
 }
+
 //过滤区域
 function filterArea(areaList,areaStrList)
 {
@@ -154,7 +155,23 @@ async function fitContent(info,layerName,layerType)
 
 	}
 	else if(globalConfig.work.type==layerType){
-		
+		data=[];
+		var workRes=await getPermit();
+		if(workRes.data && workRes.data.msg=='success')
+		{
+			var ppList=filterWorkList(workRes.data.data);
+			for(let p of ppList)
+			{
+				if(p.code==info.remarks)
+				{
+					data.push(p);
+				}
+			}
+		}
+		else{
+			layer.alert('数据加载失败');
+		}
+		data=[{Name:'测试',Id:'2'},{Name:'我的',Id:'5'}];
 	}
 	else if(globalConfig.emer.type==layerType){
 		var emerRes=await getEmer();
@@ -354,26 +371,45 @@ var tmap = new Mote.Map({
 })
 
 
-//视频播放
 function playFlv(url) {
-   
-	var player = new Aliplayer({
-	  "id": "player-flv",
-	  "source": url,
-	  "width": "100%",
-	  "height": "340px",
-	  "autoplay": true,
-	  "isLive": true,
-	  "rePlay": false,
-	  "playsinline": false,
-	  "preload": true,
-	  "controlBarVisibility": "hover",
-	  "useH5Prism": true
-	}, function (player) {
-	  console.log("The player is created");
-	}
-	);
+    var height = '340px';
+     $("#videoElement").height(height);
+     $("#mainContainer").height(height);
+    if (flvjs.isSupported()) {
+      var videoElement = document.getElementById('videoElement');
+      var flvPlayer = flvjs.createPlayer({
+        type: 'flv',
+        url: url,
+        isLive: true,
+                hasAudio: false,
+                hasVideo: true,
+                enableStashBuffer: true,
+      });
+      flvPlayer.attachMediaElement(videoElement);
+      flvPlayer.load();
+      flvPlayer.play();
+    }
 }
+
+// function playFlv(url) {
+   
+// 	var player = new Aliplayer({
+// 	  "id": "player-flv",
+// 	  "source": url,
+// 	  "width": "100%",
+// 	  "height": "340px",
+// 	  "autoplay": true,
+// 	  "isLive": true,
+// 	  "rePlay": false,
+// 	  "playsinline": false,
+// 	  "preload": true,
+// 	  "controlBarVisibility": "hover",
+// 	  "useH5Prism": true
+// 	}, function (player) {
+// 	  console.log("The player is created");
+// 	}
+// 	);
+// }
 
 function loadAll()
 {
@@ -625,6 +661,27 @@ function filterEmerList(list)
 	return ppList;
 }
 
+//hse的作业许可List重组
+function filterWorkList(list)
+{
+	var ppList=[];
+	for(let l of list)
+	{
+		for (let da of l.data)
+		{
+			ppList.push({
+				code:l.code,
+				JobLeaderx:da.JobLeaderx,
+				Timeend:da.Timeend,
+				Timestart:da.Timestart,
+				Operation:da.Operation,
+				AreaName:da.AreaName,
+				Name:da.Name
+			});
+		}
+	}
+	return ppList;
+}
 // 清空点和面
 function clearPotArea(){
 	var msg='';
@@ -803,7 +860,7 @@ async function resetArea()
 	var res = await getAreas();
 	if(res.data && res.data.length>0)
 	{
-		//initArea(res.data,'#FFFF3030');
+		initArea(res.data,'#FFFF3030');
 	}
 
 	//reset隐患区域
@@ -833,6 +890,59 @@ async function resetArea()
 		console.log('flist',flist);
 		initArea(flist,globalConfig.hidden.load[0]);
 	}
+
+	//reset工作许可区域
+	var resPermit = await getPermit();
+	if(resPermit.data && resPermit.data.msg=='success')
+		{
+			var list = resPermit.data.data;
+			list=[
+				{
+					"code": "SHAAOS011000",
+					"name": "一期丙烯酸单元一楼",
+					"data": [
+						{
+							"JobLeaderx": "沈悦峰",
+							"AllGuardian": "",
+							"count": 2,
+							"Timeend": "2020-05-30",
+							"Operation": "高处作业(III级)",
+							"Timestrat": "2020-04-25",
+							"Name": "丙烯酸一期A01单元检修",
+							"AreaName": "一期丙烯酸单元一楼",
+							"Area": "SHAAOS011000",
+							"Contractor": "上海化坚隔热防腐工程有限公司",
+							"Guardian": [
+								{
+									"name": "陈慧(内部)",
+									"oid": 0,
+									"type": "1"
+								},
+								{
+									"name": "褚小东(内部)",
+									"oid": 0,
+									"type": "1"
+								}],
+							"Perlist": [
+								{
+									"name": "沈浩明",
+									"oid": 57127,
+									"type": "2"
+								},
+								{
+									"name": "沈悦峰",
+									"oid": 57126,
+									"type": "2"
+								}
+							]
+						},
+					]
+				}
+			];
+			var orgNameList = list.select((t)=>t.name);
+			var flist = filterArea(res.data,orgNameList); //经过筛选的area
+			initArea(flist,globalConfig.work.load[0]);
+		}
 }
 async function resetAlphaArea()
 {
