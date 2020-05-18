@@ -135,9 +135,8 @@ async function fitContent(info,layerName,layerType)
 			return;
 		}
 	}
-	else if(globalConfig.hidden.type==layerType)
+	else if(globalConfig.hidden.type==type)
 	{
-		debugger
 		 var resData = await getLineChartDataPack();
 		 var pieResData = await getPieChartDataPack();
 			for(var item of resData)
@@ -233,7 +232,8 @@ function layerOpen(info)
 		layerType=globalConfig.danger.type;
 		layerName=globalConfig.danger.name;
 	}
-	if(globalConfig.hidden.load.includes(info.color))
+	if(type==globalConfig.hidden.type)
+	//if(globalConfig.hidden.load.includes(info.color))
 	{
 		layerType=globalConfig.hidden.type;
 		layerName=globalConfig.hidden.name;
@@ -244,7 +244,8 @@ function layerOpen(info)
 		layerName=globalConfig.emer.name;
 		area=['320px', '380px'];
 	}
-	if(globalConfig.work.load.includes(info.color))
+	if(type==globalConfig.work.type)
+	//if(globalConfig.work.load.includes(info.color))
 	{
 		layerType=globalConfig.work.type;
 		layerName=globalConfig.work.name;
@@ -840,8 +841,8 @@ async function resetArea()
 	if(res.data && res.data.length>0)
 	{
 		initArea(res.data,'#FFFF3030');
-		initArea(res.data,globalConfig.hidden.load[0]);
-		initArea(res.data,globalConfig.work.load[0]);
+		//initArea(res.data,globalConfig.hidden.load[0]);
+		//initArea(res.data,globalConfig.work.load[0]);
 	}
 	//resetOtherArea(res);
 }
