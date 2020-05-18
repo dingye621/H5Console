@@ -137,40 +137,9 @@ async function fitContent(info,layerName,layerType)
 	}
 	else if(globalConfig.hidden.type==layerType)
 	{
-		//  var res = await getLineChartData();
-		//  var pieRes = await getPieChartData();
-		//  if(res.data&&res.data.msg=='success')
-		//  {
-		// 	for(var item in res.data.data)
-		// 	{
-		// 		if(item.CldName==info.name){
-		// 			data.equipment=info.name;
-		// 			lineChartData=item;
-		// 			break;
-		// 		}
-		// 	}
-		//  }
-		//  else{
-		// 	 layer.alert('数据加载失败');
-		//  }
-
-		//  if(pieRes.data&&pieRes.data.msg=='success')
-		//  {
-		// 	for(var item in pieRes.data.data)
-		// 	{
-		// 		if(item.CldName==info.name){
-		// 			pieChartData=item;
-		// 			break;
-		// 		}
-		// 	}
-		//  }
-		//  else{
-		// 	 layer.alert('数据加载失败');
-		//  }
 		debugger
 		 var resData = await getLineChartDataPack();
 		 var pieResData = await getPieChartDataPack();
-		 
 			for(var item of resData)
 			{
 				if(item.CldName==info.name){
@@ -179,7 +148,6 @@ async function fitContent(info,layerName,layerType)
 					break;
 				}
 			}
-
 			for(var item of pieResData)
 			{
 				if(item.CldName==info.name){
@@ -187,11 +155,8 @@ async function fitContent(info,layerName,layerType)
 					break;
 				}
 			}
-
 	}
 	else if(globalConfig.risk.type==layerType){
-
-
 	}
 	else if(globalConfig.work.type==layerType){
 		debugger
@@ -277,7 +242,7 @@ function layerOpen(info)
 	{
 		layerType=globalConfig.emer.type;
 		layerName=globalConfig.emer.name;
-		area=['320px', '300px'];
+		area=['320px', '380px'];
 	}
 	if(globalConfig.work.load.includes(info.color))
 	{
@@ -296,7 +261,7 @@ function layerOpen(info)
   		end: function () {
 			tmap.rmFeatureSelsct();
       	}
-	  });
+	});
   	fitContent(info,layerName,layerType);
 }
 
@@ -505,10 +470,19 @@ function getAlphaAreaByType(tp){
 			//alert("加载成功");
 	});
 }
-
+// 根据名称加载AREA
+function getAreaByName(names){
+	var filter = {
+		names:names
+	}
+	tmap.loadPolygonByName(filter,function(e){
+		//if(e == 1)
+			//alert("加载成功");
+		});
+	}
 // 根据坐标和层级加载地图
 function loadMapByLonLatZoom(){
-var lon = 119.02492270,lat = 33.38843574,zoom = 17;// minZoom 15,maxZoom 24
+var lon = 119.02492270,lat = 33.38843574,zoom = 18;// minZoom 15,maxZoom 24
 var ret = tmap.loadMap(lon, lat,zoom,function(e){
 	//  if(e == 1)
 	// alert("加载成功");
@@ -566,6 +540,9 @@ function drawAreaByCoords(a){
 
 $('#reset').click(function(){
 	resetAll();
+});
+$('#resetOther').click(function(){
+	resetOtherArea();
 });
 $('#clear').click(function(){
 	clearPotArea();
@@ -864,91 +841,31 @@ async function resetArea()
 	{
 		initArea(res.data,'#FFFF3030');
 	}
-
-	//reset隐患区域
-	var resLine = await getLineChartData();
-	if(resLine.data && resLine.data.msg=='success')
-	{
-		var list = resLine.data.data;
-		list=[
-			{
-			  "CldCode": "AA0104",
-			  "num": [4,0,0,0],
-			  "month": [1,2,3,4],
-			  "CldName": "发展部",
-			  "ClientDevices": 11065
-			},
-			{
-		 
-			  "CldCode": "AA010701",
-			  "num": [1,2,9,0],
-			  "month": [1,2,3,4],
-			  "CldName": "丙烯酸装置",
-			  "ClientDevices": 11069
-			}
-		  ];
-		var orgNameList = list.select((t)=>t.CldName);
-		var flist = filterArea(res.data,orgNameList); //经过筛选的area
-		console.log('flist',flist);
-		initArea(flist,globalConfig.hidden.load[0]);
-	}
-
-	//reset工作许可区域
-	var resPermit = await getPermit();
-	if(resPermit.data && resPermit.data.msg=='success')
-		{
-			var list = resPermit.data.data;
-			// list=[
-			// 	{
-			// 		"code": "SHAAOS011000",
-			// 		"name": "一期丙烯酸单元一楼",
-			// 		"data": [
-			// 			{
-			// 				"JobLeaderx": "沈悦峰",
-			// 				"AllGuardian": "",
-			// 				"count": 2,
-			// 				"Timeend": "2020-05-30",
-			// 				"Operation": "高处作业(III级)",
-			// 				"Timestrat": "2020-04-25",
-			// 				"Name": "丙烯酸一期A01单元检修",
-			// 				"AreaName": "一期丙烯酸单元一楼",
-			// 				"Area": "SHAAOS011000",
-			// 				"Contractor": "上海化坚隔热防腐工程有限公司",
-			// 				"Guardian": [
-			// 					{
-			// 						"name": "陈慧(内部)",
-			// 						"oid": 0,
-			// 						"type": "1"
-			// 					},
-			// 					{
-			// 						"name": "褚小东(内部)",
-			// 						"oid": 0,
-			// 						"type": "1"
-			// 					}],
-			// 				"Perlist": [
-			// 					{
-			// 						"name": "沈浩明",
-			// 						"oid": 57127,
-			// 						"type": "2"
-			// 					},
-			// 					{
-			// 						"name": "沈悦峰",
-			// 						"oid": 57126,
-			// 						"type": "2"
-			// 					}
-			// 				]
-			// 			},
-			// 		]
-			// 	}
-			// ];
-			var orgNameList = list.select((t)=>t.name);
-			var flist = filterArea(res.data,orgNameList); //经过筛选的area
-			initArea(flist,globalConfig.work.load[0]);
-		}
+	resetOtherArea(res);
 }
 async function resetAlphaArea()
 {
 
+}
+
+async function resetOtherArea(res)
+{
+//reset隐患区域
+var resLine = await getLineChartDataPack();
+var orgNameList = resLine.select((t)=>t.CldName);
+var flist = filterArea(res.data,orgNameList); //经过筛选的area
+console.log('flist',flist);
+initArea(flist,globalConfig.hidden.load[0]);
+
+//reset工作许可区域
+var resPermit = await getPermit();
+if(resPermit.data && resPermit.data.msg=='success')
+{
+	var list = resPermit.data.data;
+	var orgNameList2 = list.select((t)=>t.name);
+	var flist2 = filterArea(res.data,orgNameList2); //经过筛选的area
+	initArea(flist2,globalConfig.work.load[0]);
+}
 }
 
 function getPOIByClickReal(){
@@ -980,7 +897,7 @@ function getAreasByClickReal(){
 }
 
 //根据参数加载点位
-function loadPointByParams()
+async function loadPointByParams()
 {
 	$('.layer-select li').hide();
 	$('#layer-select').hide();
@@ -998,7 +915,12 @@ function loadPointByParams()
 	}
 	else if(type == globalConfig.hidden.type)
 	{
-		getAreaByType(globalConfig.hidden.load);
+		var rr = await getLineChartDataPack();
+		debugger
+		var names = rr.select((t)=>t.CldName);
+		debugger
+		getAreaByName(names);
+		//getAreaByType(globalConfig.hidden.load);
 	}
 	else if(type == globalConfig.risk.type)
 	{

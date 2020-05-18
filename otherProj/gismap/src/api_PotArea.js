@@ -61,6 +61,28 @@ function addConfigAreaPage(info){
 			},
 		});
 	}
+	// 查询所有记录
+	function getConfigPotArea(type,filter){
+		var data = [];
+		$.ajax({
+			url: wfsUrl,
+			data: {
+				service: 'WFS',
+				version: '1.1.0',
+				request: 'GetFeature',
+				typename: DBs + ':' + type,
+				outputFormat: 'application/json',
+				cql_filter: filter
+			},
+			type: 'GET',
+			dataType: 'json',	
+			async: false,
+			success: function(response){
+				data = new ol.format.GeoJSON().readFeatures(response);					
+			}
+		});
+		return data
+	}
 
 	// 判断点是否重复
 	function checkConfigPot(filter){

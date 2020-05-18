@@ -455,6 +455,20 @@ var Mote = (function()
 		   loadConfigPotArea(dbtype_pot,cqlFilter);//加载点的图层
 			callback && callback(1);
 	 }
+	 Map.prototype.loadPointByName = function(info,callback){
+		 var cqlFilter = 'place_id=' + this.placeId;
+		 if(info.names){
+			 cqlFilter = cqlFilter + ' and name in ('
+			 for(var i=0;i<info.names.length;i++){
+				 cqlFilter = cqlFilter + '\'' + str2Unicode( info.names[i]) + '\',';
+			 }
+			 cqlFilter = cqlFilter + '\'\')';
+			 loadConfigPotArea(dbtype_pot,cqlFilter);//加载点的图层
+			 callback && callback(1);
+		 }else{
+			 callback && callback(0);
+		 }
+	 }
 	 Map.prototype.loadPolygon = function(callback){
 		 var cqlFilter = 'place_id=' + this.placeId;
 		 loadConfigPotArea(dbtype_area,cqlFilter);//加载面的图层
@@ -474,6 +488,20 @@ var Mote = (function()
 		loadConfigPotArea(dbtype_area,cqlFilter);//加载面的图层
 		 callback && callback(1);
 	 }
+	 Map.prototype.loadPolygonByName = function(info,callback){
+		  var cqlFilter = 'place_id=' + this.placeId;
+		 if(info.names){
+			 cqlFilter = cqlFilter + ' and name in ('
+			 for(var i=0;i<info.names.length;i++){
+				 cqlFilter = cqlFilter + '\'' + str2Unicode(info.names[i]) + '\',';
+			 }
+			 cqlFilter = cqlFilter + '\'\')';
+			 loadConfigPotArea(dbtype_area,cqlFilter);//加载面的图层
+			 callback && callback(1);
+		 }else{
+			callback && callback(0);
+		 }
+	 }
 	 Map.prototype.loadAlphaPolygon = function(callback){
 		 var cqlFilter = 'place_id=' + this.placeId;
 		 loadConfigPotArea(dbtype_alphaArea,cqlFilter);//加载面的图层
@@ -492,6 +520,20 @@ var Mote = (function()
 		 }
 		 loadConfigPotArea(dbtype_alphaArea,cqlFilter);//加载透明框的图层
 		 callback && callback(1);
+	 }
+	 Map.prototype.loadAlphaPolygonByName = function(info,callback){
+		 var cqlFilter = 'place_id=' + this.placeId;
+		 if(info.names){
+			 cqlFilter = cqlFilter + ' and name in ('
+			 for(var i=0;i<info.names.length;i++){
+				 cqlFilter = cqlFilter + '\'' + str2Unicode(info.names[i]) + '\',';
+			 }
+			 cqlFilter = cqlFilter + '\'\')';
+			 loadConfigPotArea(dbtype_alphaArea,cqlFilter);//加载透明框的图层
+			 callback && callback(1);
+		 }else{
+			 callback && callback(0);
+		 }
 	 }
 	 Map.prototype.rmPoint = function(callback){
 		configPotSource.clear();
@@ -518,6 +560,27 @@ var Mote = (function()
 			});
 		}
 	 }
+	 Map.prototype.clearPotByType = function(info,callback){ //TODO
+		var cqlFilter = 'place_id=' + this.placeId;
+		 if(info.types){
+			 cqlFilter = cqlFilter + ' and icon in ('
+			 for(var i=0;i<info.types.length;i++){
+				 cqlFilter = cqlFilter + info.types[i] + ',';
+			 }
+			 cqlFilter = cqlFilter + '\'\')';
+		 }
+		 var features = getConfigPotArea(dbtype_pot,cqlFilter);//加载点的图层
+		if(features.length){
+			self.saveFuature(features, dbtype_pot,'remove',function(e){
+				if (e == 4 ){
+					callback && callback(1);
+					self.loadPoint();
+				}else{
+					callback && callback(-1);
+				}
+			});
+		}
+	 }
 	 Map.prototype.clearArea = function(callback){ 
 		var features = configAreaSource.getFeatures();
 		if(features.length){
@@ -531,8 +594,50 @@ var Mote = (function()
 			});
 		}
 	 }
+	 Map.prototype.clearAreaByType = function(callback){ 
+		 var cqlFilter = 'place_id=' + this.placeId;
+		 if(info.types){
+			 cqlFilter = cqlFilter + ' and color in ('
+			 for(var i=0;i<info.types.length;i++){
+				 cqlFilter = cqlFilter + '\'' + info.types[i] + '\',';
+			 }
+			 cqlFilter = cqlFilter + '\'\')';
+		 }
+		var features = getConfigPotArea(dbtype_area,cqlFilter);
+		if(features.length){
+			self.saveFuature(features, dbtype_area,'remove',function(e){
+				if (e == 4 ){
+					callback && callback(1);
+					self.loadPolygon();
+				}else{
+					callback && callback(-1);
+				}
+			});
+		}
+	 }
 	 Map.prototype.clearAlphaArea = function(callback){ 
 		var features = configAlphaAreaSource.getFeatures();
+		if(features.length){
+			self.saveFuature(features, dbtype_alphaArea,'remove',function(e){
+				if (e == 4 ){
+					callback && callback(1);
+					self.loadAlphaPolygon();
+				}else{
+					callback && callback(-1);
+				}
+			});
+		}
+	 }
+	 Map.prototype.clearAlphaAreaByType = function(callback){ 
+		 var cqlFilter = 'place_id=' + this.placeId;
+		 if(info.types){
+			 cqlFilter = cqlFilter + ' and border_color in ('
+			 for(var i=0;i<info.types.length;i++){
+				 cqlFilter = cqlFilter + '\'' + info.types[i] + '\',';
+			 }
+			 cqlFilter = cqlFilter + '\'\')';
+		 }
+		 var features = getConfigPotArea(dbtype_alphaArea,cqlFilter);
 		if(features.length){
 			self.saveFuature(features, dbtype_alphaArea,'remove',function(e){
 				if (e == 4 ){

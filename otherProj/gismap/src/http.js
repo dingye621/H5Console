@@ -90,27 +90,27 @@ async function getPermit()
 async function getLineChartDataPack()
 {
      //模拟数据
-     return [
-        {
-          "CldCode": "AA0104",
-          "num": [4,0,0,0],
-          "month": [1,2,3,4],
-          "CldName": "装卸区域",
-          "ClientDevices": 11065
-        },
-        {
+    //  return [
+    //     {
+    //       "CldCode": "AA0104",
+    //       "num": [4,0,0,0],
+    //       "month": [1,2,3,4],
+    //       "CldName": "装卸区域",
+    //       "ClientDevices": 11065
+    //     },
+    //     {
      
-          "CldCode": "AA010701",
-          "num": [1,2,9,0],
-          "month": [1,2,3,4],
-          "CldName": "地磅",
-          "ClientDevices": 11069
-        }
-      ];
-    var res = await getLineChartDataPack();
+    //       "CldCode": "AA010701",
+    //       "num": [1,2,9,0],
+    //       "month": [1,2,3,4],
+    //       "CldName": "地磅",
+    //       "ClientDevices": 11069
+    //     }
+    //   ];
+    var res = await getLineChartData();
     if(res.data.msg=='success')
     {
-        return res.data.data;
+        return JSON.parse(res.data.data);
     }
     layer.alert('数据请求失败');
     return [];
@@ -118,72 +118,82 @@ async function getLineChartDataPack()
 
 async function getPieChartDataPack()
 {
-    //模拟数据
-    return [
-        {
-          "CldName": "装卸区域",
-          "ClientDevices": 11065,
-          "CldCode": "AA0104",
-          "pif": [
-            {
-              "PitfallName": "相关方作业",
-              "PitfallTypex": 14288,
-              "cn": 4
-            }
-          ]
-        },
-        {
-          "CldName": "地磅",
-          "ClientDevices": 11069,
-          "CldCode": "AA010701",
-          "pif": [
-            {
-              "PitfallName": "资质证照",
-              "PitfallTypex": 14197,
-              "cn": 2
-            },
-            {
-              "PitfallName": "安全规章制度",
-              "PitfallTypex": 14205,
-              "cn": 1
-            },
-            {
-              "PitfallName": "安全培训教育",
-              "PitfallTypex": 14211,
-              "cn": 1
-            },
-            {
-              "PitfallName": "相关方管理",
-              "PitfallTypex": 14220,
-              "cn": 2
-            },
-            {
-              "PitfallName": "重大危险源管理",
-              "PitfallTypex": 14225,
-              "cn": 2
-            },
-            {
-              "PitfallName": "个体防护装备",
-              "PitfallTypex": 14230,
-              "cn": 3
-            },
-            {
-              "PitfallName": "职业健康",
-              "PitfallTypex": 14234,
-              "cn": 1
-            }
-          ]
-        }
-      ];
-    var res = await getPieChartDataPack();
+    // //模拟数据
+    // return [
+    //     {
+    //       "CldName": "装卸区域",
+    //       "ClientDevices": 11065,
+    //       "CldCode": "AA0104",
+    //       "pif": [
+    //         {
+    //           "PitfallName": "相关方作业",
+    //           "PitfallTypex": 14288,
+    //           "cn": 4
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       "CldName": "地磅",
+    //       "ClientDevices": 11069,
+    //       "CldCode": "AA010701",
+    //       "pif": [
+    //         {
+    //           "PitfallName": "资质证照",
+    //           "PitfallTypex": 14197,
+    //           "cn": 2
+    //         },
+    //         {
+    //           "PitfallName": "安全规章制度",
+    //           "PitfallTypex": 14205,
+    //           "cn": 1
+    //         },
+    //         {
+    //           "PitfallName": "安全培训教育",
+    //           "PitfallTypex": 14211,
+    //           "cn": 1
+    //         },
+    //         {
+    //           "PitfallName": "相关方管理",
+    //           "PitfallTypex": 14220,
+    //           "cn": 2
+    //         },
+    //         {
+    //           "PitfallName": "重大危险源管理",
+    //           "PitfallTypex": 14225,
+    //           "cn": 2
+    //         },
+    //         {
+    //           "PitfallName": "个体防护装备",
+    //           "PitfallTypex": 14230,
+    //           "cn": 3
+    //         },
+    //         {
+    //           "PitfallName": "职业健康",
+    //           "PitfallTypex": 14234,
+    //           "cn": 1
+    //         }
+    //       ]
+    //     }
+    //   ];
+    var res = await getPieChartData();
+    if(res.data.msg=='success')
+    {
+        return JSON.parse(res.data.data);
+    }
+    layer.alert('数据请求失败');
+    return [];
+}
+
+async function getPermitPack()
+{
+    var res = await getPieChartData();
     if(res.data.msg=='success')
     {
         return res.data.data;
     }
     layer.alert('数据请求失败');
-    return {};
+    return [];
 }
-
 
 
 
