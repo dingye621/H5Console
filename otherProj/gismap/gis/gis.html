@@ -138,7 +138,7 @@
 								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
 								<tr><td>监测设备点简称：</td><td><%= data.equipment.shortName %></td></tr>
 								<tr><td>区域名称：</td><td><%= data.equipment.org.orgName %></td></tr>
-								<!-- <tr><td>区域类型</td><td><%= data.equipment.shortName %></td></tr> -->
+								<!-- <tr><td>区域类型</td><td><%= data.equipment.org.orgType %></td></tr> -->
 							</table>
 						</div>
 					</div>
@@ -182,7 +182,7 @@
 									<td>品牌：</td><td><%= data.cameraBrand %></td>
 								</tr>
 								<tr><td>型号：</td><td><%= data.cameraType %></td></tr>
-								<tr><td>用途：</td><td>未指定</td></tr>
+								<!-- <tr><td>用途：</td><td>未指定</td></tr> -->
 								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
 							</table>
 						</div>
@@ -279,23 +279,37 @@
 				<div class="tab-content">
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
+							<h4>基础信息</h4>
 							<table class="table table-striped">
 								<tr>
-								<th>区域</th>
-								<th>管理员</th>
-								<th>开始日期</th>
-								<th>截止日期</th>
-								<th>操作</th>
-								<th>作业名称</th>
+									<td>作业名称</td>
+									<td><%= data.Name %></td>
+									<td>操作</td>
+									<td><%= data.Operation %></td>
 								</tr>
-								<%for(var i = 0; i < data.length; i++) {%>
+								<tr>
+									<td>作业区域</td>
+									<td><%= data.AreaName %></td>
+									<td>作业负责人</td>
+									<td><%= data.JobLeaderx %></td>
+								</tr>
+								<tr>
+									<td>开始时间</td>
+									<td><%= data.Timestrat %></td>
+									<td>结束时间</td>
+									<td><%= data.Timeend %></td>
+								</tr>
+							</table>
+							<h4>人员清单</h4>
+							<table class="table table-striped">
+								<tr>
+								<th>人员ID</th>
+								<th>人员姓名</th>
+								</tr>
+								<%for(var i = 0; i < data.Perlist.length; i++) {%>
 									<tr>
-										<td><%:=data[i].AreaName%></td>
-										<td><%:=data[i].JobLeaderx%></td>
-										<td><%:=data[i].Timestart%></td>
-										<td><%:=data[i].Timeend%></td>
-										<td><%:=data[i].Operation%></td>
-										<td><%:=data[i].Name%></td>
+										<td><%:=data.Perlist[i].oid%></td>
+										<td><%:=data.Perlist[i].name%></td>
 									</tr>
 									<%}%>
 							</table>

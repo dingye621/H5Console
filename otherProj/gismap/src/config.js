@@ -10,7 +10,7 @@
 			danger:{type:2,load:['32'],name:'Danger',code:['32']},//重大危险源监控
 			hidden:{type:3,load:['#FFFF3030'],name:'Hidden'},//隐患排查
 			risk:{type:4,load:['#FFFF3030'],name:'Risk'},//风险分区四色图
-			work:{type:5,load:['#FFFF3030'],name:'Work'},//作业许可
+			work:{type:5,load:['#DC143C30'],name:'Work'},//作业许可
 			emer:{type:6,load:['9'],name:'Emer'},//应急物资
 			position:{type:7,load:['6'],name:'Position'},//重大危险源点位
 			esCode:'ES',//东南角

@@ -83,13 +83,24 @@ async function fitContent(info,layerName,layerType)
 	if(globalConfig.poison.type==layerType)
 	{
 		var res=await getTagInfo(info.remarks);
+		var ares = await getAreas();
 		console.log(res);
 		if(res.data.success&&res.data.data.length>0)
 		{
 			data=res.data.data.length>0?res.data.data[0]:{};
 			if(!data.equipment)
 			{
-				data.equipment={equipmentName:'点位未关联主设备',shortName:'',org:{orgName:'点位未关联区域'}};
+				data.equipment={equipmentName:'点位未关联主设备',shortName:'',org:{orgName:'点位未关联区域',orgType:''}};
+			}
+			else{
+				for(let d of ares.data)
+				{
+					if(d.orgName==data.equipment.org.orgName)
+					{
+						data.equipment.org.orgType=d.typeName;
+						break;
+					}
+				}
 			}
 		}
 		else{
@@ -110,7 +121,7 @@ async function fitContent(info,layerName,layerType)
 			if(data.rtspUrl)
 			{
 				try{playFlvFunc(data.rtspUrl);}catch{
-				layer.alert('视频加载失败');
+					layer.alert('视频加载失败');
 				}
 			}
 			else
@@ -126,11 +137,41 @@ async function fitContent(info,layerName,layerType)
 	}
 	else if(globalConfig.hidden.type==layerType)
 	{
-		 var res = await getLineChartData();
-		 var pieRes = await getPieChartData();
-		 if(res.data&&res.data.msg=='success')
-		 {
-			for(var item in res.data.data)
+		//  var res = await getLineChartData();
+		//  var pieRes = await getPieChartData();
+		//  if(res.data&&res.data.msg=='success')
+		//  {
+		// 	for(var item in res.data.data)
+		// 	{
+		// 		if(item.CldName==info.name){
+		// 			data.equipment=info.name;
+		// 			lineChartData=item;
+		// 			break;
+		// 		}
+		// 	}
+		//  }
+		//  else{
+		// 	 layer.alert('数据加载失败');
+		//  }
+
+		//  if(pieRes.data&&pieRes.data.msg=='success')
+		//  {
+		// 	for(var item in pieRes.data.data)
+		// 	{
+		// 		if(item.CldName==info.name){
+		// 			pieChartData=item;
+		// 			break;
+		// 		}
+		// 	}
+		//  }
+		//  else{
+		// 	 layer.alert('数据加载失败');
+		//  }
+		debugger
+		 var resData = await getLineChartDataPack();
+		 var pieResData = await getPieChartDataPack();
+		 
+			for(var item of resData)
 			{
 				if(item.CldName==info.name){
 					data.equipment=info.name;
@@ -138,46 +179,45 @@ async function fitContent(info,layerName,layerType)
 					break;
 				}
 			}
-		 }
-		 else{
-			 layer.alert('数据加载失败');
-		 }
-		 if(pieRes.data&&pieRes.data.msg=='success')
-		 {
-			for(var item in pieRes.data.data)
+
+			for(var item of pieResData)
 			{
 				if(item.CldName==info.name){
 					pieChartData=item;
 					break;
 				}
 			}
-		 }
-		 else{
-			 layer.alert('数据加载失败');
-		 }	
+
 	}
 	else if(globalConfig.risk.type==layerType){
 
 
 	}
 	else if(globalConfig.work.type==layerType){
-		data=[];
+		debugger
 		var workRes=await getPermit();
 		if(workRes.data && workRes.data.msg=='success')
 		{
-			var ppList=filterWorkList(workRes.data.data);
-			for(let p of ppList)
+			// var ppList=filterWorkList(workRes.data.data);
+			// for(let p of ppList)
+			// {
+			// 	if(p.code==info.remarks)
+			// 	{
+			// 		data.push(p);
+			// 	}
+			// }
+			if(workRes.data.data.length>0&&workRes.data.data[0].data.length>0)
 			{
-				if(p.code==info.remarks)
-				{
-					data.push(p);
-				}
+				data=workRes.data.data[0].data[0];
+			}
+			else{
+				layer.alert('数据为空');
 			}
 		}
 		else{
 			layer.alert('数据加载失败');
 		}
-		data=[{Name:'测试',Id:'2'},{Name:'我的',Id:'5'}];
+		//data=[{Name:'测试',Id:'2'},{Name:'我的',Id:'5'}];
 	}
 	else if(globalConfig.emer.type==layerType){
 		var emerRes=await getEmer();
@@ -204,11 +244,10 @@ async function fitContent(info,layerName,layerType)
 	document.getElementById('templatelist'+layerName).innerHTML = template(template1,{data:data});
 	if(globalConfig.hidden.type==layerType)
 	{
-		var pieRes=await getPieChartData();
-		//if(lineChartData&&pieChartData)
-		//{
+		if(lineChartData&&pieChartData)
+		{
 			initEChart(lineChartData,pieChartData);
-		//}
+		}
 	}
 }
    
@@ -245,13 +284,14 @@ function layerOpen(info)
 		layerType=globalConfig.work.type;
 		layerName=globalConfig.work.name;
 	}
-		
+	
 	layer.open({
 		title:null,
   		type: 1,
   		//skin: 'layui-layer-rim', //加上边框
   		area:area, //宽高
-  		shade: 0,//阴影
+		shade: 0,//阴影
+		//anim:2,
   		content: '<div id="templatelist'+ layerName +'"></div>',
   		end: function () {
 			tmap.rmFeatureSelsct();
@@ -262,13 +302,6 @@ function layerOpen(info)
 
 function initEChart(lineData,pieData)
 {
-	lineData={
-    	"CldCode": "AA0104",
-    	"num": [4,0,0,0],
-    	"month": [1,2,3,4],
-    	"CldName": "发展部",
-    	"ClientDevices": 11065
-	};
 	// 基于准备好的dom，初始化echarts实例
 	var myChart = echarts.init(document.getElementById('main'));
 	//var option=null;
@@ -293,43 +326,6 @@ function initEChart(lineData,pieData)
 	myChart.setOption(option);
 	var myChartYear = echarts.init(document.getElementById('mainYear'));
 	var yearData=[];
-	pieData.pif= [
-		{
-		  "PitfallName": "资质证照",
-		  "PitfallTypex": 14197,
-		  "cn": 2
-		},
-		{
-		  "PitfallName": "安全规章制度",
-		  "PitfallTypex": 14205,
-		  "cn": 1
-		},
-		{
-		  "PitfallName": "安全培训教育",
-		  "PitfallTypex": 14211,
-		  "cn": 1
-		},
-		{
-		  "PitfallName": "相关方管理",
-		  "PitfallTypex": 14220,
-		  "cn": 2
-		},
-		{
-		  "PitfallName": "重大危险源管理",
-		  "PitfallTypex": 14225,
-		  "cn": 2
-		},
-		{
-		  "PitfallName": "个体防护装备",
-		  "PitfallTypex": 14230,
-		  "cn": 3
-		},
-		{
-		  "PitfallName": "职业健康",
-		  "PitfallTypex": 14234,
-		  "cn": 1
-		}
-	  ];
 	for(var item of pieData.pif)
 	{
 		yearData.push({value: item.cn, name: item.PitfallName});
@@ -679,7 +675,7 @@ function filterWorkList(list)
 				code:l.code,
 				JobLeaderx:da.JobLeaderx,
 				Timeend:da.Timeend,
-				Timestart:da.Timestart,
+				Timestrat:da.Timestrat,
 				Operation:da.Operation,
 				AreaName:da.AreaName,
 				Name:da.Name
@@ -714,12 +710,12 @@ function clearPotArea(){
 function resetAll()
 {
 	//清除所有点位
-	//clearPotArea();
+	clearPotArea();
 	resetPOI();
 	resetArea();
 	resetAlphaArea();
-	//getPOIByClickReal();
-	//getAreasByClickReal();
+	getPOIByClickReal();
+	getAreasByClickReal();
 	layer.alert('生成成功');
 }
 async function resetPOI()
@@ -902,49 +898,49 @@ async function resetArea()
 	if(resPermit.data && resPermit.data.msg=='success')
 		{
 			var list = resPermit.data.data;
-			list=[
-				{
-					"code": "SHAAOS011000",
-					"name": "一期丙烯酸单元一楼",
-					"data": [
-						{
-							"JobLeaderx": "沈悦峰",
-							"AllGuardian": "",
-							"count": 2,
-							"Timeend": "2020-05-30",
-							"Operation": "高处作业(III级)",
-							"Timestrat": "2020-04-25",
-							"Name": "丙烯酸一期A01单元检修",
-							"AreaName": "一期丙烯酸单元一楼",
-							"Area": "SHAAOS011000",
-							"Contractor": "上海化坚隔热防腐工程有限公司",
-							"Guardian": [
-								{
-									"name": "陈慧(内部)",
-									"oid": 0,
-									"type": "1"
-								},
-								{
-									"name": "褚小东(内部)",
-									"oid": 0,
-									"type": "1"
-								}],
-							"Perlist": [
-								{
-									"name": "沈浩明",
-									"oid": 57127,
-									"type": "2"
-								},
-								{
-									"name": "沈悦峰",
-									"oid": 57126,
-									"type": "2"
-								}
-							]
-						},
-					]
-				}
-			];
+			// list=[
+			// 	{
+			// 		"code": "SHAAOS011000",
+			// 		"name": "一期丙烯酸单元一楼",
+			// 		"data": [
+			// 			{
+			// 				"JobLeaderx": "沈悦峰",
+			// 				"AllGuardian": "",
+			// 				"count": 2,
+			// 				"Timeend": "2020-05-30",
+			// 				"Operation": "高处作业(III级)",
+			// 				"Timestrat": "2020-04-25",
+			// 				"Name": "丙烯酸一期A01单元检修",
+			// 				"AreaName": "一期丙烯酸单元一楼",
+			// 				"Area": "SHAAOS011000",
+			// 				"Contractor": "上海化坚隔热防腐工程有限公司",
+			// 				"Guardian": [
+			// 					{
+			// 						"name": "陈慧(内部)",
+			// 						"oid": 0,
+			// 						"type": "1"
+			// 					},
+			// 					{
+			// 						"name": "褚小东(内部)",
+			// 						"oid": 0,
+			// 						"type": "1"
+			// 					}],
+			// 				"Perlist": [
+			// 					{
+			// 						"name": "沈浩明",
+			// 						"oid": 57127,
+			// 						"type": "2"
+			// 					},
+			// 					{
+			// 						"name": "沈悦峰",
+			// 						"oid": 57126,
+			// 						"type": "2"
+			// 					}
+			// 				]
+			// 			},
+			// 		]
+			// 	}
+			// ];
 			var orgNameList = list.select((t)=>t.name);
 			var flist = filterArea(res.data,orgNameList); //经过筛选的area
 			initArea(flist,globalConfig.work.load[0]);
