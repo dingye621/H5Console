@@ -186,7 +186,7 @@ async function getPieChartDataPack()
 
 async function getPermitPack()
 {
-    var res = await getPieChartData();
+    var res = await getPermit();
     if(res.data.msg=='success')
     {
         return res.data.data;

@@ -6,7 +6,7 @@ ul{
 /*基础图层*/
 .layui-layer{
     background-color: white;
-    opacity:0.7;
+    opacity:0.9;
     color: black;
     font-size: 16px;
 }

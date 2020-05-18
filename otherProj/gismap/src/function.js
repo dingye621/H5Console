@@ -840,8 +840,10 @@ async function resetArea()
 	if(res.data && res.data.length>0)
 	{
 		initArea(res.data,'#FFFF3030');
+		initArea(res.data,globalConfig.hidden.load[0]);
+		initArea(res.data,globalConfig.work.load[0]);
 	}
-	resetOtherArea(res);
+	//resetOtherArea(res);
 }
 async function resetAlphaArea()
 {
@@ -916,9 +918,7 @@ async function loadPointByParams()
 	else if(type == globalConfig.hidden.type)
 	{
 		var rr = await getLineChartDataPack();
-		debugger
 		var names = rr.select((t)=>t.CldName);
-		debugger
 		getAreaByName(names);
 		//getAreaByType(globalConfig.hidden.load);
 	}
@@ -929,7 +929,11 @@ async function loadPointByParams()
 	}
 	else if(type == globalConfig.work.type)
 	{
-		getAreaByType(globalConfig.work.load);
+		var rw = await getPermitPack();
+		debugger
+		var names = rw.select((t)=>t.name);
+		getAreaByName(names);
+		//getAreaByType(globalConfig.work.load);
 	}
 	else if(type == globalConfig.emer.type)
 	{
@@ -937,10 +941,10 @@ async function loadPointByParams()
 	}
 	else if(type == globalConfig.position.type)
 	{
-		for(let t of globalConfig.position.load) //in 是key  , of 是object
-		{
-			 getPOIByType(t);
-		}
+		// for(let t of globalConfig.position.load) //in 是key  , of 是object
+		// {
+		// 	 getPOIByType(t);
+		// }
 	}
 	else
 	{
