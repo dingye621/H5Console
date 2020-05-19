@@ -1,5 +1,6 @@
 var req = GetRequest();
 var type = req['tp'];  
+var tagName = req['tn'];
 
 
 window.onresize = function () {
@@ -471,6 +472,16 @@ function getAlphaAreaByType(tp){
 			//alert("加载成功");
 	});
 }
+ // 根据名称加载POI
+ function getPOIByName(names){
+	var filter = {
+		names:names
+	};
+	tmap.loadPointByName(filter,function(e){
+		//if(e == 1)
+		//	alert("加载成功");
+		});
+	}
 // 根据名称加载AREA
 function getAreaByName(names){
 	var filter = {
@@ -904,6 +915,13 @@ async function loadPointByParams()
 {
 	$('.layer-select li').hide();
 	$('#layer-select').hide();
+
+if(tagName)
+{
+	//加载单独点位
+	getPOIByName([tagName]);
+	return;
+}
 	if(type == globalConfig.poison.type)
 	{
 		getPOIByType(globalConfig.poison.load); //可传数组也可传单个字符串

@@ -1,7 +1,7 @@
 (function(w){
 	w.globalConfig = {
-			//ip:"192.168.18.12:7000",
-			ip:"localhost:7000",
+			ip:"192.168.18.12:7000",
+			//ip:"localhost:7000",
 			src:"192.168.18.3:8091",
 			//src:"47.103.35.78:8081",
 			cameraDomain:"cam.hse.upneep.com",
