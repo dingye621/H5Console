@@ -1,7 +1,8 @@
 var req = GetRequest();
 var type = req['tp'];  
 var tagName = req['tn'];
-
+var la = req['la']; //纬度
+var lo = req['lo']; //经度
 
 window.onresize = function () {
 	var height =$(window).height();
@@ -402,6 +403,11 @@ function hideLayer(){
 // 	{
 // 	   tmap.rmMouseEvent();
 // 	}
+//控制点位大小
+function setPOIScale(){
+	// 默认scale：0.6
+	tmap.setPotScale(0.4);
+}
 
 // 根据坐标加载地图
 function loadMapByLonLat(){
@@ -494,12 +500,17 @@ function getAreaByName(names){
 	}
 // 根据坐标和层级加载地图
 function loadMapByLonLatZoom(){
-var lon = 119.02492270,lat = 33.38843574,zoom = 18;// minZoom 15,maxZoom 24
-var ret = tmap.loadMap(lon, lat,zoom,function(e){
+	var lon = 119.02492270,lat = 33.38843574,zoom = 18;// minZoom 15,maxZoom 24
+	if(lo&&la)
+	{
+		lon=lo;
+		lat=la;
+	}
+	var ret = tmap.loadMap(lon, lat,zoom,function(e){
 	//  if(e == 1)
 	// alert("加载成功");
-});
-}
+	});
+}	
 loadMapByLonLatZoom();
 // 新增点&保存(输入坐标)
 function drawPotByCoords(i){
@@ -977,5 +988,5 @@ getPOIByClickReal();
 
 getAreasByClickReal();
 
-
+setPOIScale();
 

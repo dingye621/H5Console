@@ -425,7 +425,7 @@ var configPotStyleFun = function(feature) {
 	var featureName = feature.get('name');
 	var featureIcon = feature.get('icon')?feature.get('icon'):null;
 	var imageSrc = featureIcon?IconPath + '/images/pot/' + featureIcon + '.png':IconPath + '/icon/inspection.png';
-	var imageScale = featureIcon?0.6:0.24;
+	var imageScale = featureIcon?configPotLayer.get('styleScale')?configPotLayer.get('styleScale'):0.6:0.24;
 	// 返回数据的style
 	return new ol.style.Style({
 		image: new ol.style.Icon({

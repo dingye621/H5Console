@@ -1,11 +1,12 @@
 (function(w){
 	w.globalConfig = {
-			ip:"192.168.18.12:7000",
-			//ip:"localhost:7000",
+			//ip:"192.168.18.12:7000",
+			ip:"localhost:7000",
 			src:"192.168.18.3:8091",
 			//src:"47.103.35.78:8081",
 			cameraDomain:"cam.hse.upneep.com",
 			hseDomain:'192.168.18.12:8088',
+			alertDomain:'192.168.18.12:8080',
 			poison:{type:1,load:['11','12'],name:'Poison',code:['K03','K02']},//可燃(load[0])有毒(load[1])
 			danger:{type:2,load:['31'],name:'Danger',code:['31']},//重大危险源监控
 			hidden:{type:3,load:['#DC143C30'],name:'Hidden'},//隐患排查 红色

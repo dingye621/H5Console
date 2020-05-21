@@ -667,6 +667,11 @@ var Mote = (function()
 	 Map.prototype.getAlphaAreaVisible = function(){ 
 		 return configAlphaAreaLayer.getVisible()
 	 }
+	 Map.prototype.setPotScale = function(scale){ 
+		 configPotLayer.set('styleScale',scale);
+		 view.setCenter([view.getCenter()[0]-0.000000001,view.getCenter()[1]])
+		 map.updateSize();
+	 }
 	 Map.prototype.getPointByClick = function(callback){
 		    var condition = ol.events.condition.singleClick;
 			this.select = this.selectByInteraction([configPotLayer],condition);
