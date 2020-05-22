@@ -1,0 +1,1156 @@
+ImageRuntimeVersion: v4.0.30319
+Assembly pSpaceCTL.NET64.V4.5, Version=1.0.*, Culture=固定语言(固定国家/地区): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Class pSpaceCTLNET.PropField: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Type DataType 'get ' : 
+    Boolean ReadOnly 'get ' : 
+    System.String PropDesc 'get ' : 
+    System.String PropName 'get ' : 
+    UInt16 PropId 'get ' : 
+  Methods:
+    get_PropId(): PrivateScope, Public, HideBySig, SpecialName
+    get_PropName(): PrivateScope, Public, HideBySig, SpecialName
+    get_PropDesc(): PrivateScope, Public, HideBySig, SpecialName
+    get_ReadOnly(): PrivateScope, Public, HideBySig, SpecialName
+    get_DataType(): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.TagPropFields: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.ObjectModel.ReadOnlyCollection`1[pSpaceCTLNET.PropField]
+  Properties:
+    System.String[] AllKeys 'get ' : 
+  Methods:
+    get_AllKeys(): PrivateScope, Public, HideBySig, SpecialName
+    GetPropField(UInt16): PrivateScope, Public, HideBySig
+    GetPropField(String): PrivateScope, Public, HideBySig
+    Contains(UInt16): PrivateScope, Public, HideBySig
+    Contains(String): PrivateScope, Public, HideBySig
+    GetPropFields(String[]): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.PropFieldsMapping: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(UInt16): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    pSpaceCTLNET.PropField Item [UInt16] 'get ' : 
+    UInt16 MaxPropId 'get ' : 
+    pSpaceCTLNET.PropField[] FieldsArray 'get ' : 
+  Methods:
+    get_FieldsArray(): PrivateScope, Public, HideBySig, SpecialName
+    get_MaxPropId(): PrivateScope, Public, HideBySig, SpecialName
+    Clear(): PrivateScope, Public, HideBySig
+    get_Item(UInt16): PrivateScope, Public, HideBySig, SpecialName
+    CreateMapping(TagPropFields): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.TagType: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  Properties:
+    pSpaceCTLNET.TagPropFields PropFields 'get ' : 
+    System.String TagTypeDesc 'get ' : 
+    System.String TagTypeName 'get ' : 
+    UInt16 TagTypeId 'get ' : 
+  Methods:
+    get_TagTypeId(): PrivateScope, Public, HideBySig, SpecialName
+    get_TagTypeName(): PrivateScope, Public, HideBySig, SpecialName
+    get_TagTypeDesc(): PrivateScope, Public, HideBySig, SpecialName
+    get_PropFields(): PrivateScope, Public, HideBySig, SpecialName
+    op_Equality(TagTypeEnum): PrivateScope, Public, HideBySig, SpecialName
+    op_Inequality(TagTypeEnum): PrivateScope, Public, HideBySig, SpecialName
+    Equals(TagType): PrivateScope, Public, HideBySig
+    GetPropField(String): PrivateScope, Public, HideBySig
+    GetPropField(UInt16): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.TagTypes: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.ObjectModel.ReadOnlyCollection`1[pSpaceCTLNET.TagType]
+  Methods:
+    FindByName(String): PrivateScope, Public, HideBySig
+Struct pSpaceCTLNET.DbError: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
+  :System.ValueType
+    Void .ctor(Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Int32 m_nErrorCode : Public
+  Properties:
+    Boolean HasErrors 'get ' : 
+    System.String ErrorMessage 'get ' : 
+    Int32 ErrorCode 'get set' : 
+  Methods:
+    get_ErrorCode(): PrivateScope, Public, HideBySig, SpecialName
+    set_ErrorCode(Int32): PrivateScope, Public, HideBySig, SpecialName
+    get_ErrorMessage(): PrivateScope, Public, HideBySig, SpecialName
+    get_HasErrors(): PrivateScope, Public, HideBySig, SpecialName
+    BuildMessage(String): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.DbConnector: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    UInt16 RetryTimes 'get set' : 
+    Boolean CanReconnect 'get set' : 
+    UInt16 Handle 'get ' : 
+    Boolean UseProxy 'get set' : 
+    UInt16 ExecuteTimeout 'get set' : 
+    UInt16 TimeOut 'get set' : 
+    System.String Password 'get set' : 
+    System.String UserName 'get set' : 
+    System.String ServerName 'get set' : 
+  Methods:
+    get_ServerName(): PrivateScope, Public, HideBySig, SpecialName
+    set_ServerName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_UserName(): PrivateScope, Public, HideBySig, SpecialName
+    set_UserName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Password(): PrivateScope, Public, HideBySig, SpecialName
+    set_Password(String): PrivateScope, Public, HideBySig, SpecialName
+    get_TimeOut(): PrivateScope, Public, HideBySig, SpecialName
+    set_TimeOut(UInt16): PrivateScope, Public, HideBySig, SpecialName
+    get_ExecuteTimeout(): PrivateScope, Public, HideBySig, SpecialName
+    set_ExecuteTimeout(UInt16): PrivateScope, Public, HideBySig, SpecialName
+    get_UseProxy(): PrivateScope, Public, HideBySig, SpecialName
+    set_UseProxy(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_Handle(): PrivateScope, Public, HideBySig, SpecialName
+    get_CanReconnect(): PrivateScope, Public, HideBySig, SpecialName
+    set_CanReconnect(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_RetryTimes(): PrivateScope, Public, HideBySig, SpecialName
+    set_RetryTimes(UInt16): PrivateScope, Public, HideBySig, SpecialName
+    Connect(): PrivateScope, Public, HideBySig
+    Disconnect(): PrivateScope, Public, HideBySig
+    IsConnected(): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.DbManager: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(pSpaceCTLNET.DbConnector): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    pSpaceCTLNET.DbConnector DbAdapter 'get set' : 
+  Methods:
+    get_DbAdapter(): PrivateScope, Public, HideBySig, SpecialName
+    set_DbAdapter(DbConnector): PrivateScope, Public, HideBySig, SpecialName
+    GetServerInfo(): PrivateScope, Public, HideBySig
+    GetConnections(): PrivateScope, Public, HideBySig
+    GetServerTime(): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.DbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Exception
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String ErrorMessage 'get ' : 
+    Int32 ErrorCode 'get ' : 
+  Methods:
+    get_ErrorCode(): PrivateScope, Public, HideBySig, SpecialName
+    get_ErrorMessage(): PrivateScope, Public, HideBySig, SpecialName
+    GetObjectData(SerializationInfo, StreamingContext): PrivateScope, Public, Virtual, HideBySig
+    Dispatch(String, Int32): PrivateScope, Public, Static, HideBySig
+Class pSpaceCTLNET.TagTypeManager: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbManager
+    Void .ctor(pSpaceCTLNET.DbConnector): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    GetTagTypeList(): PrivateScope, Public, HideBySig
+    GetTagTypePropFields(TagType): PrivateScope, Public, HideBySig
+    GetAllPropFields(): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.TagProperties: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.Generic.Dictionary`2[System.String,System.Object]
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Interface pSpaceCTLNET.ITag: AutoLayout, AnsiClass, Class, Public, ClassSemanticsMask, Abstract, BeforeFieldInit
+  Properties:
+    System.Object Item [System.String] 'get set' : 
+    pSpaceCTLNET.TagProperties Properties 'get ' : 
+    System.String TagLongName 'get ' : 
+    pSpaceCTLNET.TagTree TagTree 'get ' : 
+    UInt32 TagId 'get set' : 
+    pSpaceCTLNET.TagDataType DataType 'get set' : 
+    pSpaceCTLNET.TagType TagType 'get ' : 
+    System.String TagName 'get set' : 
+  Methods:
+    get_TagName(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    set_TagName(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    get_TagType(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    get_DataType(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    set_DataType(TagDataType): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    get_TagId(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    set_TagId(UInt32): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    get_TagTree(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    get_TagLongName(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    get_Properties(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    get_Item(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    set_Item(String, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract, SpecialName
+    Construct(TagTree, String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    Validate(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    Update(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    Create(): PrivateScope, Public, Static, HideBySig
+Class pSpaceCTLNET.VarObject: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    GetDataTypeId(Type): PrivateScope, Public, Static, HideBySig
+    GetTypeById(UInt32): PrivateScope, Public, Static, HideBySig
+    GetVariantType(__PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    ToObject(__PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    BooleanToVARIANT(ValueType Boolean IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    CharToVARIANT(ValueType Char IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    ByteToVARIANT(ValueType Byte IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    Int16ToVARIANT(ValueType Int16 IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    UInt16ToVARIANT(ValueType UInt16 IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    Int32ToVARIANT(ValueType Int32 IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    UInt32ToVARIANT(ValueType UInt32 IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    Int64ToVARIANT(ValueType Int64 IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    UInt64ToVARIANT(ValueType UInt64 IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    SingleToVARIANT(ValueType Single IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    DoubleToVARIANT(ValueType Double IsBoxed, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    DateTimeToPS_TIME(DateTime, __PS_TIME* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    PS_TIMEToDateTime(__PS_TIME* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    TimeSpanToPS_TIME(TimeSpan, __PS_TIME* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    DateTimeToVARIANT(DateTime, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    StringToVARIANT(String, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    WStringToVARIANT(String, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    BlobToVARIANT(Byte[], __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+    ToVARIANT(Object, __PS_VARIANT* IsImplicitlyDereferenced): PrivateScope, Public, Static, HideBySig
+Class pSpaceCTLNET.TagTypeSystem: AutoLayout, AnsiClass, Class, Public
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    pSpaceCTLNET.PropField[] BasePropFields 'get ' : 
+    pSpaceCTLNET.TagPropFields AllPropFields 'get ' : 
+    pSpaceCTLNET.TagTypes AllTagTypes 'get ' : 
+  Methods:
+    get_AllTagTypes(): PrivateScope, Public, Static, HideBySig, SpecialName
+    get_AllPropFields(): PrivateScope, Public, Static, HideBySig, SpecialName
+    get_BasePropFields(): PrivateScope, Public, Static, HideBySig, SpecialName
+    Initialize(DbConnector): PrivateScope, Public, Static, HideBySig
+    Initialize(DbConnector, Boolean(HasFieldMarshal)): PrivateScope, Public, Static, HideBySig
+    GetTagType(String): PrivateScope, Public, Static, HideBySig
+    GetTagType(UInt16): PrivateScope, Public, Static, HideBySig
+Class pSpaceCTLNET.TagTree: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  Properties:
+    pSpaceCTLNET.DbConnector DbAdapter 'get set' : 
+  Methods:
+    get_DbAdapter(): PrivateScope, Public, HideBySig, SpecialName
+    set_DbAdapter(DbConnector): PrivateScope, Public, HideBySig, SpecialName
+    CreateInstance(DbConnector): PrivateScope, Public, Static, HideBySig
+    CreateTag(String, TagType): PrivateScope, Public, HideBySig
+    CreateTag(String): PrivateScope, Public, HideBySig
+    GetMgr(): PrivateScope, Public, HideBySig
+    GetTreeRoot(): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.TagVector: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.Generic.List`1[pSpaceCTLNET.ITag]
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.TagNode: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    pSpaceCTLNET.ITag
+  Properties:
+    System.Object Item [System.String] 'get set' : 
+    System.String TagLongName 'get ' : 
+    UInt32 TagId 'get set' : 
+    pSpaceCTLNET.TagDataType DataType 'get set' : 
+    pSpaceCTLNET.TagTree TagTree 'get ' : 
+    pSpaceCTLNET.TagProperties Properties 'get ' : 
+    pSpaceCTLNET.TagType TagType 'get ' : 
+    System.String TagName 'get set' : 
+  Methods:
+    Construct(TagTree, String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    get_TagName(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_TagName(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_TagType(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Properties(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_TagTree(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_DataType(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_DataType(TagDataType): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_TagId(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_TagId(UInt32): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_TagLongName(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    get_Item(String): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    set_Item(String, Object): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, SpecialName
+    Validate(String[]): PrivateScope, Public, HideBySig
+    Validate(IEnumerable`1): PrivateScope, Public, HideBySig
+    Validate(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    Update(String[]): PrivateScope, Public, HideBySig
+    Update(IEnumerable`1): PrivateScope, Public, HideBySig
+    Update(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask
+    AppendChild(ITag): PrivateScope, Public, HideBySig
+    RemoveTag(ITag): PrivateScope, Public, HideBySig
+    GetSubTags(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+    GetSubTags(String[], Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+    GetSubTags(IEnumerable`1, Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+    SelectSingleNode(String): PrivateScope, Public, HideBySig
+    SelectNodes(String): PrivateScope, Public, HideBySig
+    SelectNodes(String, UInt32, UInt32, Boolean(HasFieldMarshal), Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+Interface pSpaceCTLNET.ITagElement: AutoLayout, AnsiClass, Class, Public, ClassSemanticsMask, Abstract, BeforeFieldInit
+  Interfaces:
+    pSpaceCTLNET.ITag
+Class pSpaceCTLNET.AnalogTagElement: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.TagNode
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    pSpaceCTLNET.ITagElement
+  Methods:
+    Construct(TagTree, String): PrivateScope, Public, Virtual, HideBySig
+Struct pSpaceCTLNET.DbServerStatus: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.DbServerStatus Stopped = 0 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbServerStatus Busy = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbServerStatus Running = 2 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbServerStatus InnerError = 3 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbServerStatus NetError = 4 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbServerStatus Stopping = 5 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbServerStatus StatusMax = 6 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.DbAccessEnum: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.DbAccessEnum None = 0 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ReadServer = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ManageServer = 2 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ReadUser = 4 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ManageUser = 8 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ReadTag = 16 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ManageTag = 32 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ReadData = 64 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum WriteData = 128 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ReadHistory = 256 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ManageHistory = 512 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ReadEvent = 1024 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum WriteEvent = 2048 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ManageEvent = 4096 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum SetTime = 8192 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum ReadAlarm = 16384 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum WriteAlarm = 32768 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum AckAlarm = 65536 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAccessEnum All = 4294967295 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.TagTypeEnum: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt16 value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.TagTypeEnum NodeType = 0 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagTypeEnum DigitalType = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagTypeEnum AnalogType = 2 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagTypeEnum StringType = 3 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.TagDataType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    Byte value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.TagDataType DT_Empty = 0 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_Bool = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_Int8 = 2 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_UInt8 = 3 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_Int16 = 4 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_UInt16 = 5 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_Int32 = 6 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_UInt32 = 7 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_Int64 = 8 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_UInt64 = 9 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_Float = 10 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_Double = 11 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_Time = 12 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_String = 13 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_WString = 14 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagDataType DT_Blob = 15 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.DataField: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    Byte value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.DataField Value = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DataField Time = 2 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DataField Quality = 4 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DataField All = 7 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.QUALITY_MASK: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.QUALITY_MASK MASK = 192 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK BAD = 0 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK UNCERTAIN = 64 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK NA = 128 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK GOOD = 192 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK SUBSTATUS_MASK = 252 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK CONFIG_ERROR = 4 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK NOT_CONNECTED = 8 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK DEVICE_FAILURE = 12 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK SENSOR_FAILURE = 16 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK LAST_KNOWN = 20 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK COMM_FAILURE = 24 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK OUT_OF_SERVICE = 28 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK WAITING_FOR_INITIAL_DATA = 32 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK LAST_USABLE = 68 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK SENSOR_CAL = 80 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK EGU_EXCEEDED = 84 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK SUB_NORMAL = 88 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK LOCAL_OVERRIDE = 216 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK LL_MASK = 3 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK EXTRADATA = 65536 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK INTERPOLATED = 131072 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK RAW = 262144 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK CALCULATED = 524288 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK NOBOUND = 1048576 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK NODATA = 2097152 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK DATALOST = 4194304 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK CONVERSION = 8388608 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.QUALITY_MASK PARTIAL = 16777216 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.AggregateEnum: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.AggregateEnum NOAGGREGATE = 0 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum INTERPOLATIVE = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum TOTAL = 2 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum TOTALIZEAVERAGE = 3 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum AVERAGE = 4 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum TIMEAVERAGE = 5 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum COUNT = 6 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum STDEV = 7 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum MINIMUMACTUALTIME = 8 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum MINIMUM = 9 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum MAXIMUMACTUALTIME = 10 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum MAXIMUM = 11 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum START = 12 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum END = 13 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum DELTA = 14 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum REGSLOPE = 15 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum REGCONST = 16 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum REGDEV = 17 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum VARIANCE = 18 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum RANGE = 19 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum DURATIONGOOD = 20 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum DURATIONBAD = 21 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum PERCENTGOOD = 22 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum PERCENTBAD = 23 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.AggregateEnum WORSTQUALITY = 24 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.TagChangeType: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt16 value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.TagChangeType TagCreated = 0 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagChangeType TagProperiesChange = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagChangeType TagRemoved = 2 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.TagChangeType Initialized = 3 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.DbEventTopicEnum: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.DbEventTopicEnum Application = 0 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventTopicEnum Communication = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventTopicEnum Performance = 2 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventTopicEnum Security = 3 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventTopicEnum Configuration = 4 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventTopicEnum Alarm = 5 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.DbAlarmTopicEnum: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.DbAlarmTopicEnum QualityChanged = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAlarmTopicEnum ValueChanged = 2 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAlarmTopicEnum BeyondHighLimit = 4 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAlarmTopicEnum BeyondHHighLimit = 8 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAlarmTopicEnum BeyondLowLimit = 16 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAlarmTopicEnum BeyondLLowLimit = 32 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAlarmTopicEnum BeyondChangeRate = 64 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAlarmTopicEnum BeyondDev = 128 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.DbEventLevelEnum: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.DbEventLevelEnum Information = 0 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventLevelEnum Notify = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventLevelEnum Warning = 2 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventLevelEnum Alert = 3 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventLevelEnum Error = 4 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventLevelEnum Critical = 5 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbEventLevelEnum Fatal = 6 : Public, Static, Literal, HasDefault
+Struct pSpaceCTLNET.DbAlarmLevelEnum: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    pSpaceCTLNET.DbAlarmLevelEnum LowLevel = 0 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAlarmLevelEnum HighLevel = 1 : Public, Static, Literal, HasDefault
+    pSpaceCTLNET.DbAlarmLevelEnum EmergencyLevel = 2 : Public, Static, Literal, HasDefault
+Class pSpaceCTLNET.AuthorityDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.BatchResults: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(Int32*, UInt32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean HasErrors 'get ' : 
+    pSpaceCTLNET.DbError[] Errors 'get ' : 
+  Methods:
+    get_Errors(): PrivateScope, Public, HideBySig, SpecialName
+    get_HasErrors(): PrivateScope, Public, HideBySig, SpecialName
+    Construct(Int32*, UInt32): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.ISubscriber: AutoLayout, AnsiClass, Class, Public, Abstract, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean Enabled 'get set' : 
+    System.Collections.ObjectModel.ReadOnlyCollection`1[System.UInt32] SubscribeTagIds 'get ' : 
+    UInt32 SubscribeID 'get ' : 
+    pSpaceCTLNET.DbConnector DbAdapter 'get set' : 
+  Methods:
+    get_DbAdapter(): PrivateScope, Public, HideBySig, SpecialName
+    set_DbAdapter(DbConnector): PrivateScope, Public, HideBySig, SpecialName
+    get_SubscribeID(): PrivateScope, Public, HideBySig, SpecialName
+    get_SubscribeTagIds(): PrivateScope, Public, HideBySig, SpecialName
+    get_Enabled(): PrivateScope, Public, HideBySig, SpecialName
+    set_Enabled(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    Create(DbConnector, TagVector): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    Add(TagVector): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    Remove(TagVector): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    RemoveAll(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+    Close(): PrivateScope, Public, Virtual, HideBySig, VtableLayoutMask, Abstract
+Class pSpaceCTLNET.RealHisData: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    pSpaceCTLNET.QUALITY_MASK QualityStamp 'get set' : 
+    System.DateTime TimeStamp 'get set' : 
+    System.Object Value 'get set' : 
+  Methods:
+    get_Value(): PrivateScope, Public, HideBySig, SpecialName
+    set_Value(Object): PrivateScope, Public, HideBySig, SpecialName
+    get_TimeStamp(): PrivateScope, Public, HideBySig, SpecialName
+    set_TimeStamp(DateTime): PrivateScope, Public, HideBySig, SpecialName
+    get_QualityStamp(): PrivateScope, Public, HideBySig, SpecialName
+    set_QualityStamp(QUALITY_MASK): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.TagValue: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.RealHisData
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    UInt32 TagId 'get set' : 
+  Methods:
+    get_TagId(): PrivateScope, Public, HideBySig, SpecialName
+    set_TagId(UInt32): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.RealDataSet: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.Generic.List`1[pSpaceCTLNET.TagValue]
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.TagCallbackDelegate: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, SpecialName, RTSpecialName
+  Methods:
+    Invoke(TagChangeType, UInt32, TagProperties): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    BeginInvoke(TagChangeType, UInt32, TagProperties, AsyncCallback, Object): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+Class pSpaceCTLNET.RealDataCallbackDelegate: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, SpecialName, RTSpecialName
+  Methods:
+    Invoke(RealDataSet): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    BeginInvoke(RealDataSet, AsyncCallback, Object): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+Class pSpaceCTLNET.DbStatusChangedEventHandler: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, SpecialName, RTSpecialName
+  Methods:
+    Invoke(Object, DbServerStatus): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    BeginInvoke(Object, DbServerStatus, AsyncCallback, Object): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+Class pSpaceCTLNET.DbMonitor: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(pSpaceCTLNET.DbConnector): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean Enabled 'get set' : 
+    pSpaceCTLNET.DbConnector DbAdapter 'get set' : 
+  Events:
+    pSpaceCTLNET.DbStatusChangedEventHandler DbStatusChanged: SpecialName
+  Methods:
+    get_DbAdapter(): PrivateScope, Public, HideBySig, SpecialName
+    set_DbAdapter(DbConnector): PrivateScope, Public, HideBySig, SpecialName
+    get_Enabled(): PrivateScope, Public, HideBySig, SpecialName
+    set_Enabled(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    add_DbStatusChanged(DbStatusChangedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_DbStatusChanged(DbStatusChangedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    Reset(): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.CommonDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.ConnectDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.ConnectionInfo: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String UserName 'get ' : 
+    System.String ClientAppName 'get ' : 
+    System.String ClientComputer 'get ' : 
+    UInt16 ExecuteTimeout 'get ' : 
+    UInt16 ConnectTimeout 'get ' : 
+    UInt16 UserId 'get ' : 
+    UInt16 ClientHandle 'get ' : 
+  Methods:
+    get_ClientHandle(): PrivateScope, Public, HideBySig, SpecialName
+    get_UserId(): PrivateScope, Public, HideBySig, SpecialName
+    get_ConnectTimeout(): PrivateScope, Public, HideBySig, SpecialName
+    get_ExecuteTimeout(): PrivateScope, Public, HideBySig, SpecialName
+    get_ClientComputer(): PrivateScope, Public, HideBySig, SpecialName
+    get_ClientAppName(): PrivateScope, Public, HideBySig, SpecialName
+    get_UserName(): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.DataIO: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Snapshot(DbConnector, ITagElement): PrivateScope, Public, Static, HideBySig
+    Snapshot(DbConnector, TagVector, RealDataSet): PrivateScope, Public, Static, HideBySig
+    Append(DbConnector, RealDataSet, DataField): PrivateScope, Public, Static, HideBySig
+    Insert(DbConnector, RealDataSet, DataField): PrivateScope, Public, Static, HideBySig
+    InsertReplace(DbConnector, RealDataSet, DataField): PrivateScope, Public, Static, HideBySig
+    Replace(DbConnector, RealDataSet, DataField): PrivateScope, Public, Static, HideBySig
+    DeleteRaw(DbConnector, TagVector, DateTime, DateTime): PrivateScope, Public, Static, HideBySig
+    DeleteAtTime(DbConnector, TagVector, DateTime): PrivateScope, Public, Static, HideBySig
+    ReadRaw(DbConnector, TagVector, DateTime, DateTime, HisDataSet): PrivateScope, Public, Static, HideBySig
+    ReadRaw(DbConnector, TagVector, DateTime, DateTime, HisDataSet, UInt32, Boolean(HasFieldMarshal)): PrivateScope, Public, Static, HideBySig
+    ReadAtTime(DbConnector, TagVector, DateTime[], HisDataSet): PrivateScope, Public, Static, HideBySig
+    ReadProcessed(DbConnector, TagVector, DateTime, DateTime, TimeSpan, AggregateEnum, HisDataSet): PrivateScope, Public, Static, HideBySig
+Class pSpaceCTLNET.TagHisValues: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Collections.ObjectModel.Collection`1[pSpaceCTLNET.RealHisData] Data 'get ' : 
+    UInt32 TagId 'get set' : 
+  Methods:
+    get_TagId(): PrivateScope, Public, HideBySig, SpecialName
+    set_TagId(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_Data(): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.HisDataSet: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.ObjectModel.Collection`1[pSpaceCTLNET.TagHisValues]
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Struct pSpaceCTLNET._DataList: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
+  :System.ValueType
+Class pSpaceCTLNET.DbAlarmFilter: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean bIsQueryOneLevel 'get set' : 
+    Boolean bAlarmContent 'get set' : 
+    Boolean bAlarmHighLevel 'get set' : 
+    Boolean bAlarmLowLevel 'get set' : 
+    Boolean bAlarmAckedId 'get set' : 
+    Boolean bAlarmHaveAcked 'get set' : 
+    Boolean bAlarmTopic 'get set' : 
+    Boolean bUserID 'get set' : 
+    Boolean bTagId 'get set' : 
+    Boolean bAlarmId 'get set' : 
+    Boolean bAll 'get set' : 
+    Boolean IsQueryOneLevel 'get set' : 
+    System.String AlarmContent 'get set' : 
+    Byte AlarmHighLevel 'get set' : 
+    Byte AlarmLowLevel 'get set' : 
+    UInt16 AlarmAckedId 'get set' : 
+    Boolean AlarmHaveAcked 'get set' : 
+    pSpaceCTLNET.DbAlarmTopicEnum AlarmTopic 'get set' : 
+    UInt16 UserID 'get set' : 
+    UInt32 TagId 'get set' : 
+    UInt32 AlarmId 'get set' : 
+  Methods:
+    get_AlarmId(): PrivateScope, Public, HideBySig, SpecialName
+    set_AlarmId(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_TagId(): PrivateScope, Public, HideBySig, SpecialName
+    set_TagId(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_UserID(): PrivateScope, Public, HideBySig, SpecialName
+    set_UserID(UInt16): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmTopic(): PrivateScope, Public, HideBySig, SpecialName
+    set_AlarmTopic(DbAlarmTopicEnum): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmHaveAcked(): PrivateScope, Public, HideBySig, SpecialName
+    set_AlarmHaveAcked(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmAckedId(): PrivateScope, Public, HideBySig, SpecialName
+    set_AlarmAckedId(UInt16): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmLowLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_AlarmLowLevel(Byte): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmHighLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_AlarmHighLevel(Byte): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmContent(): PrivateScope, Public, HideBySig, SpecialName
+    set_AlarmContent(String): PrivateScope, Public, HideBySig, SpecialName
+    get_IsQueryOneLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_IsQueryOneLevel(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bAll(): PrivateScope, Public, HideBySig, SpecialName
+    set_bAll(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bAlarmId(): PrivateScope, Public, HideBySig, SpecialName
+    set_bAlarmId(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bTagId(): PrivateScope, Public, HideBySig, SpecialName
+    set_bTagId(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bUserID(): PrivateScope, Public, HideBySig, SpecialName
+    set_bUserID(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bAlarmTopic(): PrivateScope, Public, HideBySig, SpecialName
+    set_bAlarmTopic(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bAlarmHaveAcked(): PrivateScope, Public, HideBySig, SpecialName
+    set_bAlarmHaveAcked(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bAlarmAckedId(): PrivateScope, Public, HideBySig, SpecialName
+    set_bAlarmAckedId(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bAlarmLowLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_bAlarmLowLevel(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bAlarmHighLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_bAlarmHighLevel(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bAlarmContent(): PrivateScope, Public, HideBySig, SpecialName
+    set_bAlarmContent(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_bIsQueryOneLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_bIsQueryOneLevel(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    ClearFilter(): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.AlarmData: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.DateTime AlarmAckedTime 'get ' : 
+    UInt16 AlarmAckedId 'get ' : 
+    System.DateTime AlarmEndTime 'get ' : 
+    Byte AlarmHaveAcked 'get ' : 
+    Byte AlarmNeedAck 'get ' : 
+    pSpaceCTLNET.DbAlarmTopicEnum AlarmTopic 'get ' : 
+    System.DateTime AlarmStartTime 'get ' : 
+    System.String AlarmAckUserName 'get ' : 
+    System.String AlarmValue 'get ' : 
+    System.String AlarmContent 'get ' : 
+    pSpaceCTLNET.DbAlarmLevelEnum AlarmLevel 'get ' : 
+    UInt16 AlarmAppType 'get ' : 
+    UInt16 UserId 'get ' : 
+    UInt32 TagId 'get ' : 
+    UInt32 AlarmId 'get ' : 
+  Methods:
+    get_AlarmId(): PrivateScope, Public, HideBySig, SpecialName
+    get_TagId(): PrivateScope, Public, HideBySig, SpecialName
+    get_UserId(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmAppType(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmLevel(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmContent(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmValue(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmAckUserName(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmStartTime(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmTopic(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmNeedAck(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmHaveAcked(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmEndTime(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmAckedId(): PrivateScope, Public, HideBySig, SpecialName
+    get_AlarmAckedTime(): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.AlarmDataSet: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.ObjectModel.Collection`1[pSpaceCTLNET.AlarmData]
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.AlarmIDSet: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.Generic.List`1[System.UInt32]
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.DbAlarmIO: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    Alarm_Real_Query(DbConnector, DbAlarmFilter, AlarmDataSet): PrivateScope, Public, HideBySig
+    Alarm_His_Query(DbConnector, DbAlarmFilter, DateTime, DateTime, AlarmDataSet): PrivateScope, Public, HideBySig
+    Alarm_Ack(DbConnector, UInt16, String, DateTime, AlarmIDSet): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.DbConnections: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.ObjectModel.ReadOnlyCollection`1[pSpaceCTLNET.ConnectionInfo]
+    Void .ctor(System.Collections.Generic.List`1[pSpaceCTLNET.ConnectionInfo]): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.DbEventFilter: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Boolean QueryDescription 'get set' : 
+    Boolean QueryHighLevel 'get set' : 
+    Boolean QueryLowLevel 'get set' : 
+    Boolean QueryEventTopic 'get set' : 
+    Boolean QueryEndTime 'get set' : 
+    Boolean QueryStartTime 'get set' : 
+    Boolean QueryUserId 'get set' : 
+    Boolean QueryTagId 'get set' : 
+    Boolean QueryEventId 'get set' : 
+    System.String Description 'get set' : 
+    pSpaceCTLNET.DbEventLevelEnum HighLevel 'get set' : 
+    pSpaceCTLNET.DbEventLevelEnum LowLevel 'get set' : 
+    pSpaceCTLNET.DbEventTopicEnum EventTopic 'get set' : 
+    System.DateTime EndTime 'get set' : 
+    System.DateTime StartTime 'get set' : 
+    UInt16 UserId 'get set' : 
+    UInt32 TagId 'get set' : 
+    UInt32 EventId 'get set' : 
+  Methods:
+    get_EventId(): PrivateScope, Public, HideBySig, SpecialName
+    set_EventId(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_TagId(): PrivateScope, Public, HideBySig, SpecialName
+    set_TagId(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_UserId(): PrivateScope, Public, HideBySig, SpecialName
+    set_UserId(UInt16): PrivateScope, Public, HideBySig, SpecialName
+    get_StartTime(): PrivateScope, Public, HideBySig, SpecialName
+    set_StartTime(DateTime): PrivateScope, Public, HideBySig, SpecialName
+    get_EndTime(): PrivateScope, Public, HideBySig, SpecialName
+    set_EndTime(DateTime): PrivateScope, Public, HideBySig, SpecialName
+    get_EventTopic(): PrivateScope, Public, HideBySig, SpecialName
+    set_EventTopic(DbEventTopicEnum): PrivateScope, Public, HideBySig, SpecialName
+    get_LowLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_LowLevel(DbEventLevelEnum): PrivateScope, Public, HideBySig, SpecialName
+    get_HighLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_HighLevel(DbEventLevelEnum): PrivateScope, Public, HideBySig, SpecialName
+    get_Description(): PrivateScope, Public, HideBySig, SpecialName
+    set_Description(String): PrivateScope, Public, HideBySig, SpecialName
+    get_QueryEventId(): PrivateScope, Public, HideBySig, SpecialName
+    set_QueryEventId(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_QueryTagId(): PrivateScope, Public, HideBySig, SpecialName
+    set_QueryTagId(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_QueryUserId(): PrivateScope, Public, HideBySig, SpecialName
+    set_QueryUserId(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_QueryStartTime(): PrivateScope, Public, HideBySig, SpecialName
+    set_QueryStartTime(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_QueryEndTime(): PrivateScope, Public, HideBySig, SpecialName
+    set_QueryEndTime(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_QueryEventTopic(): PrivateScope, Public, HideBySig, SpecialName
+    set_QueryEventTopic(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_QueryLowLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_QueryLowLevel(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_QueryHighLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_QueryHighLevel(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_QueryDescription(): PrivateScope, Public, HideBySig, SpecialName
+    set_QueryDescription(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    ClearFilter(): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.DbEvent: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String Description 'get ' : 
+    UInt32 TagId 'get ' : 
+    pSpaceCTLNET.DbEventLevelEnum EventLevel 'get ' : 
+    pSpaceCTLNET.DbEventTopicEnum EventTopic 'get ' : 
+    UInt16 UserId 'get ' : 
+    System.DateTime Time 'get ' : 
+    UInt32 EventId 'get ' : 
+  Methods:
+    get_EventId(): PrivateScope, Public, HideBySig, SpecialName
+    get_Time(): PrivateScope, Public, HideBySig, SpecialName
+    get_UserId(): PrivateScope, Public, HideBySig, SpecialName
+    get_EventTopic(): PrivateScope, Public, HideBySig, SpecialName
+    get_EventLevel(): PrivateScope, Public, HideBySig, SpecialName
+    get_TagId(): PrivateScope, Public, HideBySig, SpecialName
+    get_Description(): PrivateScope, Public, HideBySig, SpecialName
+    Query(DbConnector, DbEventFilter): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.DbEvents: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.Generic.List`1[pSpaceCTLNET.DbEvent]
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.ScheduleDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.TagTypeDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.TagDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.TagNotifyDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.RealDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.RealNotifyDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.HisDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.EventDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.EventNotifyDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.UserDbException: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbException
+    Void .ctor(System.String, Int32, System.Exception): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.DbInfo: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    pSpaceCTLNET.DbServerStatus ServerStatus 'get ' : 
+    UInt64 SecurityArea 'get ' : 
+    pSpaceCTLNET.PermissionAccess CurrentPermission 'get ' : 
+    UInt16 SubVersion 'get ' : 
+    UInt16 Version 'get ' : 
+    System.String UserName 'get ' : 
+    System.String ServerName 'get ' : 
+  Methods:
+    get_ServerName(): PrivateScope, Public, HideBySig, SpecialName
+    get_UserName(): PrivateScope, Public, HideBySig, SpecialName
+    get_Version(): PrivateScope, Public, HideBySig, SpecialName
+    get_SubVersion(): PrivateScope, Public, HideBySig, SpecialName
+    get_CurrentPermission(): PrivateScope, Public, HideBySig, SpecialName
+    get_SecurityArea(): PrivateScope, Public, HideBySig, SpecialName
+    get_ServerStatus(): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.PermissionAccess: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(UInt32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(pSpaceCTLNET.DbAccessEnum): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    op_Equality(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    op_Equality(DbAccessEnum): PrivateScope, Public, HideBySig, SpecialName
+    op_Equality(PermissionAccess): PrivateScope, Public, HideBySig, SpecialName
+    op_Inequality(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    op_Inequality(DbAccessEnum): PrivateScope, Public, HideBySig, SpecialName
+    op_Inequality(PermissionAccess): PrivateScope, Public, HideBySig, SpecialName
+    op_BitwiseAnd(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    op_BitwiseAnd(DbAccessEnum): PrivateScope, Public, HideBySig, SpecialName
+    op_BitwiseAnd(PermissionAccess): PrivateScope, Public, HideBySig, SpecialName
+    op_BitwiseOr(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    op_BitwiseOr(DbAccessEnum): PrivateScope, Public, HideBySig, SpecialName
+    op_BitwiseOr(PermissionAccess): PrivateScope, Public, HideBySig, SpecialName
+    op_BitwiseOrAssignment(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    op_BitwiseOrAssignment(DbAccessEnum): PrivateScope, Public, HideBySig, SpecialName
+    op_BitwiseOrAssignment(PermissionAccess): PrivateScope, Public, HideBySig, SpecialName
+    HaveAuthority(UInt32): PrivateScope, Public, HideBySig
+    HaveAuthority(DbAccessEnum): PrivateScope, Public, HideBySig
+    HaveAuthority(PermissionAccess): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.DigitalTagElement: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.TagNode
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    pSpaceCTLNET.ITagElement
+  Methods:
+    Construct(TagTree, String): PrivateScope, Public, Virtual, HideBySig
+Class pSpaceCTLNET.GroupInfo: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    UInt64 SecurityArea 'get set' : 
+    pSpaceCTLNET.PermissionAccess Permission 'get set' : 
+    System.String Description 'get set' : 
+    System.String GroupName 'get set' : 
+    UInt16 GroupId 'get ' : 
+  Methods:
+    get_GroupId(): PrivateScope, Public, HideBySig, SpecialName
+    get_GroupName(): PrivateScope, Public, HideBySig, SpecialName
+    set_GroupName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Description(): PrivateScope, Public, HideBySig, SpecialName
+    set_Description(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Permission(): PrivateScope, Public, HideBySig, SpecialName
+    set_Permission(PermissionAccess): PrivateScope, Public, HideBySig, SpecialName
+    get_SecurityArea(): PrivateScope, Public, HideBySig, SpecialName
+    set_SecurityArea(UInt64): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.GroupInfos: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.Generic.List`1[pSpaceCTLNET.GroupInfo]
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.QualityStamp: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(UInt32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(pSpaceCTLNET.QUALITY_MASK): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    op_Implicit(): PrivateScope, Public, HideBySig, SpecialName
+    op_Implicit(): PrivateScope, Public, HideBySig, SpecialName
+    op_Assign(UInt32 IsConst): PrivateScope, Public, HideBySig, SpecialName
+    op_Assign(QUALITY_MASK): PrivateScope, Public, HideBySig, SpecialName
+    op_Equality(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    op_Equality(QualityStamp): PrivateScope, Public, HideBySig, SpecialName
+    op_Equality(QUALITY_MASK): PrivateScope, Public, HideBySig, SpecialName
+    op_Inequality(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    op_Inequality(QualityStamp): PrivateScope, Public, HideBySig, SpecialName
+    op_Inequality(QUALITY_MASK): PrivateScope, Public, HideBySig, SpecialName
+    IsBad(): PrivateScope, Public, HideBySig
+    IsUncertain(): PrivateScope, Public, HideBySig
+    IsGood(): PrivateScope, Public, HideBySig
+Struct pSpaceCTLNET._VariantList: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
+  :System.ValueType
+Struct pSpaceCTLNET._QueryVarList: AutoLayout, AnsiClass, Class, Public, SequentialLayout, Sealed, BeforeFieldInit
+  :System.ValueType
+Class pSpaceCTLNET.TagQueryExpression: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(pSpaceCTLNET.PropField, CompareOperator, System.Object): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Object TagPropValue 'get set' : 
+    CompareOperator Operator 'get set' : 
+    pSpaceCTLNET.PropField TagPropField 'get set' : 
+  Methods:
+    get_TagPropField(): PrivateScope, Public, HideBySig, SpecialName
+    set_TagPropField(PropField): PrivateScope, Public, HideBySig, SpecialName
+    get_Operator(): PrivateScope, Public, HideBySig, SpecialName
+    set_Operator(CompareOperator): PrivateScope, Public, HideBySig, SpecialName
+    get_TagPropValue(): PrivateScope, Public, HideBySig, SpecialName
+    set_TagPropValue(Object): PrivateScope, Public, HideBySig, SpecialName
+    Compile(): PrivateScope, Public, HideBySig
+    TryParse(String, TagTree): PrivateScope, Public, HideBySig
+Struct pSpaceCTLNET.TagQueryExpression+CompareOperator: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    CompareOperator Equal = 0 : Public, Static, Literal, HasDefault
+    CompareOperator NE = 1 : Public, Static, Literal, HasDefault
+    CompareOperator GT = 2 : Public, Static, Literal, HasDefault
+    CompareOperator ST = 3 : Public, Static, Literal, HasDefault
+    CompareOperator GE = 4 : Public, Static, Literal, HasDefault
+    CompareOperator SE = 5 : Public, Static, Literal, HasDefault
+Class pSpaceCTLNET.TagQueryConditions: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Collections.ObjectModel.Collection`1[pSpaceCTLNET.TagQueryExpression] Expressions 'get ' : 
+  Methods:
+    get_Expressions(): PrivateScope, Public, HideBySig, SpecialName
+    InsertAndCompileExpression(TagQueryExpression): PrivateScope, Public, HideBySig
+    TryParse(String, TagTree): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.TagQueryFilter: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    UInt32 ResultNumber 'get set' : 
+    UInt32 ResultStart 'get set' : 
+    pSpaceCTLNET.TagQueryConditions Conditions 'get set' : 
+    pSpaceCTLNET.TagNode StartNode 'get set' : 
+    System.Collections.Generic.IEnumerable`1[pSpaceCTLNET.PropField] Fields 'get set' : 
+    UInt16 QueryLevel 'get set' : 
+    Boolean QuerySelf 'get set' : 
+  Methods:
+    get_QuerySelf(): PrivateScope, Public, HideBySig, SpecialName
+    set_QuerySelf(Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig, SpecialName
+    get_QueryLevel(): PrivateScope, Public, HideBySig, SpecialName
+    set_QueryLevel(UInt16): PrivateScope, Public, HideBySig, SpecialName
+    get_Fields(): PrivateScope, Public, HideBySig, SpecialName
+    set_Fields(IEnumerable`1): PrivateScope, Public, HideBySig, SpecialName
+    get_StartNode(): PrivateScope, Public, HideBySig, SpecialName
+    set_StartNode(TagNode): PrivateScope, Public, HideBySig, SpecialName
+    get_Conditions(): PrivateScope, Public, HideBySig, SpecialName
+    set_Conditions(TagQueryConditions): PrivateScope, Public, HideBySig, SpecialName
+    get_ResultStart(): PrivateScope, Public, HideBySig, SpecialName
+    set_ResultStart(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_ResultNumber(): PrivateScope, Public, HideBySig, SpecialName
+    set_ResultNumber(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    TryParse(String, TagNode): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.RealDataChangedEventHandler: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, SpecialName, RTSpecialName
+  Methods:
+    Invoke(Object, RealDataSet): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    BeginInvoke(Object, RealDataSet, AsyncCallback, Object): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+Class pSpaceCTLNET.RealSubscriber: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.ISubscriber
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Events:
+    pSpaceCTLNET.RealDataChangedEventHandler RealDataChanged: SpecialName
+  Methods:
+    Create(DbConnector, TagVector): PrivateScope, Public, Virtual, HideBySig
+    CreateAndRead(DbConnector, TagVector, RealDataSet): PrivateScope, Public, HideBySig
+    Add(TagVector): PrivateScope, Public, Virtual, HideBySig
+    Remove(TagVector): PrivateScope, Public, Virtual, HideBySig
+    RemoveAll(): PrivateScope, Public, Virtual, HideBySig
+    Close(): PrivateScope, Public, Virtual, HideBySig
+    add_RealDataChanged(RealDataChangedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_RealDataChanged(RealDataChangedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.StringTagElement: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.TagNode
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    pSpaceCTLNET.ITagElement
+  Methods:
+    Construct(TagTree, String): PrivateScope, Public, Virtual, HideBySig
+Class pSpaceCTLNET.TagManager: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(pSpaceCTLNET.TagTree): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    pSpaceCTLNET.TagTree TagTree 'get set' : 
+  Methods:
+    get_TagTree(): PrivateScope, Public, HideBySig, SpecialName
+    set_TagTree(TagTree): PrivateScope, Public, HideBySig, SpecialName
+    AddTag(TagNode, ITag): PrivateScope, Public, HideBySig
+    RemoveTag(ITag): PrivateScope, Public, HideBySig
+    GetTagProperties(ITag, IEnumerable`1): PrivateScope, Public, HideBySig
+    SetTagProperties(ITag, IEnumerable`1): PrivateScope, Public, HideBySig
+    GetTagById(UInt32, IEnumerable`1): PrivateScope, Public, HideBySig
+    GetTagByName(String, IEnumerable`1): PrivateScope, Public, HideBySig
+    GetTagIdList(String[]): PrivateScope, Public, HideBySig
+    GetTagListById(List`1, IEnumerable`1): PrivateScope, Public, HideBySig
+    TagCopy(TagNode, ITag): PrivateScope, Public, HideBySig
+    TagMoveTo(TagNode, ITag): PrivateScope, Public, HideBySig
+    IsTagExist(String): PrivateScope, Public, HideBySig
+    IsTagExist(UInt32): PrivateScope, Public, HideBySig
+    IsAncestor(TagNode, ITag): PrivateScope, Public, HideBySig
+    QueryTags(TagQueryFilter): PrivateScope, Public, HideBySig
+    QueryTagsCount(TagQueryFilter): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.TagChangedEventHandler: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.MulticastDelegate
+    Void .ctor(System.Object, IntPtr): PrivateScope, Public, SpecialName, RTSpecialName
+  Methods:
+    Invoke(Object, TagChangeType, UInt32, TagProperties): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    BeginInvoke(Object, TagChangeType, UInt32, TagProperties, AsyncCallback, Object): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+    EndInvoke(IAsyncResult): PrivateScope, Public, Final, Virtual, VtableLayoutMask
+Class pSpaceCTLNET.TagSubscriber: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.ISubscriber
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Events:
+    pSpaceCTLNET.TagChangedEventHandler TagChanged: SpecialName
+  Methods:
+    Create(DbConnector, TagVector): PrivateScope, Public, Virtual, HideBySig
+    Add(TagVector): PrivateScope, Public, Virtual, HideBySig
+    Remove(TagVector): PrivateScope, Public, Virtual, HideBySig
+    RemoveAll(): PrivateScope, Public, Virtual, HideBySig
+    Close(): PrivateScope, Public, Virtual, HideBySig
+    add_TagChanged(TagChangedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+    remove_TagChanged(TagChangedEventHandler): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.UserInfo: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.String Description 'get set' : 
+    UInt64 SecurityArea 'get ' : 
+    pSpaceCTLNET.PermissionAccess Permission 'get ' : 
+    System.String Password 'get set' : 
+    System.String UserName 'get set' : 
+    UInt16 UserId 'get ' : 
+  Methods:
+    get_UserId(): PrivateScope, Public, HideBySig, SpecialName
+    get_UserName(): PrivateScope, Public, HideBySig, SpecialName
+    set_UserName(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Password(): PrivateScope, Public, HideBySig, SpecialName
+    set_Password(String): PrivateScope, Public, HideBySig, SpecialName
+    get_Permission(): PrivateScope, Public, HideBySig, SpecialName
+    get_SecurityArea(): PrivateScope, Public, HideBySig, SpecialName
+    get_Description(): PrivateScope, Public, HideBySig, SpecialName
+    set_Description(String): PrivateScope, Public, HideBySig, SpecialName
+Class pSpaceCTLNET.UserInfos: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Collections.Generic.List`1[pSpaceCTLNET.UserInfo]
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class pSpaceCTLNET.UserManager: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :pSpaceCTLNET.DbManager
+    Void .ctor(pSpaceCTLNET.DbConnector): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    GetUserCount(): PrivateScope, Public, HideBySig
+    GetGroupCount(): PrivateScope, Public, HideBySig
+    GetUserList(): PrivateScope, Public, HideBySig
+    GetGroupList(): PrivateScope, Public, HideBySig
+    AddUser(UserInfo): PrivateScope, Public, HideBySig
+    AddGroup(GroupInfo): PrivateScope, Public, HideBySig
+    RemoveUser(UserInfo): PrivateScope, Public, HideBySig
+    RemoveGroup(GroupInfo): PrivateScope, Public, HideBySig
+    SetUserInfo(UserInfo): PrivateScope, Public, HideBySig
+    GetUserInfo(String): PrivateScope, Public, HideBySig
+    GetUserInfo(UInt16): PrivateScope, Public, HideBySig
+    SetGroupInfo(GroupInfo): PrivateScope, Public, HideBySig
+    GetGroupInfo(String): PrivateScope, Public, HideBySig
+    GetGroupInfo(UInt16): PrivateScope, Public, HideBySig
+    AppendUserToGroup(UInt16, UInt16): PrivateScope, Public, HideBySig
+    AppendUserToGroup(GroupInfo, UserInfo): PrivateScope, Public, HideBySig
+    RemoveUserFromGroup(UInt16, UInt16): PrivateScope, Public, HideBySig
+    RemoveUserFromGroup(GroupInfo, UserInfo): PrivateScope, Public, HideBySig
+    GetGroupMembers(GroupInfo): PrivateScope, Public, HideBySig
+    GetGroupMembers(UInt16): PrivateScope, Public, HideBySig
+    GetUserGroups(UserInfo): PrivateScope, Public, HideBySig
+    GetUserGroups(UInt16): PrivateScope, Public, HideBySig
+Class pSpaceCTLNET.Common: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    StartAPI(): PrivateScope, Public, Static, HideBySig
+    StopAPI(): PrivateScope, Public, Static, HideBySig

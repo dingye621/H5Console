@@ -1,0 +1,15 @@
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\obj\x64\Debug\pSpaceDemo.csprojAssemblyReference.cache
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\pSpaceDemo.exe.config
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\pSpaceDemo.exe
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\pSpaceDemo.pdb
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\pSpaceCTL.NET.dll
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\pSpaceCTL.NET.pdb
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\psAPISDK64.dll
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\pSpaceAPI64.dll
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\ACE5.6.9_VC964.dll
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\psNetClient64.dll
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\obj\x64\Debug\pSpaceDemo.csproj.CopyComplete
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\obj\x64\Debug\pSpaceDemo.exe
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\obj\x64\Debug\pSpaceDemo.pdb
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\Newtonsoft.Json.dll
+C:\Users\Administrator\Desktop\pSpaceDemo\pSpaceDemo\bin\x64\Debug\Newtonsoft.Json.xml
