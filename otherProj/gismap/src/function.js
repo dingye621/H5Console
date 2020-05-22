@@ -488,6 +488,16 @@ function getAlphaAreaByType(tp){
 		//	alert("加载成功");
 		});
 	}
+
+	function getPOIByRemarks(remarks){
+		var filter = {
+			remarks:remarks
+		};
+		tmap.loadPointByRemarks(filter,function(e){
+			//if(e == 1)
+			//	alert("加载成功");
+			});
+		}
 // 根据名称加载AREA
 function getAreaByName(names){
 	var filter = {
@@ -930,7 +940,7 @@ async function loadPointByParams()
 if(tagName)
 {
 	//加载单独点位
-	getPOIByName([tagName]);
+	getPOIByRemarks([tagName]);
 	return;
 }
 	if(type == globalConfig.poison.type)

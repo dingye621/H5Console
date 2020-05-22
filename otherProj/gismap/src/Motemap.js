@@ -1311,10 +1311,21 @@ var Mote = (function()
 			}
 		});
 	 }
-	 
-	 
-	 
-	 
+
+	 Map.prototype.loadPointByRemarks = function(info,callback){
+		var cqlFilter = 'place_id=' + this.placeId;
+		if(info.remarks){
+			cqlFilter = cqlFilter + ' and remarks in ('
+			for(var i=0;i<info.remarks.length;i++){
+				cqlFilter = cqlFilter + '\'' + str2Unicode( info.remarks[i]) + '\',';
+			}
+			cqlFilter = cqlFilter + '\'\')';
+			loadConfigPotArea(dbtype_pot,cqlFilter);//加载点的图层
+			callback && callback(1);
+		}else{
+			callback && callback(0);
+		}
+	 }
 	 
 	}
   

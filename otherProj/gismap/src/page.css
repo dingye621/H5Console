@@ -29,9 +29,9 @@ ul{
     position: relative;
     top:0px;
     left: 5px;
-    border:1px solid black;
+    border:0px solid black;
     padding: 5px;
-    background-color: white;
+    background-color: skyblue;
 }
 .layer-select li{
     float: left;
