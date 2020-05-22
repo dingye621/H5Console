@@ -941,6 +941,7 @@ if(tagName)
 {
 	//加载单独点位
 	getPOIByRemarks([tagName]);
+	getPOIByClickReal();
 	return;
 }
 	if(type == globalConfig.poison.type)
@@ -950,10 +951,14 @@ if(tagName)
 		//getAlphaAreaByType(t);
 		$('.poison-li').show();
 		$('#layer-select').show();
+		tmap.loadPolygon();
+		getPOIByClickReal();
 	}
 	else if(type == globalConfig.danger.type)
 	{
 		getPOIByType(globalConfig.danger.load);
+		tmap.loadPolygon();
+		getPOIByClickReal();
 	}
 	else if(type == globalConfig.hidden.type)
 	{
@@ -966,18 +971,20 @@ if(tagName)
 	{
 		//for(let t of globalConfig.risk.load) //in 是key  , of 是object
 		getAreaByType(globalConfig.risk.load);
+		getAreasByClickReal();
 	}
 	else if(type == globalConfig.work.type)
 	{
 		var rw = await getPermitPack();
-		debugger
 		var names = rw.select((t)=>t.name);
 		getAreaByName(names);
+		getAreasByClickReal();
 		//getAreaByType(globalConfig.work.load);
 	}
 	else if(type == globalConfig.emer.type)
 	{
 		getPOIByType(globalConfig.emer.load);
+		getPOIByClickReal();
 	}
 	else if(type == globalConfig.position.type)
 	{
@@ -988,15 +995,12 @@ if(tagName)
 	}
 	else
 	{
-		 loadAll();
+		loadAll();
+		getPOIByClickReal();
+		getAreasByClickReal();
 	}
 }
 
 loadPointByParams();
 
-getPOIByClickReal();
-
-getAreasByClickReal();
-
-setPOIScale();
 

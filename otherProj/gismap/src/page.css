@@ -32,6 +32,7 @@ ul{
     border:0px solid black;
     padding: 5px;
     background-color: skyblue;
+    display: none;
 }
 .layer-select li{
     float: left;

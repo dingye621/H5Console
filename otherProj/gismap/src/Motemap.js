@@ -151,6 +151,10 @@ var Mote = (function()
 					var info = self.setSelectInfo(e.selected)
 					callback && callback(info);	
 				}
+				else 
+				{
+					callback && callback(null);	
+				}
 			});
 		}
 	 }
@@ -170,6 +174,10 @@ var Mote = (function()
 					var info = self.setSelectInfo(e.selected)
 					callback && callback(info);	
 				}
+				else 
+				{
+					callback && callback(null);	
+				}
 			});
 		}  
 	 }
@@ -183,6 +191,10 @@ var Mote = (function()
 				if(e.selected.length != 0){
 					var info = self.setSelectInfo(e.selected)
 					callback && callback(info);	
+				}
+				else 
+				{
+					callback && callback(null);	
 				}
 			});
 	    }
@@ -671,6 +683,30 @@ var Mote = (function()
 		 configPotLayer.set('styleScale',scale);
 		 view.setCenter([view.getCenter()[0]-0.000000001,view.getCenter()[1]])
 		 map.updateSize();
+	 }
+	 Map.prototype.setPotNameVisible = function(active){ 
+		 configPotLayer.set('styleTextVisible',active);
+		 view.setCenter([view.getCenter()[0]-0.000000001,view.getCenter()[1]])
+		 map.updateSize();
+	 }
+	 Map.prototype.getPotNameVisible = function(){ 
+		 return configPotLayer.get('styleTextVisible');
+	 }
+	 Map.prototype.setAreaNameVisible = function(active){ 
+		 configAreaLayer.set('styleTextVisible',active);
+		 view.setCenter([view.getCenter()[0]-0.000000001,view.getCenter()[1]])
+		 map.updateSize();
+	 }
+	 Map.prototype.getAreaNameVisible = function(){ 
+		 return configAreaLayer.get('styleTextVisible');
+	 }
+	 Map.prototype.setAlphaAreaNameVisible = function(active){ 
+		 configAlphaAreaLayer.set('styleTextVisible',active);
+		 view.setCenter([view.getCenter()[0]-0.000000001,view.getCenter()[1]])
+		 map.updateSize();
+	 }
+	 Map.prototype.getAlphaAreaNameVisible = function(){ 
+		 return configAlphaAreaLayer.get('styleTextVisible');
 	 }
 	 Map.prototype.getPointByClick = function(callback){
 		    var condition = ol.events.condition.singleClick;
@@ -1326,6 +1362,11 @@ var Mote = (function()
 			callback && callback(0);
 		}
 	 }
+	 
+	 
+	 
+	 
+	 
 	 
 	}
   

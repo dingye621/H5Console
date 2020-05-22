@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Gis地图</title>
+<!--47.103.35.78:8081 原测试地址-->
+<!--192.168.18.3:8091 -->
+<!-- 地图 -->
+<link rel="stylesheet" type="text/css" href="http://192.168.18.3:8091/chem/css/map/ol.css" />
+<link rel="stylesheet" type="text/css" href="http://192.168.18.3:8091/chem/css/map/ol3-base_3d.css" />
+<link rel="stylesheet" type="text/css" href="../src/page.css" />
+<script src="../src/config.js"></script>
+<script src="../src/src_config.js"></script>
+<!-- <script src="http://10.109.75.228:8091/chem/js/global/jquery-2.1.1.min.js"></script>  -->
+<script src="../src/component/jquery/jquery-2.1.1.min.js"></script>
+<!-- <script src="http://10.109.75.228:8091/chem/js/global/bootstrap.js"></script> -->
+	
+<!-- 地图
+<script src="http://10.109.75.228:8091/chem/js/map/map/ol-debug.js"></script>
+<script src="src/api_Common.js"></script>
+<script src="http://10.109.75.228:8091/chem/js/map/map/asset_style.js"></script>
+<script src="http://10.109.75.228:8091/chem/js/map/map/asset_init.js"></script>
+<script src="http://10.109.75.228:8091/chem/js/map/map/asset_base_fun.js"></script>
+<script src="src/Motemap.js"></script>
+
+<script src="src/api_PotArea.js"></script>-->
+<script src="../src/component/indextab.js"></script>
+<script src="../src/component/layer/layer.js"></script> 
+<!-- <script src="http://47.103.35.78:8081/chem/com/layer/layer.js"></script>  -->
+
+<!--css-->
+<link href="../src/component/bootstrap.min.css" rel="stylesheet" />
+<link href="../src/component/framework-theme.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.8/skins/default/aliplayer-min.css" />
+<script type="text/javascript" charset="utf-8"
+  src="https://g.alicdn.com/de/prismplayer/2.8.8/aliplayer-min.js"></script>
+<style>
+
+</style>
+</head>
+<body>
+	<div id="map" style="width: 70%;height:100%;float:left;"></div>
+	<div>基础：</div>
+	<div>
+		<button onclick="getBuilding();">获取建筑编号</button>
+		<button onclick="getFloor();">获取当前楼层</button>
+		<button onclick="getZoom();">获取当前zoom</button>
+		<button onclick="getLonLatByClick();">获取经纬度</button>
+		<button onclick="hideLayer();">隐藏图层</button>
+	</div>
+	<div>POI事件：</div>
+	<div>
+		<button onclick="getPOIAll();">加载全部POI</button>
+		<button onclick="getPOIByType();">根据类型加载POI</button>
+		<button onclick="getPOIByName();">根据名称加载POI</button>
+		<button onclick="getPOIByMoveon();">POI移入事件</button>
+		<button onclick="getPOIByClick();">POI单击事件</button>
+		<button onclick="getPOIByDblclick();">POI双击事件</button>
+		<button onclick="setPOIScale();">控制POI大小</button>
+		<button onclick="setPOIName();">文字是否显示</button>
+	</div>
+	<div>AREA事件：</div>
+	<div>	
+		<button onclick="getAreaAll();">加载全部AREA</button>	
+		<button onclick="getAreaByType();">根据类型加载AREA</button>	
+		<button onclick="getAreaByName();">根据名称加载AREA</button>	
+		<button onclick="getAreaByMoveon();">AREA移入事件</button>
+		<button onclick="getAreaByClick();">AREA单击事件</button>
+		<button onclick="getAreaByDblclick();">AREA双击事件</button>
+		<button onclick="setAreaName();">文字是否显示</button>
+	</div>
+	<div>透明框事件：</div>
+	<div>	
+		<button onclick="getAlphaAreaAll();">加载全部透明框</button>	
+		<button onclick="getAlphaAreaByType();">根据类型加载透明框</button>	
+		<button onclick="getAlphaAreaByName();">根据名称加载透明框</button>	
+		<button onclick="getAlphaAreaByMoveon();">透明框移入事件</button>
+		<button onclick="getAlphaAreaByClick();">透明框单击事件</button>
+		<button onclick="getAlphaAreaByDblclick();">透明框双击事件</button>
+		<button onclick="setAlphaAreaName();">文字是否显示</button>
+	</div>
+	<div>消除事件：</div>
+	<div>	
+		<button onclick="removeFeatureSelsct()">清除选中</button>
+		<button onclick="removeMouseEvent()">消除事件</button>
+	</div>
+	<div>绘制POI：
+		<button onclick="clearPotArea();">清空点和面</button>
+	</div>
+	<div>
+		<button onclick="drawPot();">标点</button>
+		<button onclick="drawPotByCoords();">输入坐标标点</button>
+		<button onclick="modifyPot();">修改点</button>
+		<button onclick="deletePot();">删除点</button>
+		<button onclick="deletePotByType();">根据类型删除点</button>
+	</div>
+	<div>绘制AREA：</div>
+	<div>	
+		<button onclick="drawArea();">标面</button>
+		<button onclick="drawAreaByCoords();">输入坐标标面</button>
+		<button onclick="modifyArea();">修改面</button>
+		<button onclick="deleteArea();">删除面</button>
+		<button onclick="deleteAreaByType();">根据类型删除面</button>
+	</div>
+	<div>绘制透明框：</div>
+	<div>
+		<button onclick="drawAlphaArea();">标透明框</button>
+		<button onclick="drawAlphaAreaByCoords();">输入坐标标透明框</button>
+		<button onclick="modifyAlphaArea();">修改透明框</button>
+		<button onclick="deleteAlphaArea();">删除透明框</button>
+		<button onclick="deleteAlphaAreaByType();">根据类型删除透明框</button>
+	</div>
+	<div>定位：</div>
+	<div>
+		<button onclick="loadMapByLonLatZoom();">根据坐标和层级加载地图</button>
+		<button onclick="loadLocate();">定位点显示</button>
+		<button onclick="getLocateByMoveon();">定位点鼠标移入</button>
+		<button onclick="loadLocateMsg();">定位点信息展示</button>
+	</div>
+	<div>轨迹：</div>
+	<div>
+		<button onclick="loadTrail();">轨迹回放</button>
+		<button onclick="getTrailMsg();">轨迹鼠标事件</button>
+	</div>
+<!--左边按钮-->
+<!--js-->
+
+<script src="../src/component/template.js"></script>
+<script src="../src/component/echarts.min.js"></script>
+<script src="../src/component/flv.min.js"></script>
+<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+<script src="../src/component/axios.min.js"></script>
+<!-- <script src="src/oidc-client.js"></script> -->
+<script src="../src/http.js"></script>
+<!-- <script src="src/axiosex.js"></script> -->
+
+
+<!-- <script src="src/app.js"></script> -->
+
+<!--template模版-->
+<script type="text/html" id="templatePosition">
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">扩展信息</a></li>
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<table>
+								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
+								<tr><td>监测设备点简称：</td><td><%= data.equipment.shortName %></td></tr>
+							</table>
+						</div>
+					</div>
+					<div id="tab-2" class="tab-pane">
+						<div class="panel-body">
+							<table>
+								<tr><td>监测点位号：</td><td><%= data.tagName %></td></tr>
+								<tr><td>监测点数值：</td><td></td></tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+<!--可燃有毒气体监测图览template模版-->
+<script type="text/html" id="templatePoison">
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">监测信息</a></li>
+				<li><a href="#tab-3" data-toggle="tab">历史报警数据</a></li>
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<table class="table table-striped">
+								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
+								<tr><td>监测设备点简称：</td><td><%= data.equipment.shortName %></td></tr>
+								<tr><td>区域名称：</td><td><%= data.equipment.org.orgName %></td></tr>
+								<!-- <tr><td>区域类型</td><td><%= data.equipment.org.orgType %></td></tr> -->
+							</table>
+						</div>
+					</div>
+					<div id="tab-2" class="tab-pane">
+							<div class="panel-body">
+								<table class="table table-striped">
+									<tr><td>监测点位号：</td><td><%= data.tagName %></td></tr>
+									<tr><td>监测点数值：</td><td></td></tr>
+								</table>
+							</div>
+					</div>
+					<div id="tab-3" class="tab-pane">
+						<div class="panel-body">
+								<table>
+									<tr><td>上次报警时间：</td><td></td></tr>
+									<tr><td>今年报警次数：</td><td></td></tr>
+								</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+<!--重大危险源监控图层template模版-->
+<script type="text/html" id="templateDanger">
+
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">视频播放</a></li>
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<table class="table table-striped">
+								<tr><td>监控名称：</td><td><%= data.cameraName %></td></tr>
+								<tr>
+									<td>品牌：</td><td><%= data.cameraBrand %></td>
+								</tr>
+								<tr><td>型号：</td><td><%= data.cameraType %></td></tr>
+								<!-- <tr><td>用途：</td><td>未指定</td></tr> -->
+								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
+							</table>
+						</div>
+					</div>
+					<div id="tab-2" class="tab-pane">
+						<!-- <div id="player-flv"></div> -->
+						<div class="mainContainer" id="mainContainer" style="width: 100%;">
+							<video name="videoElement" class="centeredVideo" id="videoElement"  playsinline="true"  style="width: 100%;height:100%;object-fit: fill;" autoplay>
+								Your browser is too old which doesn't support HTML5 video.
+							</video>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+<!--隐患排查与治理图览-->
+<script type="text/html" id="templateHidden">
+
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">统计信息</a></li>
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<table class="table table-striped">
+								<tr><td>监测设备名称：</td><td>未指定</td></tr>
+								<tr>
+									<td>监测设备点简称：</td><td>未指定</td>
+								</tr>
+								<tr><td>区域名称：</td><td><%= data.equipment %></td></tr>
+								
+							</table>
+						</div>
+					</div>
+					<div id="tab-2" class="tab-pane">
+							<div class="panel-body">
+								<!-- <div>工厂同类隐患发生次数：</div> -->
+								<div id="main" style="width: 600px;height:400px;"></div>
+								<!-- <div>区域内各类隐患分布：</div> -->
+								<div id="mainYear" style="width: 600px;height:400px;"></div>
+						    </div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+<!--应急物资-->
+<script type="text/html" id="templateEmer">
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<!-- <li><a href="#tab-2" data-toggle="tab">统计信息</a></li> -->
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<table class="table table-striped">
+								<tr><td>组织：</td><td><%= data.Organization %></td></tr>
+								<tr>
+									<td>位置：</td><td><%= data.Address %></td>
+								</tr>
+								<tr><td>单位：</td><td><%= data.Unit %></td></tr>
+								<tr><td>补给：</td><td><%= data.Supplies %></td></tr>
+								<tr><td>库存：</td><td><%= data.Stocks %></td></tr>
+								<tr><td>材质：</td><td><%= data.Principal %></td></tr>
+								<tr><td>注册人：</td><td><%= data.RegPerson %></td></tr>
+								<tr><td>注册日期：</td><td><%= data.RegDate %></td></tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+<!--作业许可-->
+<script type="text/html" id="templateWork">
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
+				<!-- <li><a href="#tab-2" data-toggle="tab">统计信息</a></li> -->
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<h4>基础信息</h4>
+							<table class="table table-striped">
+								<tr>
+									<td>作业名称</td>
+									<td><%= data.Name %></td>
+									<td>操作</td>
+									<td><%= data.Operation %></td>
+								</tr>
+								<tr>
+									<td>作业区域</td>
+									<td><%= data.AreaName %></td>
+									<td>作业负责人</td>
+									<td><%= data.JobLeaderx %></td>
+								</tr>
+								<tr>
+									<td>开始时间</td>
+									<td><%= data.Timestrat %></td>
+									<td>结束时间</td>
+									<td><%= data.Timeend %></td>
+								</tr>
+							</table>
+							<h4>人员清单</h4>
+							<table class="table table-striped">
+								<tr>
+								<th>人员ID</th>
+								<th>人员姓名</th>
+								</tr>
+								<%for(var i = 0; i < data.Perlist.length; i++) {%>
+									<tr>
+										<td><%:=data.Perlist[i].oid%></td>
+										<td><%:=data.Perlist[i].name%></td>
+									</tr>
+									<%}%>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
+<script>
+	// POI鼠标单击事件
+	function getPOIByClick(){
+		
+		tmap.poiMouseEvent('click', function(info){
+		   //alert(JSON.stringify(info));
+		   console.log(JSON.stringify(info));
+		   tmap.rmFeatureSelsct();
+		});
+	}
+
+	//新增点&保存
+	function drawPot(){
+	var info = {
+	 name:'有毒汽体',
+	 remarks:'这是一个测试点',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 type:12
+	};
+	tmap.drawPoint(info, function(e){
+	 if(e == 1)
+	   alert("标点成功");
+	});
+  }
+// 新增面&保存(输入坐标)
+function drawAreaByCoords(){
+	var coordList = [
+	{lon:119.02431533,lat:33.38726279},
+	{lon:119.02484239,lat:33.38726011},
+	{lon:119.02484239,lat:33.38703078},
+	{lon:119.02431667,lat:33.38702944},
+	{lon:119.02431533,lat:33.38726279}];
+	var info = {
+	 name:'红色区域',
+	 remarks:'这是一个测试的区域',
+	 coords: coordList,
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 color:'#FF3030'
+	};
+	tmap.drawAreaByCoords(info, function(e){
+	 if(e == 1)
+	   alert("区域保存成功!");
+	});
+}
+
+	// Area鼠标单击事件
+	function getAreaByClick(){
+		tmap.areaMouseEvent('click', function(info){
+		    alert(JSON.stringify(info));
+			tmap.rmFeatureSelsct();
+		});
+	}
+	 function drawArea(){
+	var info = {
+	 name:'红色区域',
+	 remarks:'这是一个测试的区域',
+	 building_id:tmap.getBuilding(),
+	 floor_id:tmap.getFloor(),
+	 place_id:tmap.getPlace(),
+	 color:'#FF3030'
+	};
+	tmap.drawArea(info, function(e){
+	 if(e == 1)
+	   alert("绘制区域成功!");
+	});
+  }
+</script>
+</body>
+</html>

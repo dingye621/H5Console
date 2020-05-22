@@ -13,8 +13,8 @@ var mapMode = 2.5;//parseFloat(assignment("mapMode", 2));// 控制2,3d切换
 // var LocationRequestParam; // 定位param
 var Linterval = 2;//assignment("Linterval", 2);// 定位时间间隔
 var DBs = "prison";//0 ? 'coges' : 'prison'; // 数据源选择（UWB：coges；其他：mote）
-//var comIp = "http://114.215.83.3:8090";//assignment("GeoServer", 3);
-var comIp = "http://192.168.18.3:8090";
+var comIp = "http://114.215.83.3:8090";//assignment("GeoServer", 3);
+//var comIp = "http://192.168.18.3:8090";
 var wfsUrl = comIp + '/geoserver/wfs';
 // var wmsUrl = comIp + '/geoserver/' + DBs + '/wms';
 var locateAssetUrl = locateIp + '/location/getPersonLocation';// get
@@ -426,8 +426,7 @@ var configPotStyleFun = function(feature) {
 	var featureIcon = feature.get('icon')?feature.get('icon'):null;
 	var imageSrc = featureIcon?IconPath + '/images/pot/' + featureIcon + '.png':IconPath + '/icon/inspection.png';
 	var imageScale = featureIcon?configPotLayer.get('styleScale')?configPotLayer.get('styleScale'):0.6:0.24;
-	// 返回数据的style
-	return new ol.style.Style({
+	var styleObj = {
 		image: new ol.style.Icon({
 			src: imageSrc,
 			scale: imageScale,
@@ -448,7 +447,15 @@ var configPotStyleFun = function(feature) {
 			})
 		}),
 		zIndex: 700
-	});
+	}
+	if(configPotLayer.get('styleTextVisible') == undefined){
+			configPotLayer.set('styleTextVisible',true);
+	}
+	if (!configPotLayer.get('styleTextVisible')){
+		delete styleObj.text
+	}
+	// 返回数据的style
+	return new ol.style.Style(styleObj);
 };
 //config-area
 var configAreaStyleFun = function(feature) {
@@ -464,8 +471,7 @@ var configAreaStyleFun = function(feature) {
 		:feature.get('color')
 		?feature.get('color')
 		:[255,200,100,0.5];
-	// 返回数据的style
-	return new ol.style.Style({
+	var styleObj = {
 		stroke: new ol.style.Stroke({
 			color: featureStrokeColor,
 			width:2
@@ -494,7 +500,15 @@ var configAreaStyleFun = function(feature) {
 			})
 		}),
 		zIndex: 700
-	});
+	};
+	if(configAreaLayer.get('styleTextVisible') == undefined){
+			configAreaLayer.set('styleTextVisible',true);
+	}
+	if (!configAreaLayer.get('styleTextVisible')){
+		delete styleObj.text
+	}
+	// 返回数据的style
+	return new ol.style.Style(styleObj);
 };
 //config-alphaarea
 var configAlphaAreaStyleFun = function(feature) {
@@ -510,8 +524,7 @@ var configAlphaAreaStyleFun = function(feature) {
 		:feature.get('color')
 		?feature.get('color')
 		:[255,200,100,0.5];
-	// 返回数据的style
-	return new ol.style.Style({
+	var styleObj = {
 		stroke: new ol.style.Stroke({
 			color: featureStrokeColor,
 			width:2
@@ -540,7 +553,15 @@ var configAlphaAreaStyleFun = function(feature) {
 			})
 		}),
 		zIndex: 700
-	});
+	};
+	if(configAlphaAreaLayer.get('styleTextVisible') == undefined){
+			configAlphaAreaLayer.set('styleTextVisible',true);
+	}
+	if (!configAlphaAreaLayer.get('styleTextVisible')){
+		delete styleObj.text
+	}
+	// 返回数据的style
+	return new ol.style.Style(styleObj);
 };
 
 // 电子围栏
