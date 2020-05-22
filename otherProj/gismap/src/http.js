@@ -195,6 +195,17 @@ async function getPermitPack()
     return [];
 }
 
+async function getHazardListPack()
+{
+    var res = await getHazardList();
+    if(res.data.data&&res.data.data.length>0)
+    {
+        return res.data.data;
+    }
+    layer.alert('数据请求失败');
+    return [];
+}
+
 
 
 

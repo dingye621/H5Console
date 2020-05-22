@@ -84,30 +84,28 @@ async function fitContent(info,layerName,layerType)
 
 	if(globalConfig.poison.type==layerType)
 	{
-		var res=await getTagInfo(info.remarks);
+		var resList = await getHazardListPack();
+		//var res = await getTagInfo(info.remarks);
 		var ares = await getAreas();
-		console.log(res);
-		if(res.data.success&&res.data.data.length>0)
+		console.log(resList);
+		for(let hazard of resList)
 		{
-			data=res.data.data.length>0?res.data.data[0]:{};
-			if(!data.equipment)
+			if(hazard.tag.tagName==info.remarks)
 			{
-				data.equipment={equipmentName:'点位未关联主设备',shortName:'',org:{orgName:'点位未关联区域',orgType:''}};
-			}
-			else{
-				for(let d of ares.data)
-				{
-					if(d.orgName==data.equipment.org.orgName)
-					{
-						data.equipment.org.orgType=d.typeName;
-						break;
-					}
-				}
+				data = hazard;
+				break;
 			}
 		}
-		else{
-			layer.alert('数据加载失败');
-			return;
+		if(!data.tag.tagShortName)
+			data.tag.tagShortName='未配置';
+		for(let d of ares.data)
+		{
+			if(d.orgName==data.org.orgName){
+				//data.equipment.org.orgType=d.typeName;
+				data.orgName=d.orgName;
+				data.orgTypeName=d.orgTypeName;
+				break;
+			}
 		}
 	}
 	else if(globalConfig.danger.type==layerType)
@@ -227,7 +225,7 @@ function layerOpen(info)
 	{
 		layerType=globalConfig.poison.type;
 		layerName=globalConfig.poison.name;
-		area=['420px', '260px'];
+		area=['320px', '266px'];
 	}
 	if(globalConfig.danger.load.includes(info.type))
 	{
@@ -406,7 +404,7 @@ function hideLayer(){
 //控制点位大小
 function setPOIScale(){
 	// 默认scale：0.6
-	tmap.setPotScale(0.4);
+	tmap.setPotScale(0.2);
 }
 
 // 根据坐标加载地图
@@ -1000,7 +998,8 @@ if(tagName)
 		getAreasByClickReal();
 	}
 }
-
+//加载点
 loadPointByParams();
-
+//设置点icon大小
+setPOIScale();
 
