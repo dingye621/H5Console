@@ -51,3 +51,7 @@ ul{
 #clear{
     position:fixed; top:10px; left:10px;
 }
+/*图片大小*/
+.alarm-img{
+    width: 12px;;
+}

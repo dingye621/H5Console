@@ -14,7 +14,7 @@ var mapMode = 2.5;//parseFloat(assignment("mapMode", 2));// 控制2,3d切换
 var Linterval = 2;//assignment("Linterval", 2);// 定位时间间隔
 var DBs = "prison";//0 ? 'coges' : 'prison'; // 数据源选择（UWB：coges；其他：mote）
 var comIp = "http://114.215.83.3:8090";//assignment("GeoServer", 3);
-//var comIp = "http://192.168.18.3:8090";
+
 var wfsUrl = comIp + '/geoserver/wfs';
 // var wmsUrl = comIp + '/geoserver/' + DBs + '/wms';
 var locateAssetUrl = locateIp + '/location/getPersonLocation';// get
@@ -421,12 +421,22 @@ var electronicFenceStyleFun = function(feature) {
 };
 //config-pot
 var configPotStyleFun = function(feature) {
+	if(configPotLayer.get('styleTextVisible') == undefined){
+			configPotLayer.set('styleTextVisible',false);
+	}
 	var featureFloor = feature.get('floor_id');
-	var featureName = feature.get('name');
+	var featureName = configPotLayer.get('styleTextVisible') && feature.get('selected')?feature.get('name'):'';
 	var featureIcon = feature.get('icon')?feature.get('icon'):null;
 	var imageSrc = featureIcon?IconPath + '/images/pot/' + featureIcon + '.png':IconPath + '/icon/inspection.png';
 	var imageScale = featureIcon?configPotLayer.get('styleScale')?configPotLayer.get('styleScale'):0.6:0.24;
 	var styleObj = {
+		stroke: new ol.style.Stroke({
+			color: [255,200,100,0.5],
+			width:2
+		}),
+		fill: new ol.style.Fill({
+			color: [255,200,100,0.5]
+		}),
 		image: new ol.style.Icon({
 			src: imageSrc,
 			scale: imageScale,
@@ -448,19 +458,20 @@ var configPotStyleFun = function(feature) {
 		}),
 		zIndex: 700
 	}
-	if(configPotLayer.get('styleTextVisible') == undefined){
-			configPotLayer.set('styleTextVisible',true);
-	}
-	if (!configPotLayer.get('styleTextVisible')){
-		delete styleObj.text
-	}
+	
+	// if (!configPotLayer.get('styleTextVisible')){
+		// delete styleObj.text
+	// }
 	// 返回数据的style
 	return new ol.style.Style(styleObj);
 };
 //config-area
 var configAreaStyleFun = function(feature) {
+	if(configAreaLayer.get('styleTextVisible') == undefined){
+			configAreaLayer.set('styleTextVisible',false);
+	}
 	var featureFloor = feature.get('floor_id');
-	var featureName = feature.get('name');
+	var featureName = configAreaLayer.get('styleTextVisible') && feature.get('selected')?feature.get('name'):'';
 	var featureStrokeColor = feature.get('border_color')
 		?[255,255,255,0.1]//feature.get('border_color')
 		:feature.get('color')
@@ -501,12 +512,10 @@ var configAreaStyleFun = function(feature) {
 		}),
 		zIndex: 700
 	};
-	if(configAreaLayer.get('styleTextVisible') == undefined){
-			configAreaLayer.set('styleTextVisible',true);
-	}
-	if (!configAreaLayer.get('styleTextVisible')){
-		delete styleObj.text
-	}
+	
+	// if (!configAreaLayer.get('styleTextVisible')){
+		// delete styleObj.text
+	// }
 	// 返回数据的style
 	return new ol.style.Style(styleObj);
 };
@@ -555,7 +564,7 @@ var configAlphaAreaStyleFun = function(feature) {
 		zIndex: 700
 	};
 	if(configAlphaAreaLayer.get('styleTextVisible') == undefined){
-			configAlphaAreaLayer.set('styleTextVisible',true);
+			configAlphaAreaLayer.set('styleTextVisible',false);
 	}
 	if (!configAlphaAreaLayer.get('styleTextVisible')){
 		delete styleObj.text

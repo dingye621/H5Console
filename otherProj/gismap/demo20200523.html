@@ -39,6 +39,8 @@
 	<button onclick="getPOIByMoveon();">POI移入事件</button>
 	<button onclick="getPOIByClick();">POI单击事件</button>
 	<button onclick="getPOIByDblclick();">POI双击事件</button>
+	<button onclick="setPOIScale();">控制POI大小</button>
+	<button onclick="setPOIName();">文字是否显示</button>
 </div>
 <div>AREA事件：</div>
 <div>	
@@ -48,6 +50,7 @@
 	<button onclick="getAreaByMoveon();">AREA移入事件</button>
 	<button onclick="getAreaByClick();">AREA单击事件</button>
 	<button onclick="getAreaByDblclick();">AREA双击事件</button>
+	<button onclick="setAreaName();">文字是否显示</button>
 </div>
 <div>透明框事件：</div>
 <div>	
@@ -57,6 +60,7 @@
 	<button onclick="getAlphaAreaByMoveon();">透明框移入事件</button>
 	<button onclick="getAlphaAreaByClick();">透明框单击事件</button>
 	<button onclick="getAlphaAreaByDblclick();">透明框双击事件</button>
+	<button onclick="setAlphaAreaName();">文字是否显示</button>
 </div>
 <div>消除事件：</div>
 <div>	
@@ -143,57 +147,71 @@
 	// POI鼠标移入事件
 	function getPOIByMoveon(){
 		tmap.poiMouseEvent('move', function(info){
-		   alert(JSON.stringify(info));
-		   tmap.rmFeatureSelsct();
+		   //alert(JSON.stringify(info));
+		   //tmap.rmFeatureSelsct();
 		});
 	}
 	// POI鼠标单击事件
 	function getPOIByClick(){
 		tmap.poiMouseEvent('click', function(info){
 		   alert(JSON.stringify(info));
-		   tmap.rmFeatureSelsct();
+		   //tmap.rmFeatureSelsct();
 		});
 	}
 	// POI鼠标双击事件
 	function getPOIByDblclick(){
 		tmap.poiMouseEvent('dbclick', function(info){
 		   alert(JSON.stringify(info));
-		   tmap.rmFeatureSelsct();
+		   //tmap.rmFeatureSelsct();
 		});
+	}
+	// 控制POI大小
+	function setPOIScale(){
+		// 默认scale：0.6
+		tmap.setPotScale(1);
+	}
+	// POI文字显示
+	function setPOIName(){
+		tmap.setPotNameVisible(!tmap.getPotNameVisible());
 	}
 	// Area鼠标移入事件
 	function getAreaByMoveon(){
 		tmap.areaMouseEvent('move', function(info){
-		    alert(JSON.stringify(info));
-			tmap.rmFeatureSelsct();
+		   // alert(JSON.stringify(info));
+			//tmap.rmFeatureSelsct();
 		});
 	}
 	// Area鼠标单击事件
 	function getAreaByClick(){
 		tmap.areaMouseEvent('click', function(info){
 		    alert(JSON.stringify(info));
-			tmap.rmFeatureSelsct();
+			//tmap.rmFeatureSelsct();
 		});
 	}
 	// Area鼠标双击事件
 	function getAreaByDblclick(){
 		tmap.areaMouseEvent('dbclick', function(info){
 		    alert(JSON.stringify(info));
-			tmap.rmFeatureSelsct();
+			//tmap.rmFeatureSelsct();
 		});
+	}
+	// Area文字显示
+	function setAreaName(){
+		tmap.setAreaNameVisible(!tmap.getAreaNameVisible());
 	}
 	// AlphaArea鼠标移入事件
 	function getAlphaAreaByMoveon(){
 		// 自定义边框和填充色
 		var style = {
-			fill: [255,255,0,1],
+			fill: [255,0,0,0.3],
 			stroke: [255,0,0,1]
 		}
 		// 设置自定义的样式为高亮样式
-		//tmap.setSelectFeatureStyle(style);
+		tmap.setSelectFeatureStyle(style);
 		// 默认高亮样式为元素自带的边框样式
 		tmap.alphaAreaMouseEvent('move', function(info){
-		    alert(JSON.stringify(info));
+		    //alert(JSON.stringify(info));
+			console.log(JSON.stringify(info));
 			// 高亮样式和消除高亮不能一起用
 			//tmap.rmFeatureSelsct();
 		});
@@ -211,6 +229,10 @@
 		    alert(JSON.stringify(info));
 			//tmap.rmFeatureSelsct();
 		});
+	}
+	// AlphaArea文字显示
+	function setAlphaAreaName(){
+		tmap.setAlphaAreaNameVisible(!tmap.getAlphaAreaNameVisible());
 	}
   // 加载点
   tmap.loadPoint();

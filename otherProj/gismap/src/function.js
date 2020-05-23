@@ -390,8 +390,14 @@ tmap.loadAlphaPolygon();
 }
 
 // 隐藏图层
-function hideLayer(){
+function hideAllLayer(){
 	tmap.setPotVisible(!tmap.getPotVisible());
+	tmap.setAreaVisible(!tmap.getAreaVisible());
+	//tmap.setAlphaAreaVisible(!tmap.getAlphaAreaVisible());
+}
+
+// 隐藏区域
+function hideArea(){
 	tmap.setAreaVisible(!tmap.getAreaVisible());
 	//tmap.setAlphaAreaVisible(!tmap.getAlphaAreaVisible());
 }
@@ -591,17 +597,6 @@ $('#layer-select').click(function(){
 		fixShow=true;
 	}
 });
-$("input[name='in']").click(function(){
-if(inn)
-{
-	$("input[name='in']").attr('checked','checked');
-	inn=false;
-}
-else{
-	$("input[name='out']").attr('checked','checked');
-		inn=true;
-	}
-});
 function layerSelectHide()
 {
 	//$('.layer-select').hide();
@@ -613,9 +608,9 @@ function layerSelectShow()
 	$('.layer-select').css('visibility','visible');
 }
 //多选框属性默认为选中
-$("input[name='poison'],input[name='fire']").prop('checked', true);
+$("input[name='poison'],input[name='fire'],input[name='area']").prop('checked', true);
 
-$("input[name='poison'],input[name='fire']").click(function(){
+$("input[name='poison'],input[name='fire'],input[name='area']").click(function(){
 	
 	//先清除所有的
 	tmap.rmPoint();
@@ -625,6 +620,7 @@ $("input[name='poison'],input[name='fire']").click(function(){
 	//判断选中状态
 	var fireStatus=$("input[name='fire']").is(':checked');
 	var poisonStatus=$("input[name='poison']").is(':checked');
+	var areaStatus=$("input[name='area']").is(':checked');
 	if($("input[name='fire']").is(':checked'))
 	{
 		getPOIByType([globalConfig.poison.load[0]]);
@@ -637,6 +633,7 @@ $("input[name='poison'],input[name='fire']").click(function(){
 	{
 		getPOIByType(globalConfig.poison.load);
 	}
+	hideArea();
 });
 $('#fireBtn').click(function(){
 	getPOIByType(globalConfig.poison.load[0]);
@@ -771,7 +768,7 @@ async function resetPOI()
 			info.longitude=poi.videoLongitude;
 			info.latitude=poi.videoLatitude;
 			info.name=poi.cameraName;
-			info.remarks='';
+			info.remarks='监控备注';
 			info.type=globalConfig.danger.load[0];
 			if(info.longitude && info.latitude )
 			{
@@ -914,6 +911,13 @@ function getPOIByClickReal(){
 		tmap.rmFeatureSelsct();
 	});
 }
+//鼠标移入事件
+function getPOIByMoveon(){
+	tmap.poiMouseEvent('move', function(info){
+	   //alert(JSON.stringify(info));
+	   //tmap.rmFeatureSelsct();
+	});
+}
 
 function getAreasByClickReal(){
 	console.log('执行区域添加单击事件');
@@ -998,6 +1002,8 @@ if(tagName)
 		getAreasByClickReal();
 	}
 }
+//移入事件
+//getPOIByMoveon();
 //加载点
 loadPointByParams();
 //设置点icon大小

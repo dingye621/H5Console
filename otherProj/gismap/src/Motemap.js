@@ -118,21 +118,40 @@ var Mote = (function()
 			 switch(layer){
 			 	case 'POI':
 				{
+					self.select.setStyle('POI');
 					info.type = features[i].get('icon');
-					//var geom = feature.getGeometry().getCoordinates();
+					configPotSource.getFeatureById(info.fid).set('selected',true)
+					
 				}break;
 				case 'AREA':
 				{
+					self.select.setStyle('AREA');
 					info.color = features[i].get('color');
+					configAreaSource.getFeatureById(info.fid).set('selected',true)
+					
 				}break;
 				case 'AlphaAREA':
 				{
+					self.select.setStyle('AlphaAREA');
 					info.border_color = features[i].get('border_color');
+					configAlphaAreaSource.getFeatureById(info.fid).set('selected',true)
+					
 				}break;
 			}
+			tmap.setPotNameVisible(true);
+			tmap.setAreaNameVisible(true);
+			tmap.setAlphaAreaNameVisible(true);
 			infos.push(info);
 		}
 		 return infos
+	 }
+	 Map.prototype.setDeselectedInfo = function(features){
+		 for(var i=0; i<features.length; i++){
+			 features[i].set('selected',false);
+			 tmap.setPotNameVisible(false);
+			 tmap.setAreaNameVisible(false);
+			 tmap.setAlphaAreaNameVisible(false);
+		}
 	 }
 	 	 
 	 /*
@@ -147,13 +166,12 @@ var Mote = (function()
 		 }else{
 			 self.select = self.selectByInteraction([configPotLayer],condition);
 			 self.select.select.on('select', function(e) {
+				 self.setDeselectedInfo(e.deselected)
 				if(e.selected.length != 0){
 					var info = self.setSelectInfo(e.selected)
 					callback && callback(info);	
-				}
-				else 
-				{
-					callback && callback(null);	
+				}else{
+					callback && callback(0);	
 				}
 			});
 		}
@@ -170,13 +188,12 @@ var Mote = (function()
 		  }else{
 			 self.select = self.selectByInteraction([configAreaLayer],condition);
 			 self.select.select.on('select', function(e) {
+				 self.setDeselectedInfo(e.deselected)
 				if(e.selected.length != 0){
 					var info = self.setSelectInfo(e.selected)
 					callback && callback(info);	
-				}
-				else 
-				{
-					callback && callback(null);	
+				}else{
+					callback && callback(0);	
 				}
 			});
 		}  
@@ -188,13 +205,12 @@ var Mote = (function()
 		 }else{
 			 self.select = self.selectByInteraction([configAlphaAreaLayer],condition);
 			 self.select.select.on('select', function(e) {
+				 self.setDeselectedInfo(e.deselected)
 				if(e.selected.length != 0){
 					var info = self.setSelectInfo(e.selected)
 					callback && callback(info);	
-				}
-				else 
-				{
-					callback && callback(null);	
+				}else{
+					callback && callback(0);
 				}
 			});
 	    }
@@ -248,22 +264,12 @@ var Mote = (function()
 		 return this.clickEvent?Object.keys(this.clickEvent).length:false
 	 }
 	 Map.prototype.selectByInteraction = function(layers,condition){
-		 // var style = layers[0] == configPotLayer
-			// ?configPotStyleFun
-			// :layers[0] == configAreaLayer
-				// ?configAreaStyleFun
-				// :layers[0] == configAlphaAreaLayer
-					// ?configAlphaAreaStyleFun
-					// :layers[0] == AssetLocateLayer
-						// ?assetstylefunction
-						// :layers[0] == AssetRoutePointLayer
-							// ?RouteStyle['geoms']
-							// :geojsonstylefunction
+		var style = configPotStyleFun;
 		 this.selectFeature = {
 			init: function() {
 				this.select = new ol.interaction.Select({
 					layers: layers,
-					style : false,
+					style : configPotStyleFun,//configAreaStyleFun,
 					condition: condition,
 					multi: true,
 					//hitTolerance: 5,
@@ -280,6 +286,37 @@ var Mote = (function()
 			},
 			setActive: function(active) {
 				this.select.setActive(active);
+			},
+			setStyle: function(layer){
+				switch(layer){
+					case 'POI':
+					{
+						style = configPotStyleFun;
+					}break;
+					case 'AREA':
+					{
+						style = configAreaStyleFun;
+					}break;
+					case 'AlphaAREA':
+					{
+						style = configAlphaAreaStyleFun;
+					}break;
+					case 'Locate':
+					{
+						style = assetstylefunction;
+					}break;
+					case 'RoutePoint':
+					{
+						style = RouteStyle['geoms'];
+					}break;
+					default:
+					{
+						style = geojsonstylefunction;
+					}break;
+				}
+			},
+			getStyle: function(){
+				return style
 			},
 			setLayers: function(layer){
 				var flag = true;
@@ -480,6 +517,20 @@ var Mote = (function()
 		 }else{
 			 callback && callback(0);
 		 }
+	 }
+	 Map.prototype.loadPointByRemarks = function(info,callback){
+		var cqlFilter = 'place_id=' + this.placeId;
+		if(info.remarks){
+			cqlFilter = cqlFilter + ' and remarks in ('
+			for(var i=0;i<info.remarks.length;i++){
+				cqlFilter = cqlFilter + '\'' + str2Unicode( info.remarks[i]) + '\',';
+			}
+			cqlFilter = cqlFilter + '\'\')';
+			loadConfigPotArea(dbtype_pot,cqlFilter);//加载点的图层
+			callback && callback(1);
+		}else{
+			callback && callback(0);
+		}
 	 }
 	 Map.prototype.loadPolygon = function(callback){
 		 var cqlFilter = 'place_id=' + this.placeId;
@@ -1257,6 +1308,7 @@ var Mote = (function()
 		self.select = self.selectByInteraction([AssetLocateLayer],condition);
 		self.select.select.on('select', function(e) {
 			if(e.selected.length != 0){
+				self.select.setStyle('Locate');
 				var info = new Object();
 				info.name = e.selected[0].get('name');
 				info.building_id = e.selected[0].get('building_id');
@@ -1341,6 +1393,7 @@ var Mote = (function()
 		self.select = self.selectByInteraction([AssetRoutePointLayer],condition);
 		self.select.select.on('select', function(e) {
 			if(e.selected.length != 0){
+				self.select.setStyle('RoutePoint');
 				var info = new Object();
 				info.time = e.selected[0].get('time');
 				callback && callback(info);
@@ -1348,20 +1401,6 @@ var Mote = (function()
 		});
 	 }
 
-	 Map.prototype.loadPointByRemarks = function(info,callback){
-		var cqlFilter = 'place_id=' + this.placeId;
-		if(info.remarks){
-			cqlFilter = cqlFilter + ' and remarks in ('
-			for(var i=0;i<info.remarks.length;i++){
-				cqlFilter = cqlFilter + '\'' + str2Unicode( info.remarks[i]) + '\',';
-			}
-			cqlFilter = cqlFilter + '\'\')';
-			loadConfigPotArea(dbtype_pot,cqlFilter);//加载点的图层
-			callback && callback(1);
-		}else{
-			callback && callback(0);
-		}
-	 }
 	 
 	 
 	 

@@ -66,11 +66,8 @@
 		<li class="poison-li">
 			<input  type="checkbox" name="fire" value=""/>可燃
 		</li>
-		<li>
-			<input  type="checkbox" name="in" value=""/>内部
-		</li>
-		<li>
-			<input  type="checkbox" name="out" value=""/>外部
+		<li class="poison-li">
+			<input  type="checkbox" name="area" value=""/>区域
 		</li>
 	</ul>
 </div>
@@ -143,8 +140,14 @@
 					<div id="tab-2" class="tab-pane">
 							<table class="table table-striped t-body">
 								<tr><td>监测点位号：</td><td><%= data.tag.tagName %></td></tr>
-								<tr><td>监测点数值：</td><td></td></tr>
-								<tr><td>是否报警：</td><td></td></tr>
+								<tr><td>监测点数值：</td><td><%= data.tagValue %></td></tr>
+								<tr><td>是否报警：</td><td>
+								<% if(data.isAlarm=="1"){%>
+								<img src='images/red.png' class='alarm-img'/>
+								<% }else{%>
+								<img src='images/green.png' class='alarm-img'/>
+										<%}%>
+								</td></tr>
 							</table>
 					</div>
 					<div id="tab-3" class="tab-pane">
