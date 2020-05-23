@@ -43,33 +43,8 @@
 </div>
 <!--左边按钮-->
 <div id='fix'>
-	<!-- <ul class="rightMenu btn-group-vertical hidden">
-		<li id="tpPoison" class="btn btn-default"  >
-			<span class="glyphicon glyphicon-heart"></span>
-		</li>
-		<li id="tpDanger" class="btn btn-default" >
-			<span class="glyphicon glyphicon-star"></span>
-		</li>
-		<li id="tpHidden" class="btn btn-default">
-			<span class="glyphicon glyphicon-music"></span>
-		</li>
-	</ul> -->
-	<ul class="leftMenu btn-group-vertical">
-		<li id="layer-select" class="btn btn-default"  >
-			<span class="glyphicon glyphicon-retweet"></span>
-		</li>
-	</ul>
-	<ul class="layer-select btn-group-vertical">
-		<li class="poison-li">
-			<input  type="checkbox" name="poison" value=""/>有毒
-		</li>
-		<li class="poison-li">
-			<input  type="checkbox" name="fire" value=""/>可燃
-		</li>
-		<li class="poison-li">
-			<input  type="checkbox" name="area" value=""/>区域
-		</li>
-	</ul>
+
+
 </div>
 <div id="reset" class="btn btn-default hidden">一键重置</div>
 <div id="clear" class="btn btn-default hidden">一键清除</div>
@@ -86,32 +61,62 @@
 
 
 <!-- <script src="src/app.js"></script> -->
-
+<script type="text/html" id="templateSelect">
+    
+	<ul class="leftMenu btn-group-vertical">
+		<li id="layer-select" class="btn btn-default"  >
+			<span class="glyphicon glyphicon-retweet"></span>
+		</li>
+	</ul>
+	<ul class="layer-select btn-group-vertical">
+		<li class="poison-li">
+			<input  type="checkbox" name="poison" value=""/><span id='poisonName'>有毒</span>
+		</li>
+		<li class="poison-li">
+			<input  type="checkbox" name="fire" value=""/><span id='fireName'>可燃</span>
+		</li>
+		<!-- <li class="poison-li">
+			<input  type="checkbox" name="area" value=""/><span id='areaName'>区域</span>
+		</li> -->
+	</ul>
+</script>
 <!--template模版-->
 <script type="text/html" id="templatePosition">
     <ul>
 		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tab-1" data-toggle="tab">基本信息</a></li>
-				<li><a href="#tab-2" data-toggle="tab">扩展信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">监测信息</a></li>
+				<li><a href="#tab-3" data-toggle="tab">历史报警数据</a></li>
 			</ul>
 			<div style="padding-top: 20px; margin-right: 30px;">
 				<div class="tab-content">
 					<div id="tab-1" class="tab-pane active">
-						<div class="panel-body">
-							<table>
-								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
-								<tr><td>监测设备点简称：</td><td><%= data.equipment.shortName %></td></tr>
-							</table>
-						</div>
+						<table class="table table-striped t-body">
+							<tr><td>监测设备名称：</td><td><%= data.tag.tagDescription %></td></tr>
+							<tr><td>监测设备点简称：</td><td><%= data.tag.tagShortName %></td></tr>
+							<tr><td>区域名称：</td><td><%= data.orgName %></td></tr>
+							<tr><td>区域类型：</td><td><%= data.orgTypeName %></td></tr>
+						</table>
 					</div>
 					<div id="tab-2" class="tab-pane">
-						<div class="panel-body">
-							<table>
-								<tr><td>监测点位号：</td><td><%= data.tagName %></td></tr>
-								<tr><td>监测点数值：</td><td></td></tr>
+							<table class="table table-striped t-body">
+								<tr><td>监测点位号：</td><td><%= data.tag.tagName %></td></tr>
+								<tr><td>监测点数值：</td><td><%= data.tagValue %></td></tr>
+								<tr><td>是否报警：</td><td>
+								<% if(data.isAlarm=="1"){%>
+								<img src='images/red.png' class='alarm-img'/>
+								<% }else{%>
+								<img src='images/green.png' class='alarm-img'/>
+										<%}%>
+								</td></tr>
 							</table>
-						</div>
+					</div>
+					<div id="tab-3" class="tab-pane">
+							<table class="table table-striped t-body">
+								<tr><td>上次报警时间：</td><td></td></tr>
+								<tr><td>今年报警次数：</td><td></td></tr>
+							</table>
 					</div>
 				</div>
 			</div>
@@ -245,20 +250,23 @@
 			<div style="padding-top: 20px; margin-right: 30px;">
 				<div class="tab-content">
 					<div id="tab-1" class="tab-pane active">
-						<div class="panel-body">
-							<table class="table table-striped">
-								<tr><td>组织：</td><td><%= data.Organization %></td></tr>
-								<tr>
-									<td>位置：</td><td><%= data.Address %></td>
-								</tr>
-								<tr><td>单位：</td><td><%= data.Unit %></td></tr>
-								<tr><td>补给：</td><td><%= data.Supplies %></td></tr>
-								<tr><td>库存：</td><td><%= data.Stocks %></td></tr>
-								<tr><td>材质：</td><td><%= data.Principal %></td></tr>
-								<tr><td>注册人：</td><td><%= data.RegPerson %></td></tr>
-								<tr><td>注册日期：</td><td><%= data.RegDate %></td></tr>
+							<table class="table table-striped t-body">
+			<tr>
+			<td>组织</td><td>位置</td><td>单位</td><td>补给</td><td>库存</td><td>材质</td><td>注册人</td><td>注册日期</td>
+			</tr>
+							<%for(var i = 0; i < data.length; i++) {%>
+									<tr>
+										<td><%= data[i].Organization %></td>
+										<td><%= data[i].Address %></td>
+										<td><%= data[i].Unit %></td>
+										<td><%= data[i].Supplies %></td>
+										<td><%= data[i].Stocks %></td>
+										<td><%= data[i].Principal %></td>
+										<td><%= data[i].RegPerson %></td>
+										<td><%= data[i].RegDate %></td>
+									</tr>
+								<%}%>
 							</table>
-						</div>
 					</div>
 				</div>
 			</div>

@@ -13,7 +13,7 @@
 			risk:{type:4,load:['#FFFF3030'],name:'Risk'},//风险分区四色图  黄色
 			work:{type:5,load:['#1E90FF30'],name:'Work'},//作业许可 蓝色
 			emer:{type:6,load:['37'],name:'Emer'},//应急物资
-			position:{type:7,load:['6'],name:'Position'},//重大危险源点位
+			position:{type:7,load:['21'],name:'Position',code:['K01']},//重大危险源点位
 			esCode:'ES',//东南角
 			wnCode:'WN',//西北角
 			wsCode:'WS',//西南角

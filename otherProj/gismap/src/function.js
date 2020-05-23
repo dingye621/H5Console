@@ -72,6 +72,14 @@ function filterArea(areaList,areaStrList)
 	}
 	return areaRes;
 }
+
+// 模板渲染
+if(document.getElementById('templateSelect'))
+{
+	var templateSelect= document.getElementById('templateSelect').innerHTML;
+	document.getElementById('fix').innerHTML = template(templateSelect,{data:null});
+}
+
 //填充弹窗内容
 async function fitContent(info,layerName,layerType)
 {
@@ -158,7 +166,6 @@ async function fitContent(info,layerName,layerType)
 	else if(globalConfig.risk.type==layerType){
 	}
 	else if(globalConfig.work.type==layerType){
-		debugger
 		var workRes=await getPermit();
 		if(workRes.data && workRes.data.msg=='success')
 		{
@@ -172,6 +179,7 @@ async function fitContent(info,layerName,layerType)
 			// }
 			if(workRes.data.data.length>0&&workRes.data.data[0].data.length>0)
 			{
+				var test=workRes.data.data[0].data;
 				data=workRes.data.data[0].data[0];
 			}
 			else{
@@ -185,6 +193,7 @@ async function fitContent(info,layerName,layerType)
 	}
 	else if(globalConfig.emer.type==layerType){
 		var emerRes=await getEmer();
+		data=[];
 		if(emerRes.data && emerRes.data.msg=='success')
 		{
 			var ppList=filterEmerList(emerRes.data.data);
@@ -192,8 +201,8 @@ async function fitContent(info,layerName,layerType)
 			{
 				if(p.ID==info.remarks)
 				{
-					data=p;
-					break;
+					data.push(p);
+					//break;
 				}
 			}
 		}
@@ -202,7 +211,29 @@ async function fitContent(info,layerName,layerType)
 		}
 	}
 	else if(globalConfig.position.type==layerType){
-	
+		var resList = await getHazardListPack();
+		//var res = await getTagInfo(info.remarks);
+		var ares = await getAreas();
+		console.log(resList);
+		for(let hazard of resList)
+		{
+			if(hazard.tag.tagName==info.remarks)
+			{
+				data = hazard;
+				break;
+			}
+		}
+		if(!data.tag.tagShortName)
+			data.tag.tagShortName='未配置';
+		for(let d of ares.data)
+		{
+			if(d.orgName==data.org.orgName){
+				//data.equipment.org.orgType=d.typeName;
+				data.orgName=d.orgName;
+				data.orgTypeName=d.orgTypeName;
+				break;
+			}
+		}
 	}
 	console.log(data);
 	document.getElementById('templatelist'+layerName).innerHTML = template(template1,{data:data});
@@ -225,6 +256,12 @@ function layerOpen(info)
 	{
 		layerType=globalConfig.poison.type;
 		layerName=globalConfig.poison.name;
+		area=['320px', '226px'];
+	}
+	if(globalConfig.position.load.includes(info.type))
+	{
+		layerType=globalConfig.position.type;
+		layerName=globalConfig.position.name;
 		area=['320px', '266px'];
 	}
 	if(globalConfig.danger.load.includes(info.type))
@@ -242,13 +279,17 @@ function layerOpen(info)
 	{
 		layerType=globalConfig.emer.type;
 		layerName=globalConfig.emer.name;
-		area=['320px', '380px'];
+		area=['380px', '380px'];
 	}
 	if(type==globalConfig.work.type)
-	//if(globalConfig.work.load.includes(info.color))
 	{
 		layerType=globalConfig.work.type;
 		layerName=globalConfig.work.name;
+	}
+	if(type==globalConfig.risk.type)
+	{
+		layerType=globalConfig.risk.type;
+		layerName=globalConfig.risk.name;
 	}
 	
 	layer.open({
@@ -410,7 +451,7 @@ function hideArea(){
 //控制点位大小
 function setPOIScale(){
 	// 默认scale：0.6
-	tmap.setPotScale(0.2);
+	tmap.setPotScale(0.3);
 }
 
 // 根据坐标加载地图
@@ -729,6 +770,7 @@ async function resetPOI()
 	var info = {};
 	var res = await getHazardList();
 	var list = {};
+	//重大危险源+有毒可燃
 	if(res.data.success && res.data.data.length>0)
 	{
 		list = res.data.data;
@@ -742,6 +784,8 @@ async function resetPOI()
 				tp=globalConfig.poison.load[0];
 			else if(poi.hazardUdc.code==globalConfig.poison.code[1])
 				tp=globalConfig.poison.load[1];
+			else if(poi.hazardUdc.code==globalConfig.position.code[0])
+				tp=globalConfig.position.load[0];
 			else
 				tp='';
 			info.type=tp;
@@ -933,11 +977,18 @@ function getAreasByClickReal(){
 	});
 }
 
+//$("input[name='fire']").hide();
+//$("#fireName").hide();
+//$("input[name='poison']").hide();
+//$("#poisonName").hide();
+//$('.layer-select li').hide();
 //根据参数加载点位
 async function loadPointByParams()
 {
-	$('.layer-select li').hide();
+	
 	$('#layer-select').hide();
+
+
 
 if(tagName)
 {
@@ -951,8 +1002,14 @@ if(tagName)
 		getPOIByType(globalConfig.poison.load); //可传数组也可传单个字符串
 		//getAreaByType(t);
 		//getAlphaAreaByType(t);
+		
 		$('.poison-li').show();
 		$('#layer-select').show();
+
+		$("input[name='fire']").show();
+		$("input[name='poison']").show();
+		$("#poisonName").show();
+		$("#fireName").show();
 		tmap.loadPolygon();
 		getPOIByClickReal();
 	}
@@ -990,10 +1047,8 @@ if(tagName)
 	}
 	else if(type == globalConfig.position.type)
 	{
-		// for(let t of globalConfig.position.load) //in 是key  , of 是object
-		// {
-		// 	 getPOIByType(t);
-		// }
+		getPOIByType(globalConfig.position.load);
+		getPOIByClickReal();
 	}
 	else
 	{
