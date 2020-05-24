@@ -1,9 +1,12 @@
+using HYIT.Alarm.Con.Log;
+using HYIT.Alarm.Con.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static HYIT.Alarm.Con.Utils.Json;
 
 namespace HYIT.Alarm.Con.EF
 {
@@ -13,6 +16,8 @@ namespace HYIT.Alarm.Con.EF
     {
     }
     public IDbSet<Alarm> Alarms { get; set; }
+
+    public IDbSet<Tag> Tags { get; set; }
 
     public IDbSet<AlarmRecord> AlarmRecords { get; set; }
 
@@ -27,18 +32,42 @@ namespace HYIT.Alarm.Con.EF
   }
 
 
-  public static  class EFOperation
+  public static class EFOperation
   {
     public async static void AddAlarmRecord(AlarmRecord alarmRecord)
     {
       using (ApplicationDbContext _Db = new ApplicationDbContext())
       {
         _Db.AlarmRecords.Add(alarmRecord);
-         await _Db.SaveChangesAsync();
+        await _Db.SaveChangesAsync();
+      }
+    }
+
+    public async static void UpdateTag(Tag tag)
+    {
+      using (ApplicationDbContext _Db = new ApplicationDbContext())
+      {
+        var existing = await _Db.Tags.FirstOrDefaultAsync(c => c.TagName == tag.TagName);
+        if (existing != null)
+        {
+          existing.TagValue = tag.TagValue;
+          existing.AlarmFlag = tag.AlarmFlag;
+          LogInfo.AlarmInfo.InfoFormat("alarm update:{0}", tag.ToJson());
+          await _Db.SaveChangesAsync();
+        }
+      }
+    }
+    public static Tag GetTag(string tagName)
+    {
+      using (ApplicationDbContext _Db = new ApplicationDbContext())
+      {
+        return _Db.Tags.FirstOrDefault(c => c.TagName == tagName);
       }
     }
   }
 }
+
+  
 //下列为Ef用法
 /*
  public class CompaniesController : ApiController

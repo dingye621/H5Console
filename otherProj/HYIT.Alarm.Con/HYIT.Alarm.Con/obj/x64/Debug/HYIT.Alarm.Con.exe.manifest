@@ -66,14 +66,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HYIT.Alarm.Con.exe" size="26640">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HYIT.Alarm.Con.exe" size="35344">
       <assemblyIdentity name="HYIT.Alarm.Con" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>jGt/G9eXZLTAoR+RDMc3y7SLpv819d65d9mU7UL8iU8=</dsig:DigestValue>
+        <dsig:DigestValue>v97Mffra+PRe2OZyH6JK9aiJVB27bDQecSOTw0zDXbc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -158,6 +158,7 @@
     <Compile Include="Log\LogInfoWriter.cs" />
     <Compile Include="Models\Alarm.cs" />
     <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
