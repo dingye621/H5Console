@@ -812,7 +812,7 @@ async function resetPOI()
 			info.longitude=poi.videoLongitude;
 			info.latitude=poi.videoLatitude;
 			info.name=poi.cameraName;
-			info.remarks='监控备注';
+			info.remarks=poi.cameraId;
 			info.type=globalConfig.danger.load[0];
 			if(info.longitude && info.latitude )
 			{
@@ -1010,12 +1010,14 @@ if(tagName)
 		$("input[name='poison']").show();
 		$("#poisonName").show();
 		$("#fireName").show();
+		//加载区域
 		tmap.loadPolygon();
 		getPOIByClickReal();
 	}
 	else if(type == globalConfig.danger.type)
 	{
 		getPOIByType(globalConfig.danger.load);
+		//加载区域
 		tmap.loadPolygon();
 		getPOIByClickReal();
 	}
