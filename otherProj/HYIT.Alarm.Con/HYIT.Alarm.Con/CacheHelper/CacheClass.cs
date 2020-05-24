@@ -6,14 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace HYIT.Alarm.Con.Cache
+namespace HYIT.Alarm.Con.CacheHelper
 {
 
   public class Const
   {
     //CacheKey
-    public static string ALARM_FLAG_KEY = "AlarmFlagKey";  //报警状态标记位
-    
+    public const string ALARM_FLAG_KEY = "AlarmFlag";  //报警前状态标记位
+    public const string ALARM_STATUS_KEY = "AlarmStatus"; //已报警状态标记位
+    public const string ALARM_LEVLE_0 = "0";   //未报警
+    public const string ALARM_LEVLE_1 = "1";   //一级报警
+    public const string ALARM_LEVLE_2 = "2";   //二级报警
+    public const double DEFAULT_VALUE = -999999;
   }
   public interface ICache
   {
@@ -23,7 +27,7 @@ namespace HYIT.Alarm.Con.Cache
     void RemoveCache(string cacheKey);
     void RemoveCache();
   }
-  public class Cache : ICache
+  public class CacheClass : ICache
   {
     private static System.Web.Caching.Cache cache = HttpRuntime.Cache;
 
@@ -59,6 +63,9 @@ namespace HYIT.Alarm.Con.Cache
 }
 /*
 Cache _cache=new Cache();
-_cache.xxxx();
+
+   cache.WriteCache(rcList, routeClassCacheKey, DateTime.Now.AddHours(1));
+   _cache.RemoveCache(Const.ROUTE_CACHE_KEY);
+    _cache.GetCache<List<D_dj_detectroute>>(cacheKey);
    */
 

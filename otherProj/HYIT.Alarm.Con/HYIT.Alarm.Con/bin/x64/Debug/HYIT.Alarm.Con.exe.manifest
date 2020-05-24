@@ -66,14 +66,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HYIT.Alarm.Con.exe" size="17936">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HYIT.Alarm.Con.exe" size="26640">
       <assemblyIdentity name="HYIT.Alarm.Con" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>oSSBSbecp9xBykCglXQfrDx+FJN0VZ9J0w7/3lHRXbk=</dsig:DigestValue>
+        <dsig:DigestValue>jGt/G9eXZLTAoR+RDMc3y7SLpv819d65d9mU7UL8iU8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -269,13 +269,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="HYIT.Alarm.Con.exe.config" size="1887">
+  <file name="HYIT.Alarm.Con.exe.config" size="1970">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>uq8MC3wETo82aPh6vaHJHDwMuS2fPMSRRA3gtgkH/P8=</dsig:DigestValue>
+      <dsig:DigestValue>LEo2sw3V9J9GmN5z1EqHn0hneKxm18A8UTww7a1MEM0=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

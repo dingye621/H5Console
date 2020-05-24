@@ -14,12 +14,27 @@ namespace HYIT.Alarm.Con.EF
     }
     public IDbSet<Alarm> Alarms { get; set; }
 
+    public IDbSet<AlarmRecord> AlarmRecords { get; set; }
+
     public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
     {
       protected override void Seed(ApplicationDbContext context)
       {
         base.Seed(context);
         //context.Alarms.Add(new Alarm { TagValue = "1",TagName="2" });
+      }
+    }
+  }
+
+
+  public static  class EFOperation
+  {
+    public async static void AddAlarmRecord(AlarmRecord alarmRecord)
+    {
+      using (ApplicationDbContext _Db = new ApplicationDbContext())
+      {
+        _Db.AlarmRecords.Add(alarmRecord);
+         await _Db.SaveChangesAsync();
       }
     }
   }

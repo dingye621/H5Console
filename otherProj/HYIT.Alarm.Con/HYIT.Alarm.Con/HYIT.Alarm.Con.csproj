@@ -151,7 +151,7 @@
   <ItemGroup>
     <Compile Include="AlarmHelper.cs" />
     <Compile Include="Business\Business.cs" />
-    <Compile Include="Cache\Cache.cs" />
+    <Compile Include="CacheHelper\CacheClass.cs" />
     <Compile Include="Controllers\AlarmController.cs" />
     <Compile Include="EF\EFComponent.cs" />
     <Compile Include="Log\LogInfo.cs" />
