@@ -1,0 +1,193 @@
+﻿2020-05-25 06:02:41,076 [3] ERROR - 建立连接失败，错误号：-19998，描述： 参数错误 
+2020-05-25 06:02:41,664 [7] ERROR - 建立连接失败，错误号：-19998，描述： 参数错误 
+2020-05-25 06:02:42,665 [3] ERROR - 建立连接失败，错误号：-19998，描述： 参数错误 
+2020-05-25 06:02:43,666 [7] ERROR - 建立连接失败，错误号：-19998，描述： 参数错误 
+2020-05-25 06:02:44,666 [3] ERROR - 建立连接失败，错误号：-19998，描述： 参数错误 
+2020-05-25 06:02:45,668 [7] ERROR - 建立连接失败，错误号：-19998，描述： 参数错误 
+2020-05-25 06:02:46,670 [3] ERROR - 建立连接失败，错误号：-19998，描述： 参数错误 
+2020-05-25 06:02:47,670 [7] ERROR - 建立连接失败，错误号：-19998，描述： 参数错误 
+2020-05-25 06:04:35,752 [3] ERROR - 建立连接失败，错误号：-19998，描述： 参数错误 
+2020-05-25 06:04:40,275 [3] ERROR - 建立连接失败，错误号：-19998，描述： 参数错误 
+2020-05-25 06:57:19,413 [3] ERROR - System.InvalidOperationException: The model backing the 'ApplicationDbContext' context has changed since the database was created. Consider using Code First Migrations to update the database (http://go.microsoft.com/fwlink/?LinkId=238269).
+   在 System.Data.Entity.CreateDatabaseIfNotExists`1.InitializeDatabase(TContext context)
+   在 System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   在 System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   在 System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   在 System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   在 System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   在 System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   在 System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   在 HYIT.Alarm.Con.EF.EFOperation.UpdateTag(Tag tag) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 50
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 159
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 06:57:23,040 [3] ERROR - System.InvalidOperationException: The model backing the 'ApplicationDbContext' context has changed since the database was created. Consider using Code First Migrations to update the database (http://go.microsoft.com/fwlink/?LinkId=238269).
+   在 System.Data.Entity.CreateDatabaseIfNotExists`1.InitializeDatabase(TContext context)
+   在 System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   在 System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   在 System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   在 System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   在 System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+   在 System.Data.Entity.DbSet`1.Add(TEntity entity)
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 41
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 06:57:28,055 [3] ERROR - System.InvalidOperationException: The model backing the 'ApplicationDbContext' context has changed since the database was created. Consider using Code First Migrations to update the database (http://go.microsoft.com/fwlink/?LinkId=238269).
+   在 System.Data.Entity.CreateDatabaseIfNotExists`1.InitializeDatabase(TContext context)
+   在 System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   在 System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   在 System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   在 System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   在 System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+   在 System.Data.Entity.DbSet`1.Add(TEntity entity)
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 41
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 06:57:33,149 [3] ERROR - System.InvalidOperationException: The model backing the 'ApplicationDbContext' context has changed since the database was created. Consider using Code First Migrations to update the database (http://go.microsoft.com/fwlink/?LinkId=238269).
+   在 System.Data.Entity.CreateDatabaseIfNotExists`1.InitializeDatabase(TContext context)
+   在 System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   在 System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   在 System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   在 System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   在 System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   在 System.Data.Entity.Infrastructure.DbQuery`1.System.Linq.IQueryable.get_Provider()
+   在 System.Linq.Queryable.FirstOrDefault[TSource](IQueryable`1 source, Expression`1 predicate)
+   在 HYIT.Alarm.Con.EF.EFOperation.UpdateTag(Tag tag) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 50
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 159
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 06:57:38,015 [10] ERROR - System.InvalidOperationException: The model backing the 'ApplicationDbContext' context has changed since the database was created. Consider using Code First Migrations to update the database (http://go.microsoft.com/fwlink/?LinkId=238269).
+   在 System.Data.Entity.CreateDatabaseIfNotExists`1.InitializeDatabase(TContext context)
+   在 System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   在 System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   在 System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   在 System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   在 System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+   在 System.Data.Entity.DbSet`1.Add(TEntity entity)
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 41
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 06:57:42,934 [3] ERROR - System.InvalidOperationException: The model backing the 'ApplicationDbContext' context has changed since the database was created. Consider using Code First Migrations to update the database (http://go.microsoft.com/fwlink/?LinkId=238269).
+   在 System.Data.Entity.CreateDatabaseIfNotExists`1.InitializeDatabase(TContext context)
+   在 System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   在 System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   在 System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   在 System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   在 System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+   在 System.Data.Entity.DbSet`1.Add(TEntity entity)
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 41
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 06:57:48,235 [3] ERROR - System.InvalidOperationException: The model backing the 'ApplicationDbContext' context has changed since the database was created. Consider using Code First Migrations to update the database (http://go.microsoft.com/fwlink/?LinkId=238269).
+   在 System.Data.Entity.CreateDatabaseIfNotExists`1.InitializeDatabase(TContext context)
+   在 System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   在 System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   在 System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   在 System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   在 System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+   在 System.Data.Entity.DbSet`1.Add(TEntity entity)
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 41
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 06:57:53,042 [10] ERROR - System.InvalidOperationException: The model backing the 'ApplicationDbContext' context has changed since the database was created. Consider using Code First Migrations to update the database (http://go.microsoft.com/fwlink/?LinkId=238269).
+   在 System.Data.Entity.CreateDatabaseIfNotExists`1.InitializeDatabase(TContext context)
+   在 System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   在 System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   在 System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   在 System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   在 System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   在 System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+   在 System.Data.Entity.DbSet`1.Add(TEntity entity)
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 41
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 07:02:53,178 [3] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 07:02:57,711 [3] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 07:03:02,657 [10] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 07:03:07,717 [3] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 07:03:12,670 [3] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 07:03:17,677 [10] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 263
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 418
+2020-05-25 08:24:52,126 [3] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 264
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 420
+2020-05-25 08:24:56,769 [3] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 264
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 420
+2020-05-25 08:25:01,881 [3] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 264
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 420
+2020-05-25 08:25:06,932 [3] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 264
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 420
+2020-05-25 08:25:11,978 [9] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 264
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 420
+2020-05-25 08:25:16,860 [3] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 264
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 420
+2020-05-25 08:25:21,937 [3] ERROR - System.Data.Entity.Validation.DbEntityValidationException: Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+   在 System.Data.Entity.Internal.InternalContext.SaveChanges()
+   在 HYIT.Alarm.Con.EF.EFOperation.AddAlarmRecord(AlarmRecord alarmRecord) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\EF\EFComponent.cs:行号 42
+   在 HYIT.Alarm.Con.AlarmHelper.RunAlarmMonitor() 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 264
+   在 HYIT.Alarm.Con.AlarmHelper.Task(Object source, ElapsedEventArgs e) 位置 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\AlarmHelper.cs:行号 420

@@ -24,15 +24,19 @@ namespace HYIT.Alarm.Con
     private static bool _runStatus { get; set; } //任务运行状态
     private static CacheClass _cache { get; set; }
 
+   // private static EFOperation db { get; set; }
 
 
-    public AlarmHelper()
+
+    static AlarmHelper()
     {
       _serverName = Configs.GetValue("ServerName");
       _userName = Configs.GetValue("UserName");
       _password = Configs.GetValue("Password");
       _runStatus = false;
       _cache = new CacheClass();
+     // db = new EFOperation();
+
     }
 
     public List<Alarm> GetAlarm()
@@ -140,7 +144,8 @@ namespace HYIT.Alarm.Con
       double highLimit = Const.DEFAULT_VALUE;
       string tagName = string.Empty;
       Tag tag = null;
-
+      AlarmRecord record = null;
+      Random r = new Random();
       foreach (var item in ret)
       {
         var elm = item as ITagElement;
@@ -149,7 +154,16 @@ namespace HYIT.Alarm.Con
           cachKey = Const.ALARM_FLAG_KEY + item.TagLongName;
           cachKeyStatus = Const.ALARM_STATUS_KEY + item.TagLongName;
           var realdata = DataIO.Snapshot(connector, elm);
-          if (item.TagLongName.Contains("MTEB"))//有毒可燃判断方式
+          tagName = StaticFunc.FilterString(item.TagLongName.ToString());
+          if (r.Next(1, 20) == 8)
+          {
+              EFOperation.UpdateTag(new Models.Tag()
+              {
+              TagName = tagName,
+              TagValue = realdata.Value.ToString(),
+              });
+          }
+          if (!item.TagLongName.Contains("MTEB"))//有毒可燃判断方式
           {
             if (!double.TryParse(realdata.Value.ToString(), out tagValue))
             {
@@ -165,12 +179,13 @@ namespace HYIT.Alarm.Con
                 if (status != Const.ALARM_LEVLE_1 && status != Const.ALARM_LEVLE_2)
                 {
                   //前一次报警0，标记1，这次为一级报警 直接报警写库
-                  EFOperation.AddAlarmRecord(new AlarmRecord()
+                  record = new AlarmRecord()
                   {
                     TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_1
-                  });
+                  };
+                  EFOperation.AddAlarmRecord(record);
                   EFOperation.UpdateTag(new Models.Tag()
                   {
                     TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
@@ -179,6 +194,7 @@ namespace HYIT.Alarm.Con
                   });
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_1, cachKeyStatus, DateTime.Now.AddHours(10));
+                  AddAlarmLog(record);
                 }
                 else
                 {
@@ -191,19 +207,22 @@ namespace HYIT.Alarm.Con
                 if (status != Const.ALARM_LEVLE_1 || status != Const.ALARM_LEVLE_2)
                 {
                   //前一次报警0，标记2，这次为1级报警 直接报警写库
-                  EFOperation.AddAlarmRecord(new AlarmRecord()
+                  record = new AlarmRecord()
                   {
-                    TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
+                    TagName = tagName,
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_1
-                  });
+                  };
+                  EFOperation.AddAlarmRecord(record);
                   EFOperation.UpdateTag(new Models.Tag()
                   {
-                    TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
+                    TagName = tagName,
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_1
                   });
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_1, cachKeyStatus, DateTime.Now.AddHours(10));
+                  _cache.RemoveCache(cachKey);
+                  AddAlarmLog(record);
                 }
                 else
                 {
@@ -236,20 +255,22 @@ namespace HYIT.Alarm.Con
                 if (status != Const.ALARM_LEVLE_1 && status != Const.ALARM_LEVLE_2)
                 {
                   //前一次报警0，标记1，这次为2级报警 直接报警写库
-                  EFOperation.AddAlarmRecord(new AlarmRecord()
+                  record = new AlarmRecord()
                   {
-                    TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
+                    TagName = tagName,
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_2
-                  });
+                  };
+                  EFOperation.AddAlarmRecord(record);
                   EFOperation.UpdateTag(new Models.Tag()
                   {
-                    TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
+                    TagName = tagName,
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_2
                   });
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_2, cachKeyStatus, DateTime.Now.AddHours(10));
+                  AddAlarmLog(record);
                 }
                 else
                 {
@@ -262,12 +283,13 @@ namespace HYIT.Alarm.Con
                 if (status != Const.ALARM_LEVLE_1 || status != Const.ALARM_LEVLE_2)
                 {
                   //前一次报警0，标记2，这次为2级报警 直接报警写库
-                  EFOperation.AddAlarmRecord(new AlarmRecord()
+                  record = new AlarmRecord()
                   {
-                    TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
+                    TagName = tagName,
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_2
-                  });
+                  };
+                  EFOperation.AddAlarmRecord(record);
                   EFOperation.UpdateTag(new Models.Tag()
                   {
                     TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
@@ -276,6 +298,7 @@ namespace HYIT.Alarm.Con
                   });
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_2, cachKeyStatus, DateTime.Now.AddHours(10));
+                  AddAlarmLog(record);
                 }
                 else
                 {
@@ -307,7 +330,6 @@ namespace HYIT.Alarm.Con
           //重大危险源判断方式
           else
           {
-            tagName = StaticFunc.FilterString(item.TagLongName.ToString());
             tag = EFOperation.GetTag(tagName);
             if (tag == null)
               continue;
@@ -326,20 +348,22 @@ namespace HYIT.Alarm.Con
                 if (status != Const.ALARM_LEVLE_1)
                 {
                   //前一次报警0，标记1，报警
-                  EFOperation.AddAlarmRecord(new AlarmRecord()
+                  record = new AlarmRecord()
                   {
-                    TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
+                    TagName = tagName,
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_1
-                  });
+                  };
+                  EFOperation.AddAlarmRecord(record);
                   EFOperation.UpdateTag(new Models.Tag()
                   {
-                    TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
+                    TagName = tagName,
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_1
                   });
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_1, cachKeyStatus, DateTime.Now.AddHours(10));
+                  AddAlarmLog(record);
                 }
                 else {
                   //已经是报警状态，消除报警标记位
@@ -368,6 +392,12 @@ namespace HYIT.Alarm.Con
       connector.Disconnect();
 
       Common.StopAPI();
+    }
+    private static void AddAlarmLog(AlarmRecord record)
+    {
+      string s = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}:alarmInfo:{record.ToJson()}";
+      Console.WriteLine(s);
+      LogInfo.AlarmInfo.Info(s);
     }
 
     public static void Load()

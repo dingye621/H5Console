@@ -8,6 +8,9 @@ using Newtonsoft.Json;
 using Microsoft.Owin.Hosting;
 using HYIT.Alarm.Con.Utils;
 using System.Timers;
+using HYIT.Alarm.Con.EF;
+using System.Data.Entity;
+using static HYIT.Alarm.Con.EF.ApplicationDbContext;
 
 namespace HYIT.Alarm.Con
 {
@@ -20,7 +23,8 @@ namespace HYIT.Alarm.Con
       //var db = new ApplicationDbContext();
       //int count = db.Companies.Count();
       // Console.WriteLine("Initializing and seeding database with {0} company records...", count);
-
+      Database.SetInitializer<ApplicationDbContext>(null); 
+     
       var baseUri = $"{Configs.GetValue("StartUrl")}";
       Console.WriteLine("Starting web Server...");
       WebApp.Start<Startup>(baseUri);

@@ -29,8 +29,8 @@ namespace HYIT.Alarm.Con
     [StringLength(50), Required]
     [Column("TAG_VALUE")]
     public string TagValue { get; set; }
-    [StringLength(50), Required]
-    [Column("ALARM_FLAGE")]
+    [StringLength(50)]
+    [Column("Flag")]
     public string AlarmFlag { get; set; }
   }
 }

@@ -34,26 +34,27 @@ namespace HYIT.Alarm.Con.EF
 
   public static class EFOperation
   {
-    public async static void AddAlarmRecord(AlarmRecord alarmRecord)
+    public static void AddAlarmRecord(AlarmRecord alarmRecord)
     {
       using (ApplicationDbContext _Db = new ApplicationDbContext())
       {
         _Db.AlarmRecords.Add(alarmRecord);
-        await _Db.SaveChangesAsync();
+        _Db.SaveChanges();
       }
     }
 
-    public async static void UpdateTag(Tag tag)
+    public static void UpdateTag(Tag tag)
     {
       using (ApplicationDbContext _Db = new ApplicationDbContext())
       {
-        var existing = await _Db.Tags.FirstOrDefaultAsync(c => c.TagName == tag.TagName);
+        var existing = _Db.Tags.FirstOrDefault(c => c.TagName == tag.TagName);
         if (existing != null)
         {
           existing.TagValue = tag.TagValue;
+          if(!string.IsNullOrEmpty(tag.AlarmFlag))
           existing.AlarmFlag = tag.AlarmFlag;
           LogInfo.AlarmInfo.InfoFormat("alarm update:{0}", tag.ToJson());
-          await _Db.SaveChangesAsync();
+          _Db.SaveChanges();
         }
       }
     }
