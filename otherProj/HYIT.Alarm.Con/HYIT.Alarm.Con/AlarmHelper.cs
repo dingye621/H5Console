@@ -343,7 +343,8 @@ namespace HYIT.Alarm.Con
             }
             flag = _cache.GetCache<string>(cachKey);
             status = _cache.GetCache<string>(cachKeyStatus);
-            if (tag.HighLimitEnable  && tagValue > highLimit)
+            
+            if ((tag.HighLimitEnable  && tagValue > highLimit) || (tag.LowLimitEnable && tagValue < lowLimit))
             {
               if (flag != null && flag == Const.ALARM_LEVLE_1)
               {
@@ -386,6 +387,7 @@ namespace HYIT.Alarm.Con
                 }
               }
             }
+     
           }
           //aList.Add(new Alarm() { LongName = item.TagLongName, TagId = item.TagId.ToString(), TagValue = realdata.Value.ToString() });
 
