@@ -155,6 +155,8 @@ namespace HYIT.Alarm.Con
           cachKeyStatus = Const.ALARM_STATUS_KEY + item.TagLongName;
           var realdata = DataIO.Snapshot(connector, elm);
           tagName = StaticFunc.FilterString(item.TagLongName.ToString());
+          if (string.IsNullOrEmpty(tagName))
+            continue;
           if (r.Next(1, 20) == 8)
           {
               EFOperation.UpdateTag(new Models.Tag()
@@ -163,7 +165,7 @@ namespace HYIT.Alarm.Con
               TagValue = realdata.Value.ToString(),
               });
           }
-          if (!item.TagLongName.Contains("MTEB"))//有毒可燃判断方式
+          if (!item.TagLongName.Contains("MTBE"))//有毒可燃判断方式
           {
             if (!double.TryParse(realdata.Value.ToString(), out tagValue))
             {
