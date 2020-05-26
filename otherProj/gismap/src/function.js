@@ -990,7 +990,13 @@ function getPOIByMoveon(){
 	   //tmap.rmFeatureSelsct();
 	});
 }
-
+// Area鼠标移入事件
+function getAreaByMoveon(){
+	tmap.areaMouseEvent('move', function(info){
+	   // alert(JSON.stringify(info));
+		//tmap.rmFeatureSelsct();
+	});
+}
 function getAreasByClickReal(){
 	console.log('执行区域添加单击事件');
 	tmap.areaMouseEvent('click', function(info){
@@ -1087,8 +1093,10 @@ if(tagName)
 		getAreasByClickReal();
 	}
 }
-//移入事件
-//getPOIByMoveon();
+//点位移入事件
+getPOIByMoveon();
+//区域移入事件
+getAreaByMoveon();
 //加载点
 loadPointByParams();
 //设置点icon大小

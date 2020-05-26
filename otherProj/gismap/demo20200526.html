@@ -4,21 +4,24 @@
 <meta charset="utf-8">
 <title>懋特地图Demo</title>
 <!-- 地图 -->
-<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol.css" />
-<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol3-base_3d.css" />
-<link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/bootstrap.css" />
-	<script src="http://47.103.35.78:8081/chem/js/global/jquery-2.1.1.min.js"></script>
-	<script src="http://47.103.35.78:8081/chem/js/global/bootstrap.js"></script>
+<!-- <link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/map/ol3-base_3d.css" /> -->
+<!-- <link rel="stylesheet" type="text/css" href="http://47.103.35.78:8081/chem/css/bootstrap.css" /> -->
+<link rel="stylesheet" type="text/css" href="http://192.168.1.121:8081/chem/css/map/ol.css" />
+<link rel="stylesheet" type="text/css" href="http://192.168.1.121:8081/chem/css/map/ol3-base_3d.css" />
+<link rel="stylesheet" type="text/css" href="http://192.168.1.121:8081/chem/css/bootstrap.css" />
+	<script src="http://192.168.1.121:8081/chem/js/global/jquery-2.1.1.min.js"></script>
+	<script src="http://192.168.1.121:8081/chem/js/global/bootstrap.js"></script>
 	<!-- 地图 -->
-	<script src="http://47.103.35.78:8081/chem/js/map/map/ol-debug.js"></script>
+	<script src="http://192.168.1.121:8081/chem/js/map/map/ol-debug.js"></script>
 	<script src="src/api_Common.js"></script>
-	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_style.js"></script>
-	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_init.js"></script>
-	<script src="http://47.103.35.78:8081/chem/js/map/map/asset_base_fun.js"></script>
+	<script src="http://192.168.1.121:8081/chem/js/map/map/asset_style.js"></script>
+	<script src="http://192.168.1.121:8081/chem/js/map/map/asset_init.js"></script>
+	<script src="http://192.168.1.121:8081/chem/js/map/map/asset_base_fun.js"></script>
 	<script src="src/Motemap.js"></script>
 	<script src="src/api_PotArea.js"></script>
 	<!-- 弹框 -->
-	<script src="http://47.103.35.78:8081/chem/com/layer/layer.js"></script>
+	<script src="http://192.168.1.121:8081/chem/com/layer/layer.js"></script>
 </head>
 <body>
 
@@ -40,6 +43,7 @@
 	<button onclick="getPOIByClick();">POI单击事件</button>
 	<button onclick="getPOIByDblclick();">POI双击事件</button>
 	<button onclick="setPOIScale();">控制POI大小</button>
+	<button onclick="setPOIName();">文字是否显示</button>
 </div>
 <div>AREA事件：</div>
 <div>	
@@ -49,6 +53,7 @@
 	<button onclick="getAreaByMoveon();">AREA移入事件</button>
 	<button onclick="getAreaByClick();">AREA单击事件</button>
 	<button onclick="getAreaByDblclick();">AREA双击事件</button>
+	<button onclick="setAreaName();">文字是否显示</button>
 </div>
 <div>透明框事件：</div>
 <div>	
@@ -58,6 +63,7 @@
 	<button onclick="getAlphaAreaByMoveon();">透明框移入事件</button>
 	<button onclick="getAlphaAreaByClick();">透明框单击事件</button>
 	<button onclick="getAlphaAreaByDblclick();">透明框双击事件</button>
+	<button onclick="setAlphaAreaName();">文字是否显示</button>
 </div>
 <div>消除事件：</div>
 <div>	
@@ -144,8 +150,9 @@
 	// POI鼠标移入事件
 	function getPOIByMoveon(){
 		tmap.poiMouseEvent('move', function(info){
-		   alert(JSON.stringify(info));
-		   tmap.rmFeatureSelsct();
+		   //alert(JSON.stringify(info));
+		   //显示文字和消除选中不能同时
+		   //tmap.rmFeatureSelsct();
 		});
 	}
 	// POI鼠标单击事件
@@ -167,11 +174,15 @@
 		// 默认scale：0.6
 		tmap.setPotScale(1);
 	}
+	// POI文字显示
+	function setPOIName(){
+		tmap.setPotNameVisible(!tmap.getPotNameVisible());
+	}
 	// Area鼠标移入事件
 	function getAreaByMoveon(){
 		tmap.areaMouseEvent('move', function(info){
-		    alert(JSON.stringify(info));
-			tmap.rmFeatureSelsct();
+		   // alert(JSON.stringify(info));
+			//tmap.rmFeatureSelsct();
 		});
 	}
 	// Area鼠标单击事件
@@ -188,18 +199,23 @@
 			tmap.rmFeatureSelsct();
 		});
 	}
+	// Area文字显示
+	function setAreaName(){
+		tmap.setAreaNameVisible(!tmap.getAreaNameVisible());
+	}
 	// AlphaArea鼠标移入事件
 	function getAlphaAreaByMoveon(){
 		// 自定义边框和填充色
 		var style = {
-			fill: [255,255,0,1],
+			fill: [0,255,0,0.3],
 			stroke: [255,0,0,1]
 		}
 		// 设置自定义的样式为高亮样式
-		//tmap.setSelectFeatureStyle(style);
+		tmap.setSelectFeatureStyle(style);
 		// 默认高亮样式为元素自带的边框样式
 		tmap.alphaAreaMouseEvent('move', function(info){
-		    alert(JSON.stringify(info));
+		    //alert(JSON.stringify(info));
+			console.log(JSON.stringify(info));
 			// 高亮样式和消除高亮不能一起用
 			//tmap.rmFeatureSelsct();
 		});
@@ -208,15 +224,19 @@
 	function getAlphaAreaByClick(){
 		tmap.alphaAreaMouseEvent('click', function(info){
 		    alert(JSON.stringify(info));
-			//tmap.rmFeatureSelsct();
+			tmap.rmFeatureSelsct();
 		});
 	}
 	// AlphaArea鼠标双击事件
 	function getAlphaAreaByDblclick(){
 		tmap.alphaAreaMouseEvent('dbclick', function(info){
 		    alert(JSON.stringify(info));
-			//tmap.rmFeatureSelsct();
+			tmap.rmFeatureSelsct();
 		});
+	}
+	// AlphaArea文字显示
+	function setAlphaAreaName(){
+		tmap.setAlphaAreaNameVisible(!tmap.getAlphaAreaNameVisible());
 	}
   // 加载点
   tmap.loadPoint();

@@ -9,6 +9,7 @@ var Mote = (function()
 	 this.target = e.target;
 	 this.moveRoute = false;
 	 this.scaleLine = e.scaleLine?e.scaleLine:false;
+	 this.select = new Object();
 
 	 var self = this;
 
@@ -104,10 +105,66 @@ var Mote = (function()
 		 }
 		 return condition
 	 }
-	 Map.prototype.setSelectInfo = function(features){
+	 Map.prototype.getSelectStyle = function(layerType){
+		 var style;
+		  switch(layerType){
+			case 'POI':
+			{
+				style = configPotStyleFun;
+			}break;
+			case 'AREA':
+			{
+				style = configAreaStyleFun;
+			}break;
+			case 'AlphaAREA':
+			{
+				style = configAlphaAreaStyleFun;
+			}break;
+			case 'Locate':
+			{
+				style = assetstylefunction;
+			}break;
+			case 'RoutePoint':
+			{
+				style = RouteStyle['geoms'];
+			}break;
+			default:
+			{
+				style = geojsonstylefunction;
+			}break;
+		 }
+		 return style
+	 }
+	 Map.prototype.getSelectLayer = function(layerType){
+		 var layer;
+		  switch(layerType){
+			case 'POI':
+			{
+				layer = configPotLayer;
+			}break;
+			case 'AREA':
+			{
+				layer = configAreaLayer;
+			}break;
+			case 'AlphaAREA':
+			{
+				layer = configAlphaAreaLayer;
+			}break;
+			case 'Locate':
+			{
+				layer = AssetLocateLayer;
+			}break;
+			case 'RoutePoint':
+			{
+				layer = AssetRoutePointLayer;
+			}break;
+		 }
+		 return layer
+	 }
+	 Map.prototype.setSelectInfo = function(features,layerType,eventType){
 		 var infos = [];
 		 for(var i=0; i<features.length; i++){
-			 var layer = self.select.select.getLayer(features[i]).get('title');
+			 //var layer = self.select.select.getLayer(features[i]).get('title');
 			 var info = new Object();
 			 info.fid = features[i].getId();
 			 info.name = features[i].get('name');
@@ -115,29 +172,30 @@ var Mote = (function()
 			 info.building_id = features[i].get('building_id');
 			 info.floor_id = features[i].get('floor_id');
 			 info.place_id = features[i].get('place_id');		
-			 switch(layer){
+			 switch(layerType){
 			 	case 'POI':
 				{
-					self.select.setStyle('POI');
 					info.type = features[i].get('icon');
-					configPotSource.getFeatureById(info.fid).set('selected',true)
-					
+					if(eventType == 'move'){
+						configPotSource.getFeatureById(info.fid).set('selected',true)
+					}
 				}break;
 				case 'AREA':
 				{
-					self.select.setStyle('AREA');
 					info.color = features[i].get('color');
-					configAreaSource.getFeatureById(info.fid).set('selected',true)
-					
+					if(eventType == 'move'){
+						configAreaSource.getFeatureById(info.fid).set('selected',true)
+					}
 				}break;
 				case 'AlphaAREA':
 				{
-					self.select.setStyle('AlphaAREA');
 					info.border_color = features[i].get('border_color');
-					configAlphaAreaSource.getFeatureById(info.fid).set('selected',true)
-					
+					if(eventType == 'move'){
+						configAlphaAreaSource.getFeatureById(info.fid).set('selected',true)
+					}
 				}break;
 			}
+			
 			tmap.setPotNameVisible(true);
 			tmap.setAreaNameVisible(true);
 			tmap.setAlphaAreaNameVisible(true);
@@ -153,28 +211,26 @@ var Mote = (function()
 			 tmap.setAlphaAreaNameVisible(false);
 		}
 	 }
-	 	 
+	 
 	 /*
 	  *处理鼠标事件
 	  *eventType 参数类型，单击'click',双击"dbclick"，移入'move'
 	  *callback 返回的回调函数，info为返回的对象，对象定义{name:"", type:"", remarks:"", building_id:"", floor_id:"", place_id:"", lon:"", lat:""}
 	 */
 	 Map.prototype.poiMouseEvent = function(eventType, callback){
-		 var condition = self.getSelectCondition(eventType);
-		 if(self.select){
-			 self.select.setLayers(configPotLayer);
-		 }else{
-			 self.select = self.selectByInteraction([configPotLayer],condition);
-			 self.select.select.on('select', function(e) {
-				 self.setDeselectedInfo(e.deselected)
-				if(e.selected.length != 0){
-					var info = self.setSelectInfo(e.selected)
-					callback && callback(info);	
-				}else{
-					callback && callback(0);	
-				}
-			});
+		 if(!self.select.poi){
+			self.select.poi = new Object();
 		}
+		 self.select.poi[eventType] = self.selectByInteraction('POI',eventType);
+		 self.select.poi[eventType].select.on('select', function(e) {
+			self.setDeselectedInfo(e.deselected)
+			if(e.selected.length != 0){
+				var info = self.setSelectInfo(e.selected,'POI',eventType)
+				callback && callback(info);	
+			}else{
+				callback && callback(0);	
+			}
+		});
 	 }
 	  /*
 	  *处理框的鼠标事件
@@ -182,42 +238,42 @@ var Mote = (function()
 	  *callback 返回的回调函数，info为返回的对象，对象定义{name:"", type:"", memo:"", lon:"", lat:""}
 	 */
 	 Map.prototype.areaMouseEvent = function(eventType, callback){
-		  var condition = self.getSelectCondition(eventType);
-		  if(self.select){
-			 self.select.setLayers(configAreaLayer);
-		  }else{
-			 self.select = self.selectByInteraction([configAreaLayer],condition);
-			 self.select.select.on('select', function(e) {
-				 self.setDeselectedInfo(e.deselected)
-				if(e.selected.length != 0){
-					var info = self.setSelectInfo(e.selected)
-					callback && callback(info);	
-				}else{
-					callback && callback(0);	
-				}
-			});
-		}  
+		 if(!self.select.area){
+			self.select.area = new Object();
+		}
+		self.select.area[eventType] = self.selectByInteraction('AREA',eventType);
+		self.select.area[eventType].select.on('select', function(e) {
+			self.setDeselectedInfo(e.deselected)
+			if(e.selected.length != 0){
+				var info = self.setSelectInfo(e.selected,'AREA',eventType)
+				callback && callback(info);	
+			}else{
+				callback && callback(0);	
+			}
+		});
 	 }
 	 Map.prototype.alphaAreaMouseEvent = function(eventType, callback){
-		 var condition = self.getSelectCondition(eventType);
-		 if(self.select){
-			 self.select.setLayers(configAlphaAreaLayer);
-		 }else{
-			 self.select = self.selectByInteraction([configAlphaAreaLayer],condition);
-			 self.select.select.on('select', function(e) {
-				 self.setDeselectedInfo(e.deselected)
-				if(e.selected.length != 0){
-					var info = self.setSelectInfo(e.selected)
-					callback && callback(info);	
-				}else{
-					callback && callback(0);
-				}
-			});
-	    }
+		 if(!self.select.alphaarea){
+			self.select.alphaarea = new Object();
+		}
+		 self.select.alphaarea[eventType] = self.selectByInteraction('AlphaAREA',eventType);
+		 self.select.alphaarea[eventType].select.on('select', function(e) {
+			self.setDeselectedInfo(e.deselected)
+			if(e.selected.length != 0){
+				var info = self.setSelectInfo(e.selected,'AlphaAREA',eventType)
+				callback && callback(info);	
+			}else{
+				callback && callback(0);	
+			}
+		});
 	 }
 	 
 	 Map.prototype.rmFeatureSelsct = function(){
-		 self.select.rmFeatures();
+		Object.keys(self.select).forEach(function(key1,i1,v1){
+			Object.keys(self.select[key1]).forEach(function(key2,i2,v2){
+				self.select[key1][key2].rmFeatures();
+			})  
+        }) 
 	 }
 	 Map.prototype.setSelectFeatureStyle = function(info){
 		configAlphaAreaStyleFun =  function(feature) {
@@ -256,20 +312,26 @@ var Mote = (function()
 		};
 	 }
 	 Map.prototype.rmMouseEvent = function(){
-		 self.rmInteraction(self.select.select);
-		 self.select = null;
+		 Object.keys(self.select).forEach(function(key1,i1,v1){
+			Object.keys(self.select[key1]).forEach(function(key2,i2,v2){
+				self.rmInteraction(self.select[key1][key2].select);
+				self.select[key1][key2] = null;
+			})  
+        }) 
 	 }
 	 
 	 Map.prototype.getClickEventFlag = function(){
 		 return this.clickEvent?Object.keys(this.clickEvent).length:false
 	 }
-	 Map.prototype.selectByInteraction = function(layers,condition){
-		var style = configPotStyleFun;
+	 Map.prototype.selectByInteraction = function(layerType,eventType){
+		var condition = self.getSelectCondition(eventType);
+		var style = self.getSelectStyle(layerType);
+		var layer = self.getSelectLayer(layerType);
 		 this.selectFeature = {
 			init: function() {
 				this.select = new ol.interaction.Select({
-					layers: layers,
-					style : configPotStyleFun,//configAreaStyleFun,
+					layers: [layer],
+					style : style,
 					condition: condition,
 					multi: true,
 					//hitTolerance: 5,
@@ -286,50 +348,6 @@ var Mote = (function()
 			},
 			setActive: function(active) {
 				this.select.setActive(active);
-			},
-			setStyle: function(layer){
-				switch(layer){
-					case 'POI':
-					{
-						style = configPotStyleFun;
-					}break;
-					case 'AREA':
-					{
-						style = configAreaStyleFun;
-					}break;
-					case 'AlphaAREA':
-					{
-						style = configAlphaAreaStyleFun;
-					}break;
-					case 'Locate':
-					{
-						style = assetstylefunction;
-					}break;
-					case 'RoutePoint':
-					{
-						style = RouteStyle['geoms'];
-					}break;
-					default:
-					{
-						style = geojsonstylefunction;
-					}break;
-				}
-			},
-			getStyle: function(){
-				return style
-			},
-			setLayers: function(layer){
-				var flag = true;
-				for(var i=0; i<layers.length; i++){
-					if(layer == layers[i]){
-						flag = !flag
-						break
-					}
-				}
-				if(flag){layers.push(layer);}
-			},
-			getLayers: function(){
-				return layers;
 			},
 			rmFeatures: function() {
 				var selectedFeatures = this.select.getFeatures();
@@ -623,7 +641,7 @@ var Mote = (function()
 			});
 		}
 	 }
-	 Map.prototype.clearPotByType = function(info,callback){ //TODO
+	 Map.prototype.clearPotByType = function(info,callback){
 		var cqlFilter = 'place_id=' + this.placeId;
 		 if(info.types){
 			 cqlFilter = cqlFilter + ' and icon in ('
@@ -760,16 +778,17 @@ var Mote = (function()
 		 return configAlphaAreaLayer.get('styleTextVisible');
 	 }
 	 Map.prototype.getPointByClick = function(callback){
-		    var condition = ol.events.condition.singleClick;
-			this.select = this.selectByInteraction([configPotLayer],condition);
-			this.select.select.on('select', function(e) {
+		if(!self.select.poi){
+			self.select.poi = new Object();
+		}
+			self.select.poi['click'] = this.selectByInteraction('POI','click');
+			self.select.poi['click'].select.on('select', function(e) {
 				if(e.selected.length != 0) {  
 					var selectInfo = e.selected[0];
 				    callback && callback(selectInfo);
 				}			
 				
 			});
-			//self.rmInteraction(select.select);
 	 }
 	 Map.prototype.deletePoint = function(point, callback){
 		 var newFeature = new ol.Feature();
@@ -784,19 +803,20 @@ var Mote = (function()
 			}
 		});
 		//消除选择
-		self.rmInteraction(self.select.select);
+		self.rmInteraction(self.select.poi['click'].select);
 	 } 
 	 Map.prototype.getAreaByClick = function(callback){
-		    var condition = ol.events.condition.singleClick;
-			this.select = this.selectByInteraction([configAreaLayer],condition);
-			this.select.select.on('select', function(e) {
-				if(e.selected.length != 0) {  
-					var selectInfo = e.selected[0];
-				    callback && callback(selectInfo);
-				}			
-				
-			});
-			//self.rmInteraction(select.select);
+		if(!self.select.area){
+			self.select.area = new Object();
+		}
+		self.select.area['click'] = this.selectByInteraction('AREA','click');
+		self.select.area['click'].select.on('select', function(e) {
+			if(e.selected.length != 0) {  
+				var selectInfo = e.selected[0];
+				callback && callback(selectInfo);
+			}			
+			
+		});
 	 }
 	 Map.prototype.deleteArea = function(area, callback){
 		var newFeature = new ol.Feature();
@@ -810,19 +830,20 @@ var Mote = (function()
 			}
 		});
 		//消除选择
-		self.rmInteraction(self.select.select);
+		self.rmInteraction(self.select.area['click'].select);
 	 }
 	 Map.prototype.getAlphaAreaByClick = function(callback){
-		    var condition = ol.events.condition.singleClick;
-			this.select = this.selectByInteraction([configAlphaAreaLayer],condition);
-			this.select.select.on('select', function(e) {
-				if(e.selected.length != 0) {  
-					var selectInfo = e.selected[0];
-				    callback && callback(selectInfo);
-				}			
-				
-			});
-			//self.rmInteraction(select.select);
+		if(!self.select.alphaarea){
+			self.select.alphaarea = new Object();
+		}
+		self.select.alphaarea['click'] = this.selectByInteraction('AlphaAREA','click');
+		self.select.alphaarea['click'].select.on('select', function(e) {
+			if(e.selected.length != 0) {  
+				var selectInfo = e.selected[0];
+				callback && callback(selectInfo);
+			}			
+			
+		});
 	 }
 	 Map.prototype.deleteAlphaArea = function(area, callback){
 		var newFeature = new ol.Feature();
@@ -836,7 +857,7 @@ var Mote = (function()
 			}
 		});
 		//消除选择
-		self.rmInteraction(self.select.select);
+		self.rmInteraction(self.select.alphaarea['click'].select);
 	 }
 	 
 	 this.init(this.target);
@@ -1227,9 +1248,11 @@ var Mote = (function()
 		 map.addOverlay(self.overlay);
 		  
 		 if(self.overlay){
-			var condition = ol.events.condition.singleClick;
-			self.selectPointerMove = self.selectByInteraction([AssetLocateLayer],condition);
-			self.selectPointerMove.select.on('select', function(e) {
+			if(!self.select.locate){
+				self.select.locate = new Object();
+			}
+			self.select.locate['click'] = self.selectByInteraction('Locate','click');
+			self.select.locate['click'].select.on('select', function(e) {
 			if (e.selected[0] != null){
 				//if(self.getZoom() > 17){
 					self.makePopupMsg(e.selected[0],popup.content);
@@ -1304,11 +1327,12 @@ var Mote = (function()
 	 }
 	 
 	 Map.prototype.locatorMouseEvent = function(eventType,callback){
-		var condition = ol.events.condition.pointerMove;
-		self.select = self.selectByInteraction([AssetLocateLayer],condition);
-		self.select.select.on('select', function(e) {
-			if(e.selected.length != 0){
-				self.select.setStyle('Locate');
+		if(!self.select.locate){
+			self.select.locate = new Object();
+		}
+		self.select.locate['move'] = self.selectByInteraction('Locate','move');
+		self.select.locate['move'].select.on('select', function(e) {
+			if(e.selected.length != 0) {  
 				var info = new Object();
 				info.name = e.selected[0].get('name');
 				info.building_id = e.selected[0].get('building_id');
@@ -1389,11 +1413,12 @@ var Mote = (function()
 		changeFloorAction();
 	 }
 	 Map.prototype.trailMouseEvent = function(eventType,callback){
-		var condition = ol.events.condition.pointerMove;
-		self.select = self.selectByInteraction([AssetRoutePointLayer],condition);
-		self.select.select.on('select', function(e) {
-			if(e.selected.length != 0){
-				self.select.setStyle('RoutePoint');
+		if(!self.select.route){
+			self.select.route = new Object();
+		}
+		self.select.route['move'] = self.selectByInteraction('RoutePoint','move');
+		self.select.route['move'].select.on('select', function(e) {
+			if(e.selected.length != 0) { 
 				var info = new Object();
 				info.time = e.selected[0].get('time');
 				callback && callback(info);
