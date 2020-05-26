@@ -169,7 +169,7 @@ namespace HYIT.Alarm.Con
           {
             if (!double.TryParse(realdata.Value.ToString(), out tagValue))
             {
-                continue;
+              continue;
             }
             if (tagValue > 25 && tagValue <= 50)
             {
@@ -324,9 +324,18 @@ namespace HYIT.Alarm.Con
               #endregion
             }
             else {
-              //数据正常消除标记位,消除报警标记
-              _cache.RemoveCache(cachKey);
-              _cache.RemoveCache(cachKeyStatus);
+              if (status == Const.ALARM_LEVLE_1 || status == Const.ALARM_LEVLE_2)
+              {
+                //前一次报警这一次 数据正常消除标记位,消除报警标记 更新状态
+                EFOperation.UpdateTag(new Models.Tag()
+                {
+                  TagName = tagName,
+                  TagValue = tagValue.ToString(),
+                  AlarmFlag = Const.ALARM_LEVLE_0
+                });
+                _cache.RemoveCache(cachKey);
+                _cache.RemoveCache(cachKeyStatus);
+              }
             }
           }
           //重大危险源判断方式
@@ -343,8 +352,8 @@ namespace HYIT.Alarm.Con
             }
             flag = _cache.GetCache<string>(cachKey);
             status = _cache.GetCache<string>(cachKeyStatus);
-            
-            if ((tag.HighLimitEnable  && tagValue > highLimit) || (tag.LowLimitEnable && tagValue < lowLimit))
+
+            if ((tag.HighLimitEnable && tagValue > highLimit) || (tag.LowLimitEnable && tagValue < lowLimit))
             {
               if (flag != null && flag == Const.ALARM_LEVLE_1)
               {
@@ -368,17 +377,19 @@ namespace HYIT.Alarm.Con
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_1, cachKeyStatus, DateTime.Now.AddHours(10));
                   AddAlarmLog(record);
                 }
-                else {
+                else
+                {
                   //已经是报警状态，消除报警标记位
                   _cache.RemoveCache(cachKey);
                 }
               }
-              else {
+              else
+              {
                 if (status != Const.ALARM_LEVLE_1)
                 {
                   //前一次报警0，标记0，报警消除
                   _cache.RemoveCache(cachKeyStatus);
-                  _cache.RemoveCache(cachKey);                
+                  _cache.RemoveCache(cachKey);
                 }
                 else
                 {
@@ -387,7 +398,20 @@ namespace HYIT.Alarm.Con
                 }
               }
             }
-     
+            else {
+              if (status == Const.ALARM_LEVLE_1 || status == Const.ALARM_LEVLE_2)
+              {
+                //前一次报警这一次 数据正常消除标记位,消除报警标记 更新状态
+                EFOperation.UpdateTag(new Models.Tag()
+                {
+                  TagName = tagName,
+                  TagValue = tagValue.ToString(),
+                  AlarmFlag = Const.ALARM_LEVLE_0
+                });
+                _cache.RemoveCache(cachKey);
+                _cache.RemoveCache(cachKeyStatus);
+              }
+            }
           }
           //aList.Add(new Alarm() { LongName = item.TagLongName, TagId = item.TagId.ToString(), TagValue = realdata.Value.ToString() });
 
