@@ -105,7 +105,7 @@ async function fitContent(info,layerName,layerType)
 			}
 		}
 		if(!data.tag.tagShortName)
-			data.tag.tagShortName='未配置';
+			data.tag.tagShortName='/';
 		for(let d of ares.data)
 		{
 			if(d.orgName==data.org.orgName){
@@ -124,7 +124,7 @@ async function fitContent(info,layerName,layerType)
 			data=res.data.data.length>0?res.data.data[0]:{};
 			if(!data.equipment)
 			{
-				data.equipment={equipmentName:'点位未关联主设备',shortName:''};
+				data.equipment={equipmentName:'/',shortName:'/'};
 			}
 			if(data.rtspUrl)
 			{
@@ -224,7 +224,7 @@ async function fitContent(info,layerName,layerType)
 			}
 		}
 		if(!data.tag.tagShortName)
-			data.tag.tagShortName='未配置';
+			data.tag.tagShortName='/';
 		for(let d of ares.data)
 		{
 			if(d.orgName==data.org.orgName){

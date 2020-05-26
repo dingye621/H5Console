@@ -64,8 +64,9 @@
 <script type="text/html" id="templateSelect">
     
 	<ul class="leftMenu btn-group-vertical">
-		<li id="layer-select" class="btn btn-default"  >
-			<span class="glyphicon glyphicon-retweet"></span>
+		<li id="layer-select" class="btn btn-default">
+			<img src='images/switch.svg' class='alarm-img'/>
+			<!-- <span class="glyphicon glyphicon-retweet"></span> -->
 		</li>
 	</ul>
 	<ul class="layer-select btn-group-vertical">
@@ -101,8 +102,8 @@
 					</div>
 					<div id="tab-2" class="tab-pane">
 							<table class="table table-striped t-body">
-								<tr><td>监测点位号：</td><td><%= data.tag.tagName %></td></tr>
-								<tr><td>监测点数值：</td><td><%= data.tagValue %></td></tr>
+								<tr><td>采集位号：</td><td><%= data.tag.tagName %></td></tr>
+								<tr><td>实时数值：</td><td><%= data.tagValue %></td></tr>
 								<tr><td>是否报警：</td><td>
 								<% if(data.isAlarm=="1"){%>
 								<img src='images/red.png' class='alarm-img'/>
@@ -144,8 +145,8 @@
 					</div>
 					<div id="tab-2" class="tab-pane">
 							<table class="table table-striped t-body">
-								<tr><td>监测点位号：</td><td><%= data.tag.tagName %></td></tr>
-								<tr><td>监测点数值：</td><td><%= data.tagValue %></td></tr>
+								<tr><td>采集位号：</td><td><%= data.tag.tagName %></td></tr>
+								<tr><td>实时数值：</td><td><%= data.tagValue %></td></tr>
 								<tr><td>是否报警：</td><td>
 								<% if(data.isAlarm=="1"){%>
 								<img src='images/red.png' class='alarm-img'/>
@@ -157,8 +158,8 @@
 					</div>
 					<div id="tab-3" class="tab-pane">
 							<table class="table table-striped t-body">
-								<tr><td>上次报警时间：</td><td></td></tr>
-								<tr><td>今年报警次数：</td><td></td></tr>
+								<tr><td>上次报警时间：</td><td><%= data.alarmTime==null? '/': data.alarmTime %></td></tr>
+								<tr><td>今年报警次数：</td><td><%= data.alarmCount %></td></tr>
 							</table>
 					</div>
 				</div>
