@@ -23,8 +23,10 @@ namespace HYIT.Alarm.Con
     private static string _password { get; set; }
     private static bool _runStatus { get; set; } //任务运行状态
     private static CacheClass _cache { get; set; }
+    static Random r { get; set; }
+    private static int _random { get; set; }
 
-   // private static EFOperation db { get; set; }
+    // private static EFOperation db { get; set; }
 
 
 
@@ -33,9 +35,11 @@ namespace HYIT.Alarm.Con
       _serverName = Configs.GetValue("ServerName");
       _userName = Configs.GetValue("UserName");
       _password = Configs.GetValue("Password");
+      _random= Configs.GetValue<int>("Random");
       _runStatus = false;
       _cache = new CacheClass();
-     // db = new EFOperation();
+      // db = new EFOperation();
+      r = new Random();
 
     }
 
@@ -112,7 +116,8 @@ namespace HYIT.Alarm.Con
       // System.Threading.Thread.Sleep(5000);
       // Console.WriteLine("task end  " +DateTime.Now.ToLongTimeString());
       // return;
-
+      int count = 0;
+      int count2 = 0;
       Common.StartAPI();
       var connector = new DbConnector()
       {
@@ -145,7 +150,9 @@ namespace HYIT.Alarm.Con
       string tagName = string.Empty;
       Tag tag = null;
       AlarmRecord record = null;
-      Random r = new Random();
+
+      var tagNameList = EFOperation.GetTagNameList();
+
       foreach (var item in ret)
       {
         var elm = item as ITagElement;
@@ -153,24 +160,31 @@ namespace HYIT.Alarm.Con
         {
           cachKey = Const.ALARM_FLAG_KEY + item.TagLongName;
           cachKeyStatus = Const.ALARM_STATUS_KEY + item.TagLongName;
+          flag = _cache.GetCache<string>(cachKey);
+          status = _cache.GetCache<string>(cachKeyStatus);
           var realdata = DataIO.Snapshot(connector, elm);
           tagName = StaticFunc.FilterString(item.TagLongName.ToString());
+          if (!tagNameList.Contains(tagName))
+            continue;
           if (string.IsNullOrEmpty(tagName))
             continue;
-          if (r.Next(1, 20) == 8)
+          if (!double.TryParse(realdata.Value.ToString(), out tagValue))
+          {
+            continue;
+          }
+          count2++;
+          if (r.Next(1, _random) == 8)
           {
               EFOperation.UpdateTag(new Models.Tag()
               {
               TagName = tagName,
               TagValue = realdata.Value.ToString(),
-              });
+              }, flag, status);
+            count++;
           }
           if (!item.TagLongName.Contains("MTBE"))//有毒可燃判断方式
           {
-            if (!double.TryParse(realdata.Value.ToString(), out tagValue))
-            {
-              continue;
-            }
+           
             if (tagValue > 25 && tagValue <= 50)
             {
               #region 25 - 50
@@ -193,10 +207,11 @@ namespace HYIT.Alarm.Con
                     TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_1
-                  });
+                  }, flag, status);
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_1, cachKeyStatus, DateTime.Now.AddHours(10));
                   AddAlarmLog(record);
+                  count++;
                 }
                 else
                 {
@@ -221,10 +236,11 @@ namespace HYIT.Alarm.Con
                     TagName = tagName,
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_1
-                  });
+                  }, flag, status);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_1, cachKeyStatus, DateTime.Now.AddHours(10));
                   _cache.RemoveCache(cachKey);
                   AddAlarmLog(record);
+                  count++;
                 }
                 else
                 {
@@ -250,8 +266,7 @@ namespace HYIT.Alarm.Con
             else if (tagValue > 50)
             {
               #region >50
-              flag = _cache.GetCache<string>(cachKey);
-              status = _cache.GetCache<string>(cachKeyStatus);
+             
               if (flag != null && flag == Const.ALARM_LEVLE_1)
               {
                 if (status != Const.ALARM_LEVLE_1 && status != Const.ALARM_LEVLE_2)
@@ -269,10 +284,11 @@ namespace HYIT.Alarm.Con
                     TagName = tagName,
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_2
-                  });
+                  }, flag, status);
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_2, cachKeyStatus, DateTime.Now.AddHours(10));
                   AddAlarmLog(record);
+                  count++;
                 }
                 else
                 {
@@ -297,10 +313,11 @@ namespace HYIT.Alarm.Con
                     TagName = StaticFunc.FilterString(item.TagLongName.ToString()),
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_2
-                  });
+                  }, flag, status);
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_2, cachKeyStatus, DateTime.Now.AddHours(10));
                   AddAlarmLog(record);
+                  count++;
                 }
                 else
                 {
@@ -323,7 +340,7 @@ namespace HYIT.Alarm.Con
               }
               #endregion
             }
-            else {
+            else if (tagValue<25){
               if (status == Const.ALARM_LEVLE_1 || status == Const.ALARM_LEVLE_2)
               {
                 //前一次报警这一次 数据正常消除标记位,消除报警标记 更新状态
@@ -332,9 +349,10 @@ namespace HYIT.Alarm.Con
                   TagName = tagName,
                   TagValue = tagValue.ToString(),
                   AlarmFlag = Const.ALARM_LEVLE_0
-                });
+                },flag,status);
                 _cache.RemoveCache(cachKey);
                 _cache.RemoveCache(cachKeyStatus);
+                count++;
               }
             }
           }
@@ -372,10 +390,11 @@ namespace HYIT.Alarm.Con
                     TagName = tagName,
                     TagValue = tagValue.ToString(),
                     AlarmFlag = Const.ALARM_LEVLE_1
-                  });
+                  },flag,status);
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_1, cachKeyStatus, DateTime.Now.AddHours(10));
                   AddAlarmLog(record);
+                  count++;
                 }
                 else
                 {
@@ -401,15 +420,19 @@ namespace HYIT.Alarm.Con
             else {
               if (status == Const.ALARM_LEVLE_1 || status == Const.ALARM_LEVLE_2)
               {
-                //前一次报警这一次 数据正常消除标记位,消除报警标记 更新状态
-                EFOperation.UpdateTag(new Models.Tag()
+                if (r.Next(1, _random) == 8)
                 {
-                  TagName = tagName,
-                  TagValue = tagValue.ToString(),
-                  AlarmFlag = Const.ALARM_LEVLE_0
-                });
-                _cache.RemoveCache(cachKey);
-                _cache.RemoveCache(cachKeyStatus);
+                  //前一次报警这一次 数据正常消除标记位,消除报警标记 更新状态
+                  EFOperation.UpdateTag(new Models.Tag()
+                  {
+                    TagName = tagName,
+                    TagValue = tagValue.ToString(),
+                    AlarmFlag = Const.ALARM_LEVLE_0
+                  },flag,status);
+                  _cache.RemoveCache(cachKey);
+                  _cache.RemoveCache(cachKeyStatus);
+                  count++;
+                }
               }
             }
           }
@@ -420,6 +443,8 @@ namespace HYIT.Alarm.Con
       connector.Disconnect();
 
       Common.StopAPI();
+      Console.WriteLine("update:"+count);
+      Console.WriteLine("valid point:" + count2);
     }
     private static void AddAlarmLog(AlarmRecord record)
     {
@@ -427,6 +452,8 @@ namespace HYIT.Alarm.Con
       Console.WriteLine(s);
       LogInfo.AlarmInfo.Info(s);
     }
+
+
 
     public static void Load()
     {
