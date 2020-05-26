@@ -3,6 +3,7 @@ var type = req['tp'];
 var tagName = req['tn'];
 var la = req['la']; //纬度
 var lo = req['lo']; //经度
+var poisonArr = [true,true,true];
 
 window.onresize = function () {
 	var height =$(window).height();
@@ -652,38 +653,65 @@ function layerSelectShow()
 $("input[name='poison'],input[name='fire'],input[name='area']").prop('checked', true);
 
 $("input[name='poison'],input[name='fire'],input[name='area']").click(function(){
+	//debugger
 	
+
+	if(this.name=='poison')
+	{
+		poisonArr[0]=!poisonArr[0];
+	}
+	if(this.name=='fire')
+	{
+		poisonArr[1]=!poisonArr[1];
+	}
+	if(this.name=='area')
+	{
+		poisonArr[2]=!poisonArr[2];
+	}
+	console.log(poisonArr);
 	//先清除所有的
 	tmap.rmPoint();
+	tmap.rmPolygon();
 	//选中状态可参考下列2类
 	//console.log('ch1',$("input[name='poison']").prop('checked'));  
 	//console.log('ch2f',$("input[name='fire']").is(':checked'));
 	//判断选中状态
-	var fireStatus=$("input[name='fire']").is(':checked');
-	var poisonStatus=$("input[name='poison']").is(':checked');
-	var areaStatus=$("input[name='area']").is(':checked');
-	if($("input[name='fire']").is(':checked'))
-	{
-		getPOIByType([globalConfig.poison.load[0]]);
-	}
-	if($("input[name='poison']").is(':checked'))
-	{
-		getPOIByType([globalConfig.poison.load[1]]);
-	}
-	if(fireStatus&&poisonStatus)
+	// var fireStatus=$("input[name='fire']").is(':checked');
+	// var poisonStatus=$("input[name='poison']").is(':checked');
+	// var areaStatus=$("input[name='area']").is(':checked');
+	// if($("input[name='fire']").is(':checked'))
+	// {
+	// 	getPOIByType([globalConfig.poison.load[0]]);
+	// }
+	// if($("input[name='poison']").is(':checked'))
+	// {
+	// 	getPOIByType([globalConfig.poison.load[1]]);
+	// }
+	// if(fireStatus&&poisonStatus)
+	// {
+	// 	getPOIByType(globalConfig.poison.load);
+	// }
+	// hideArea();
+	if(poisonArr[0]&&!poisonArr[1])
+	getPOIByType([globalConfig.poison.load[0]]);
+	if(poisonArr[1]&&!poisonArr[0])
+	getPOIByType([globalConfig.poison.load[1]]);
+	if(poisonArr[1]&&poisonArr[0])
 	{
 		getPOIByType(globalConfig.poison.load);
 	}
-	hideArea();
+	if(poisonArr[2])
+	getAreaByType([globalConfig.defaultColor]);
+
 });
-$('#fireBtn').click(function(){
-	getPOIByType(globalConfig.poison.load[0]);
-	layerSelectHide();
-});
-$('#poisonBtn').click(function(){
-	getPOIByType(globalConfig.poison.load[1]);
-	layerSelectHide();
-});
+// $('#fireBtn').click(function(){
+// 	getPOIByType(globalConfig.poison.load[0]);
+// 	layerSelectHide();
+// });
+// $('#poisonBtn').click(function(){
+// 	getPOIByType(globalConfig.poison.load[1]);
+// 	layerSelectHide();
+// });
 
 //hse的应急物资List重组
 function filterEmerList(list)
@@ -911,7 +939,7 @@ async function resetArea()
 	var res = await getAreas();
 	if(res.data && res.data.length>0)
 	{
-		initArea(res.data,'#FFFF3030');
+		initArea(res.data,globalConfig.defaultColor);
 		//initArea(res.data,globalConfig.hidden.load[0]);
 		//initArea(res.data,globalConfig.work.load[0]);
 	}

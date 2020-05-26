@@ -18,6 +18,7 @@
 			wnCode:'WN',//西北角
 			wsCode:'WS',//西南角
 			enCode:'EN',//东北角
+			defaultColor:['#FFFF3030']//基础区域颜色  黄色
 	};
 	return w;
 })(window || {});

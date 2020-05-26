@@ -76,9 +76,9 @@
 		<li class="poison-li">
 			<input  type="checkbox" name="fire" value=""/><span id='fireName'>可燃</span>
 		</li>
-		<!-- <li class="poison-li">
+		<li class="poison-li">
 			<input  type="checkbox" name="area" value=""/><span id='areaName'>区域</span>
-		</li> -->
+		</li>
 	</ul>
 </script>
 <!--重大危险源点位template模版-->
@@ -115,8 +115,8 @@
 					</div>
 					<div id="tab-3" class="tab-pane">
 							<table class="table table-striped t-body">
-								<tr><td>上次报警时间：</td><td></td></tr>
-								<tr><td>今年报警次数：</td><td></td></tr>
+								<tr><td>上次报警时间：</td><td><%= data.alarmTime==null? '/': data.alarmTime %></td></tr>
+								<tr><td>今年报警次数：</td><td><%= data.alarmCount %></td></tr>
 							</table>
 					</div>
 				</div>
