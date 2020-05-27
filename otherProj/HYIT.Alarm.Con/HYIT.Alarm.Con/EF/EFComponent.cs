@@ -43,7 +43,7 @@ namespace HYIT.Alarm.Con.EF
       }
     }
 
-    public static void UpdateTag(Tag tag)
+    public static void UpdateTag(Tag tag,string flag ,string status)
     {
       using (ApplicationDbContext _Db = new ApplicationDbContext())
       {
@@ -53,7 +53,8 @@ namespace HYIT.Alarm.Con.EF
           existing.TagValue = tag.TagValue;
           if(!string.IsNullOrEmpty(tag.AlarmFlag))
           existing.AlarmFlag = tag.AlarmFlag;
-          LogInfo.AlarmInfo.InfoFormat("alarm update:{0}", tag.ToJson());
+          AddUpdateLog(tag,flag,status);
+         // LogInfo.AlarmInfo.InfoFormat("alarm update:{0}", tag.ToJson());
           _Db.SaveChanges();
         }
       }
@@ -64,6 +65,21 @@ namespace HYIT.Alarm.Con.EF
       {
         return _Db.Tags.FirstOrDefault(c => c.TagName == tagName);
       }
+    }
+
+    public static List<string> GetTagNameList()
+    {
+      using (ApplicationDbContext _Db = new ApplicationDbContext())
+      {
+        return _Db.Tags.Select(x=>x.TagName).ToList();
+      }
+    }
+
+    private static void AddUpdateLog(Tag tag, string flag, string status)
+    {
+      string s = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}:update:{tag.ToJson()}:flag:{flag}:status:{status}";
+      Console.WriteLine(s);
+      LogInfo.AlarmInfo.Info(s);
     }
   }
 }

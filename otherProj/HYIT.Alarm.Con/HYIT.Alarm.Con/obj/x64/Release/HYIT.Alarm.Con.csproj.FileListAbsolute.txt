@@ -82,9 +82,9 @@ C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\bin\x64\Release\p
 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\bin\x64\Release\pSpaceAPI64.dll
 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\bin\x64\Release\ACE5.6.9_VC964.dll
 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\bin\x64\Release\psNetClient64.dll
-C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\obj\x64\Release\HYIT.Alarm.Con.csprojAssemblyReference.cache
 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\obj\x64\Release\HYIT.Alarm.Con.exe.manifest
 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\obj\x64\Release\HYIT.Alarm.Con.application
 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\obj\x64\Release\HYIT.Alarm.Con.csproj.CopyComplete
 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\obj\x64\Release\HYIT.Alarm.Con.exe
 C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\obj\x64\Release\HYIT.Alarm.Con.pdb
+C:\MyCode\HY\H5Console\otherProj\HYIT.Alarm.Con\HYIT.Alarm.Con\obj\x64\Release\HYIT.Alarm.Con.csprojAssemblyReference.cache
