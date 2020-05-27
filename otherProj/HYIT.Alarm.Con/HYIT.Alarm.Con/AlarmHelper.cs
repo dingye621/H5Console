@@ -420,8 +420,7 @@ namespace HYIT.Alarm.Con
             else {
               if (status == Const.ALARM_LEVLE_1 || status == Const.ALARM_LEVLE_2)
               {
-                if (r.Next(1, _random) == 8)
-                {
+                
                   //前一次报警这一次 数据正常消除标记位,消除报警标记 更新状态
                   EFOperation.UpdateTag(new Models.Tag()
                   {
@@ -432,7 +431,7 @@ namespace HYIT.Alarm.Con
                   _cache.RemoveCache(cachKey);
                   _cache.RemoveCache(cachKeyStatus);
                   count++;
-                }
+                
               }
             }
           }

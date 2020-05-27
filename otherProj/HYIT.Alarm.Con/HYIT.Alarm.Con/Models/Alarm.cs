@@ -32,6 +32,15 @@ namespace HYIT.Alarm.Con
     [StringLength(50)]
     [Column("Flag")]
     public string AlarmFlag { get; set; }
+
+    [Column("IS_DEAL")]
+    public int? IsDeal { get; set; }
+    [StringLength(50)]
+    [Column("DEALER")]
+    public string Dealer { get; set; }
+
+    [Column("DEAL_TIME")]
+    public DateTime? DealTime { get; set; }
   }
 }
 
