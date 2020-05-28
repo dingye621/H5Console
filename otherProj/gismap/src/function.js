@@ -3,7 +3,7 @@ var type = req['tp'];
 var tagName = req['tn'];
 var la = req['la']; //纬度
 var lo = req['lo']; //经度
-var poisonArr = [true,true,true];
+var poisonArr = [true,true,true,true];
 
 window.onresize = function () {
 	var height =$(window).height();
@@ -74,12 +74,21 @@ function filterArea(areaList,areaStrList)
 	return areaRes;
 }
 
-// 模板渲染
-if(document.getElementById('templateSelect'))
+// 按参数模板渲染
+function drawTemplate()
 {
-	var templateSelect= document.getElementById('templateSelect').innerHTML;
-	document.getElementById('fix').innerHTML = template(templateSelect,{data:null});
+	if(type==1&&document.getElementById('templateSelect'))
+	{
+		var templateSelect= document.getElementById('templateSelect').innerHTML;
+		document.getElementById('fix').innerHTML = template(templateSelect,{data:null});
+	}
+	if(type==2&&document.getElementById('templateSelectDanger'))
+	{
+		var templateSelect= document.getElementById('templateSelectDanger').innerHTML;
+		document.getElementById('fix').innerHTML = template(templateSelect,{data:null});
+	}
 }
+drawTemplate();
 
 //填充弹窗内容
 async function fitContent(info,layerName,layerType)
@@ -269,6 +278,7 @@ function layerOpen(info)
 	{
 		layerType=globalConfig.danger.type;
 		layerName=globalConfig.danger.name;
+		area=['320px', '246px'];
 	}
 	if(type==globalConfig.hidden.type)
 	//if(globalConfig.hidden.load.includes(info.color))
@@ -556,7 +566,8 @@ function getAreaByName(names){
 	}
 // 根据坐标和层级加载地图
 function loadMapByLonLatZoom(){
-	var lon = 119.02492270,lat = 33.38843574,zoom = 18;// minZoom 15,maxZoom 24
+	//var lon = 119.02492270,lat = 33.38843574,zoom = 18;// minZoom 15,maxZoom 24
+	var lon = 119.02492270,lat = 33.38800574,zoom=18;
 	if(lo&&la)
 	{
 		lon=lo;
@@ -568,6 +579,15 @@ function loadMapByLonLatZoom(){
 	});
 }	
 loadMapByLonLatZoom();
+$('#point').click(function(){
+	getLonLatByClick();
+});
+function getLonLatByClick(){
+	tmap.getCoordByClick(function(coord){
+		  alert("lon: " + coord.lon + ", lat:" + coord.lat);
+	});
+	
+}
 // 新增点&保存(输入坐标)
 function drawPotByCoords(i){
 	var info = {
@@ -653,9 +673,6 @@ function layerSelectShow()
 $("input[name='poison'],input[name='fire'],input[name='area']").prop('checked', true);
 
 $("input[name='poison'],input[name='fire'],input[name='area']").click(function(){
-	//debugger
-	
-
 	if(this.name=='poison')
 	{
 		poisonArr[0]=!poisonArr[0];
@@ -675,23 +692,6 @@ $("input[name='poison'],input[name='fire'],input[name='area']").click(function()
 	//选中状态可参考下列2类
 	//console.log('ch1',$("input[name='poison']").prop('checked'));  
 	//console.log('ch2f',$("input[name='fire']").is(':checked'));
-	//判断选中状态
-	// var fireStatus=$("input[name='fire']").is(':checked');
-	// var poisonStatus=$("input[name='poison']").is(':checked');
-	// var areaStatus=$("input[name='area']").is(':checked');
-	// if($("input[name='fire']").is(':checked'))
-	// {
-	// 	getPOIByType([globalConfig.poison.load[0]]);
-	// }
-	// if($("input[name='poison']").is(':checked'))
-	// {
-	// 	getPOIByType([globalConfig.poison.load[1]]);
-	// }
-	// if(fireStatus&&poisonStatus)
-	// {
-	// 	getPOIByType(globalConfig.poison.load);
-	// }
-	// hideArea();
 	if(poisonArr[0]&&!poisonArr[1])
 	getPOIByType([globalConfig.poison.load[0]]);
 	if(poisonArr[1]&&!poisonArr[0])
@@ -702,7 +702,49 @@ $("input[name='poison'],input[name='fire'],input[name='area']").click(function()
 	}
 	if(poisonArr[2])
 	getAreaByType([globalConfig.defaultColor]);
-
+});
+$("input[name='hazard'],input[name='work'],input[name='clean'],input[name='darea']").prop('checked', true);
+$("input[name='hazard'],input[name='work'],input[name='clean'],input[name='darea']").click(function(){
+	if(this.name=='hazard')
+	{
+		poisonArr[0]=!poisonArr[0];
+	}
+	if(this.name=='work')
+	{
+		poisonArr[1]=!poisonArr[1];
+	}
+	if(this.name=='clean')
+	{
+		poisonArr[2]=!poisonArr[2];
+	}
+	if(this.name=='darea')
+	{
+		poisonArr[3]=!poisonArr[3];
+	}
+	console.log(poisonArr);
+	//先清除所有的
+	tmap.rmPoint();
+	tmap.rmPolygon();
+	//选中状态可参考下列2类
+	//console.log('ch1',$("input[name='poison']").prop('checked'));  
+	//console.log('ch2f',$("input[name='fire']").is(':checked'));
+	if(poisonArr[0]&&!poisonArr[1]&&!poisonArr[2])   //100
+	getPOIByType([globalConfig.danger.load[1]]);
+	if(poisonArr[0]&&poisonArr[1]&&!poisonArr[2])     //110
+	getPOIByType([globalConfig.danger.load[1],globalConfig.danger.load[2]]);
+	if(poisonArr[0]&&poisonArr[1]&&poisonArr[2])     //111
+	//getPOIByType([globalConfig.poison.load[1],globalConfig.poison.load[2],globalConfig.poison.load[3]]);
+	getPOIByType(globalConfig.danger.load);
+	if(!poisonArr[0]&&!poisonArr[1]&&poisonArr[2])    //001
+	getPOIByType([globalConfig.danger.load[3]]);
+	if(!poisonArr[0]&&poisonArr[1]&&poisonArr[2])    //011
+	getPOIByType([globalConfig.danger.load[2],globalConfig.danger.load[3]]);
+	if(!poisonArr[0]&&poisonArr[1]&&!poisonArr[2])    //010
+	getPOIByType([globalConfig.danger.load[2]]);
+	//区域
+	if(poisonArr[3])
+	getAreaByType([globalConfig.defaultColor]);
+	
 });
 // $('#fireBtn').click(function(){
 // 	getPOIByType(globalConfig.poison.load[0]);
@@ -841,7 +883,18 @@ async function resetPOI()
 			info.latitude=poi.videoLatitude;
 			info.name=poi.cameraName;
 			info.remarks=poi.cameraId;
-			info.type=globalConfig.danger.load[0];
+			if(poi.useObject!=null)
+			{
+				if(poi.useObject.code=globalConfig.danger.code[3])
+				info.type=globalConfig.danger.load[3];
+				if(poi.useObject.code=globalConfig.danger.code[1])
+				info.type=globalConfig.danger.load[1];
+				if(poi.useObject.code=globalConfig.danger.code[2])
+				info.type=globalConfig.danger.load[2];	
+			}
+			else{
+				info.type=globalConfig.danger.load[0];
+			}
 			if(info.longitude && info.latitude )
 			{
 				console.log('drawPoi',info);
@@ -1019,10 +1072,7 @@ function getAreasByClickReal(){
 //根据参数加载点位
 async function loadPointByParams()
 {
-	
 	$('#layer-select').hide();
-
-
 
 if(tagName)
 {
@@ -1050,6 +1100,9 @@ if(tagName)
 	}
 	else if(type == globalConfig.danger.type)
 	{
+		
+		$('.poison-li').show();
+		$('#layer-select').show();
 		getPOIByType(globalConfig.danger.load);
 		//加载区域
 		tmap.loadPolygon();

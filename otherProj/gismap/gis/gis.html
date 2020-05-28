@@ -81,6 +81,29 @@
 		</li>
 	</ul>
 </script>
+<script type="text/html" id="templateSelectDanger">
+    
+	<ul class="leftMenu btn-group-vertical">
+		<li id="layer-select" class="btn btn-default">
+			<img src='images/switch.svg' class='alarm-img'/>
+			<!-- <span class="glyphicon glyphicon-retweet"></span> -->
+		</li>
+	</ul>
+	<ul class="layer-select btn-group-vertical">
+		<li class="poison-li">
+			<input  type="checkbox" name="hazard" value=""/><span id='hazard'>重大危险源监测用</span>
+		</li>
+		<li class="poison-li">
+			<input  type="checkbox" name="work" value=""/><span id='work'>工作场所</span>
+		</li>
+		<li class="poison-li">
+			<input  type="checkbox" name="clean" value=""/><span id='clean'>保卫用</span>
+		</li>
+		<li class="poison-li">
+			<input  type="checkbox" name="darea" value=""/><span id='darea'>区域</span>
+		</li>
+	</ul>
+</script>
 <!--重大危险源点位template模版-->
 <script type="text/html" id="templatePosition">
     <ul>
@@ -188,6 +211,7 @@
 								<tr><td>型号：</td><td><%= data.cameraType %></td></tr>
 								<!-- <tr><td>用途：</td><td>未指定</td></tr> -->
 								<tr><td>监测设备名称：</td><td><%= data.equipment.equipmentName %></td></tr>
+								<tr><td>监控类型：</td><td><%= data.type==null?'/':(data.type==0?'枪机':'半球') %></td></tr>
 							</table>
 						</div>
 					</div>

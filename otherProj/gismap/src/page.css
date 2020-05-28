@@ -51,6 +51,10 @@ ul{
 #clear{
     position:fixed; top:10px; left:10px;
 }
+/*一键清除*/
+#point{
+    position:fixed; top:10px; left:190px;
+}
 /*图片大小*/
 .alarm-img{
     width: 14px;;
