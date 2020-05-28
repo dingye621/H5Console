@@ -164,27 +164,31 @@ namespace HYIT.Alarm.Con
           status = _cache.GetCache<string>(cachKeyStatus);
           var realdata = DataIO.Snapshot(connector, elm);
           tagName = StaticFunc.FilterString(item.TagLongName.ToString());
-          if (!tagNameList.Contains(tagName))
+          if (!item.TagLongName.Contains("YDKR") && !item.TagLongName.Contains("MTBE"))
+          {
             continue;
-          if (string.IsNullOrEmpty(tagName))
-            continue;
+          }
           if (!double.TryParse(realdata.Value.ToString(), out tagValue))
           {
             continue;
           }
+          if (!tagNameList.Contains(tagName))
+            continue;
+          if (string.IsNullOrEmpty(tagName))
+            continue;
+        
           count2++;
           if (r.Next(1, _random) == 8)
           {
-              EFOperation.UpdateTag(new Models.Tag()
-              {
+            EFOperation.UpdateTag(new Models.Tag()
+            {
               TagName = tagName,
               TagValue = realdata.Value.ToString(),
-              }, flag, status);
+            }, flag, status);
             count++;
           }
-          if (!item.TagLongName.Contains("MTBE"))//有毒可燃判断方式
+          if (item.TagLongName.Contains("YDKR"))//有毒可燃判断方式
           {
-           
             if (tagValue > 25 && tagValue <= 50)
             {
               #region 25 - 50
@@ -341,6 +345,19 @@ namespace HYIT.Alarm.Con
               #endregion
             }
             else if (tagValue<25){
+              //数据正常随机刷新
+              if (r.Next(1, _random) == 8)
+              {
+                EFOperation.UpdateTag(new Models.Tag()
+                {
+                  TagName = tagName,
+                  TagValue = realdata.Value.ToString(),
+                  AlarmFlag = Const.ALARM_LEVLE_0
+                }, flag, status);
+                count++;
+              }
+
+
               if (status == Const.ALARM_LEVLE_1 || status == Const.ALARM_LEVLE_2)
               {
                 //前一次报警这一次 数据正常消除标记位,消除报警标记 更新状态
@@ -418,6 +435,18 @@ namespace HYIT.Alarm.Con
               }
             }
             else {
+              //数据正常随机消除报警
+              if (r.Next(1, _random) == 8)
+              {
+                EFOperation.UpdateTag(new Models.Tag()
+                {
+                  TagName = tagName,
+                  TagValue = realdata.Value.ToString(),
+                  AlarmFlag = Const.ALARM_LEVLE_0
+                }, flag, status);
+                count++;
+              }
+
               if (status == Const.ALARM_LEVLE_1 || status == Const.ALARM_LEVLE_2)
               {
                 
