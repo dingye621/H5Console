@@ -55,7 +55,11 @@ ul{
 #point{
     position:fixed; top:10px; left:190px;
 }
+/*返回上一页*/
+#point{
+    position:fixed; top:10px; left:10px;
+}
 /*图片大小*/
 .alarm-img{
-    width: 14px;;
+    width: 14px;
 }

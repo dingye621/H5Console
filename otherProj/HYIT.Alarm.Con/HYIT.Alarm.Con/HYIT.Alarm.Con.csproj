@@ -165,6 +165,7 @@
     <Compile Include="Utils\Configs.cs" />
     <Compile Include="Utils\Json.cs" />
     <Compile Include="Utils\Other.cs" />
+    <Compile Include="Utils\QXHttpClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

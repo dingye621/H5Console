@@ -25,6 +25,8 @@ namespace HYIT.Alarm.Con
     private static CacheClass _cache { get; set; }
     static Random r { get; set; }
     private static int _random { get; set; }
+    private static int lightTimes { get; set; }
+    private static string _url { get; set; }
 
     // private static EFOperation db { get; set; }
 
@@ -32,10 +34,12 @@ namespace HYIT.Alarm.Con
 
     static AlarmHelper()
     {
+      _url = Configs.GetValue("LightUrl");
       _serverName = Configs.GetValue("ServerName");
       _userName = Configs.GetValue("UserName");
       _password = Configs.GetValue("Password");
       _random= Configs.GetValue<int>("Random");
+      lightTimes = Configs.GetValue<int>("LightTimes");
       _runStatus = false;
       _cache = new CacheClass();
       // db = new EFOperation();
@@ -155,6 +159,8 @@ namespace HYIT.Alarm.Con
 
       foreach (var item in ret)
       {
+        if(string.IsNullOrEmpty(_cache.GetCache<string>(Const.ALARM_LIGHT)))
+          Off();//关闭报警灯
         var elm = item as ITagElement;
         if (elm != null)
         {
@@ -215,6 +221,7 @@ namespace HYIT.Alarm.Con
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_1, cachKeyStatus, DateTime.Now.AddHours(10));
                   AddAlarmLog(record);
+                  On();//亮起报警灯
                   count++;
                 }
                 else
@@ -244,6 +251,7 @@ namespace HYIT.Alarm.Con
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_1, cachKeyStatus, DateTime.Now.AddHours(10));
                   _cache.RemoveCache(cachKey);
                   AddAlarmLog(record);
+                  On();//亮起报警灯
                   count++;
                 }
                 else
@@ -292,6 +300,7 @@ namespace HYIT.Alarm.Con
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_2, cachKeyStatus, DateTime.Now.AddHours(10));
                   AddAlarmLog(record);
+                  On();//亮起报警灯
                   count++;
                 }
                 else
@@ -321,6 +330,7 @@ namespace HYIT.Alarm.Con
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_2, cachKeyStatus, DateTime.Now.AddHours(10));
                   AddAlarmLog(record);
+                  On();//亮起报警灯
                   count++;
                 }
                 else
@@ -411,6 +421,7 @@ namespace HYIT.Alarm.Con
                   _cache.RemoveCache(cachKey);
                   _cache.WriteCache<string>(Const.ALARM_LEVLE_1, cachKeyStatus, DateTime.Now.AddHours(10));
                   AddAlarmLog(record);
+                  On();//亮起报警灯
                   count++;
                 }
                 else
@@ -481,7 +492,32 @@ namespace HYIT.Alarm.Con
       LogInfo.AlarmInfo.Info(s);
     }
 
+    private static void On()
+    {
+      try
+      {
+        var httpCelint = new QxHttpClient();
+        httpCelint.Get<string>(_url + "/ecmd?pin%20set%20k1%20on");
+        _cache.WriteCache<string>(Const.ALARM_LEVLE_1, Const.ALARM_LIGHT, DateTime.Now.AddSeconds(lightTimes));
+      }
+      catch (Exception ex)
+      {
+        LogInfo.LightEx.Error(ex);
+      }
+    }
 
+    private static void Off()
+    {
+      try
+      {
+        var httpCelint = new QxHttpClient();
+        httpCelint.Get<string>(_url + "/ecmd?pin%20set%20k1%20off");
+      }
+      catch (Exception ex)
+      {
+        LogInfo.LightEx.Error(ex);
+      }
+    }
 
     public static void Load()
     {

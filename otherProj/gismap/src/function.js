@@ -1,6 +1,7 @@
 var req = GetRequest();
 var type = req['tp'];  
 var tagName = req['tn'];
+var hist = req['history'];
 var la = req['la']; //纬度
 var lo = req['lo']; //经度
 var poisonArr = [true,true,true,true];
@@ -10,7 +11,11 @@ window.onresize = function () {
 	$("#videoElement").height(height);
 	$("#mainContainer").height(height);
 }
-
+$('#back').click(function (){
+	window.history.back(-1); 
+});
+if(hist==1)
+	$('#back').show();
 function groupBy(array, f) {
     //debugger;
     const groups = {};
@@ -936,7 +941,7 @@ async function resetPOI()
 		return;
 	}
 }
-function initArea(areaList,color)
+function initArea(areaList,isRisk)
 {
 	var info = {};
 	var coordList= [];
@@ -947,14 +952,16 @@ function initArea(areaList,color)
 	var name='';
 	var code='';
 	var group=[];
+	
 	group = groupBy(areaList, (org) => {
 		return org.orgCode
 	});
 	
 	for(let data of group)
 	{
-		if(data.length!=4)
-			continue;
+		//if(data.length!=4)
+			//continue;
+		var color=globalConfig.defaultColor;
 		for(var o of data)
 		{
 			if(o.typeCode==globalConfig.wnCode)
@@ -965,6 +972,24 @@ function initArea(areaList,color)
 				es = o.value;
 			if(o.typeCode==globalConfig.wsCode)
 				ws = o.value;
+			if(isRisk)
+			{
+				//debugger
+				if(o.typeCode==globalConfig.colorCode)
+				{
+					if(o.value=='red')
+					color = globalConfig.redColor;
+					if(o.value=='yellow')
+					color = globalConfig.yellowColor;
+					if(o.value=='blue')
+					color = globalConfig.blueColor;
+					if(o.value=='orange')
+					color = globalConfig.orangeColor;
+				}
+				else{
+					color = globalConfig.defaultColor;
+				}
+			}
 			name = o.orgName;
 			code = o.orgCode;
 		}
@@ -992,16 +1017,29 @@ async function resetArea()
 	var res = await getAreas();
 	if(res.data && res.data.length>0)
 	{
-		initArea(res.data,globalConfig.defaultColor);
+		//initArea(res.data,false);
 		//initArea(res.data,globalConfig.hidden.load[0]);
 		//initArea(res.data,globalConfig.work.load[0]);
+
+		//加载四色图区域
+		initArea(res.data,true);
 	}
 	//resetOtherArea(res);
+	//resetRiskArea(res);
 }
 async function resetAlphaArea()
 {
 
 }
+
+async function resetRiskArea(res)
+{
+	if(res.data && res.data.length>0)
+	{
+		
+	}
+}
+
 
 async function resetOtherArea(res)
 {
@@ -1119,7 +1157,7 @@ if(tagName)
 	{
 		//for(let t of globalConfig.risk.load) //in 是key  , of 是object
 		getAreaByType(globalConfig.risk.load);
-		getAreasByClickReal();
+		//getAreasByClickReal();
 	}
 	else if(type == globalConfig.work.type)
 	{

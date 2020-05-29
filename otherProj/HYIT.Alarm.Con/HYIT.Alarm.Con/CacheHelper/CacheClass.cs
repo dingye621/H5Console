@@ -14,6 +14,7 @@ namespace HYIT.Alarm.Con.CacheHelper
     //CacheKey
     public const string ALARM_FLAG_KEY = "AlarmFlag";  //报警前状态标记位
     public const string ALARM_STATUS_KEY = "AlarmStatus"; //已报警状态标记位
+    public const string ALARM_LIGHT = "AlarmLight"; //报警灯
     public const string ALARM_LEVLE_0 = "0";   //未报警
     public const string ALARM_LEVLE_1 = "1";   //一级报警
     public const string ALARM_LEVLE_2 = "2";   //二级报警

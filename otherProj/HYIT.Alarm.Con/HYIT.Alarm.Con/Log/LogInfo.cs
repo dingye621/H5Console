@@ -10,6 +10,8 @@ namespace HYIT.Alarm.Con.Log
   {
     public static readonly LogInfoWriter AlarmException = LogInfoWriter.GetInstance("AlarmException");
     public static readonly LogInfoWriter AlarmInfo = LogInfoWriter.GetInstance("AlarmInfo");
+    public static readonly LogInfoWriter LightEx = LogInfoWriter.GetInstance("LightEx");
+
 
   }
 }
