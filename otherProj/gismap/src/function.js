@@ -978,13 +978,13 @@ function initArea(areaList,isRisk)
 				if(o.typeCode==globalConfig.colorCode)
 				{
 					if(o.value=='red')
-					color = globalConfig.redColor;
+					color = globalConfig.risk.load[3];
 					if(o.value=='yellow')
-					color = globalConfig.yellowColor;
+					color = globalConfig.risk.load[1];
 					if(o.value=='blue')
-					color = globalConfig.blueColor;
+					color = globalConfig.risk.load[0];
 					if(o.value=='orange')
-					color = globalConfig.orangeColor;
+					color = globalConfig.risk.load[2];
 				}
 				else{
 					color = globalConfig.defaultColor;
