@@ -979,15 +979,12 @@ function initArea(areaList,isRisk)
 				{
 					if(o.value=='red')
 					color = globalConfig.risk.load[3];
-					if(o.value=='yellow')
+					else if(o.value=='yellow')
 					color = globalConfig.risk.load[1];
-					if(o.value=='blue')
+					else if(o.value=='blue')
 					color = globalConfig.risk.load[0];
-					if(o.value=='orange')
+					else if(o.value=='orange')
 					color = globalConfig.risk.load[2];
-				}
-				else{
-					color = globalConfig.defaultColor;
 				}
 			}
 			name = o.orgName;
