@@ -1014,7 +1014,7 @@ async function resetArea()
 	var res = await getAreas();
 	if(res.data && res.data.length>0)
 	{
-		//initArea(res.data,false);
+		initArea(res.data,false);
 		//initArea(res.data,globalConfig.hidden.load[0]);
 		//initArea(res.data,globalConfig.work.load[0]);
 
