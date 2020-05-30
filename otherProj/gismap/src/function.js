@@ -17,7 +17,6 @@ $('#back').click(function (){
 if(hist==1)
 	$('#back').show();
 function groupBy(array, f) {
-    //debugger;
     const groups = {};
     array.forEach(function (o) {
         const group = JSON.stringify(f(o));
@@ -974,7 +973,6 @@ function initArea(areaList,isRisk)
 				ws = o.value;
 			if(isRisk)
 			{
-				//debugger
 				if(o.typeCode==globalConfig.colorCode)
 				{
 					if(o.value=='red')
@@ -1130,7 +1128,8 @@ if(tagName)
 		$("#poisonName").show();
 		$("#fireName").show();
 		//加载区域
-		tmap.loadPolygon();
+		//tmap.loadPolygon();
+		getAreaByType([globalConfig.defaultColor]);
 		getPOIByClickReal();
 	}
 	else if(type == globalConfig.danger.type)
