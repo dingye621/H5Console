@@ -1,20 +1,27 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace HYIT.Alarm.Con.Controllers
 {
-    public class AlarmController:ApiController
+  public class AlarmController : ApiController
+  {
+    [HttpGet]
+    public List<Alarm> Get()
     {
-        [HttpGet]
-        public List<Alarm> Get()
-        {
-            var res = new AlarmHelper().GetAlarm();
-          
-            return res;
-        }
+      var res = new AlarmHelper().GetAlarm();
+      return res;
     }
+    [HttpGet]
+    [Route("On")]
+    public void On()
+    {
+      AlarmHelper.On();
+    }
+    [HttpGet]
+    [Route("Off")]
+    public void Off()
+    {
+      AlarmHelper.Off();
+    }
+  }
 }

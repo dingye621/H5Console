@@ -492,7 +492,7 @@ namespace HYIT.Alarm.Con
       LogInfo.AlarmInfo.Info(s);
     }
 
-    private static void On()
+    public static void On()
     {
       try
       {
@@ -506,7 +506,7 @@ namespace HYIT.Alarm.Con
       }
     }
 
-    private static void Off()
+    public static void Off()
     {
       try
       {

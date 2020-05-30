@@ -1,4 +1,4 @@
-﻿using Owin;
+using Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +20,15 @@ namespace HYIT.Alarm.Con
         private HttpConfiguration ConfigureWebApi(IAppBuilder app)
         {
             var config = new HttpConfiguration();
+            //config.Routes.MapHttpRoute(
+            //    "DefaultApi",
+            //    "api/{controller}/{id}",
+            //    new { id = RouteParameter.Optional });
+
             config.Routes.MapHttpRoute(
-                "DefaultApi",
-                "api/{controller}/{id}",
-                new { id = RouteParameter.Optional });
+            name: "API Default",
+            routeTemplate: "api/{controller}/{action}/{id}",
+            defaults: new { id = RouteParameter.Optional });
 
             //清除xml格式，使用json格式
             config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
