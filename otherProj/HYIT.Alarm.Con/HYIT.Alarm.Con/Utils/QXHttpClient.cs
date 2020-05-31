@@ -16,9 +16,7 @@ namespace HYIT.Alarm.Con.Utils
     public HttpClient _httpClient = null;
     HttpClientHandler handler = null;
 
-
-
-
+    int timeout = 1000;
 
     /// <summary>
     /// 默认语言
@@ -28,6 +26,14 @@ namespace HYIT.Alarm.Con.Utils
 
     public delegate void HttpProgress(int progress);
     //public event HttpProgress HttpDownloadProgressEvent;
+
+    public QxHttpClient(int _timeout)
+    {
+      cookieContainer = new CookieContainer();
+      handler = new HttpClientHandler() { CookieContainer = cookieContainer, AllowAutoRedirect = true, UseCookies = true };
+      _httpClient = new HttpClient();
+      timeout = _timeout;
+    }
 
     public QxHttpClient()
     {
@@ -46,7 +52,6 @@ namespace HYIT.Alarm.Con.Utils
 
       handler = new HttpClientHandler() { CookieContainer = cookieContainer, AllowAutoRedirect = true, UseCookies = true, Proxy = wp };
       _httpClient = new HttpClient();
-
     }
 
 
@@ -118,7 +123,23 @@ namespace HYIT.Alarm.Con.Utils
     public T Get<T>(string url, bool ignoreHttpErrorrCode = false)
     {
       Object result = null;
+   
+      var httpResult = _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, url)).Result;
+      if (ignoreHttpErrorrCode || httpResult.StatusCode == HttpStatusCode.OK)
+      {
+        var buffer = httpResult.Content.ReadAsByteArrayAsync().Result;
+        result = CastObj<T>(buffer);
 
+      }
+      else
+      {
+        //return default(T);
+      }
+      return (T)result;
+    }
+    public async Task<T> GetAsync<T>(string url, bool ignoreHttpErrorrCode = false)
+    {
+      Object result = null;
 
       var httpResult = _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, url)).Result;
       if (ignoreHttpErrorrCode || httpResult.StatusCode == HttpStatusCode.OK)

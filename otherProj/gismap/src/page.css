@@ -62,4 +62,10 @@ ul{
 /*图片大小*/
 .alarm-img{
     width: 14px;
+    position: relative;
+    top:-5px;
+}
+#layer-select{
+    padding-bottom: 10px !important;
+
 }

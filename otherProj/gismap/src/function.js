@@ -4,6 +4,7 @@ var tagName = req['tn'];
 var hist = req['history'];
 var la = req['la']; //纬度
 var lo = req['lo']; //经度
+var rtspU = req['cameraId'];
 var poisonArr = [true,true,true,true];
 
 window.onresize = function () {
@@ -11,6 +12,14 @@ window.onresize = function () {
 	$("#videoElement").height(height);
 	$("#mainContainer").height(height);
 }
+
+$('#big').click(function(){
+	//获取当前窗口高度
+	var height = document.body.clientHeight;
+	var hei=0.8*height;
+	$("#videoElement").height(hei);
+	$("#mainContainer").height(hei);
+});
 $('#back').click(function (){
 	window.history.back(-1); 
 });
@@ -206,6 +215,7 @@ async function fitContent(info,layerName,layerType)
 		//data=[{Name:'测试',Id:'2'},{Name:'我的',Id:'5'}];
 	}
 	else if(globalConfig.emer.type==layerType){
+		debugger
 		var emerRes=await getEmer();
 		data=[];
 		if(emerRes.data && emerRes.data.msg=='success')
@@ -213,7 +223,8 @@ async function fitContent(info,layerName,layerType)
 			var ppList=filterEmerList(emerRes.data.data);
 			for(var p of ppList)
 			{
-				if(p.ID==info.remarks)
+				//p.ID
+				if(p.Coordinate==info.remarks)
 				{
 					data.push(p);
 					//break;
@@ -926,7 +937,8 @@ async function resetPOI()
 			info.longitude=poi.Coordinate.split(',')[0];
 			info.latitude=poi.Coordinate.split(',')[1];
 			info.name=poi.Supplies;
-			info.remarks=poi.ID;
+			//info.remarks=poi.ID;
+			info.remarks=poi.Coordinate;
 			info.type=globalConfig.emer.load[0];
 			if(info.longitude && info.latitude )
 			{
@@ -1134,16 +1146,16 @@ if(tagName)
 	}
 	else if(type == globalConfig.danger.type)
 	{
-		
 		$('.poison-li').show();
 		$('#layer-select').show();
 		getPOIByType(globalConfig.danger.load);
 		//加载区域
-		tmap.loadPolygon();
+		//tmap.loadPolygon();
 		getPOIByClickReal();
 	}
 	else if(type == globalConfig.hidden.type)
 	{
+		debugger
 		var rr = await getLineChartDataPack();
 		var names = rr.select((t)=>t.CldName);
 		getAreaByName(names);
@@ -1188,4 +1200,9 @@ getAreaByMoveon();
 loadPointByParams();
 //设置点icon大小
 setPOIScale();
+
+if(type=='8')
+{
+	playFlvFunc(rtspU);
+}
 

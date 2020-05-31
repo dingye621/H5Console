@@ -27,6 +27,7 @@ namespace HYIT.Alarm.Con
     private static int _random { get; set; }
     private static int lightTimes { get; set; }
     private static string _url { get; set; }
+    private static bool _lightOpen { get; set; }
 
     // private static EFOperation db { get; set; }
 
@@ -35,6 +36,7 @@ namespace HYIT.Alarm.Con
     static AlarmHelper()
     {
       _url = Configs.GetValue("LightUrl");
+      _lightOpen = Configs.GetValue<bool>("LightOpen");
       _serverName = Configs.GetValue("ServerName");
       _userName = Configs.GetValue("UserName");
       _password = Configs.GetValue("Password");
@@ -184,7 +186,7 @@ namespace HYIT.Alarm.Con
             continue;
         
           count2++;
-          if (r.Next(1, _random) == 8)
+          if (r.Next(1, _random) == 1)
           {
             EFOperation.UpdateTag(new Models.Tag()
             {
@@ -356,7 +358,7 @@ namespace HYIT.Alarm.Con
             }
             else if (tagValue<25){
               //数据正常随机刷新
-              if (r.Next(1, _random) == 8)
+              if (r.Next(1, _random) == 1)
               {
                 EFOperation.UpdateTag(new Models.Tag()
                 {
@@ -447,7 +449,7 @@ namespace HYIT.Alarm.Con
             }
             else {
               //数据正常随机消除报警
-              if (r.Next(1, _random) == 8)
+              if (r.Next(1, _random) == 1)
               {
                 EFOperation.UpdateTag(new Models.Tag()
                 {
@@ -492,26 +494,33 @@ namespace HYIT.Alarm.Con
       LogInfo.AlarmInfo.Info(s);
     }
 
-    public static void On()
+    public async static void On()
     {
+      if (!_lightOpen)
+        return;
       try
       {
         var httpCelint = new QxHttpClient();
-        httpCelint.Get<string>(_url + "/ecmd?pin%20set%20k1%20on");
+        var res = await httpCelint.GetAsync<string>(_url + "/ecmd?pin%20set%20k1%20on");
         _cache.WriteCache<string>(Const.ALARM_LEVLE_1, Const.ALARM_LIGHT, DateTime.Now.AddSeconds(lightTimes));
+        LogInfo.LightEx.Info("开启报警灯");
       }
       catch (Exception ex)
       {
+        _cache.WriteCache<string>(Const.ALARM_LEVLE_1, Const.ALARM_LIGHT, DateTime.Now.AddSeconds(lightTimes));
         LogInfo.LightEx.Error(ex);
       }
     }
 
-    public static void Off()
+    public async static void Off()
     {
+      if (!_lightOpen)
+        return;
       try
       {
         var httpCelint = new QxHttpClient();
-        httpCelint.Get<string>(_url + "/ecmd?pin%20set%20k1%20off");
+        await httpCelint.GetAsync<string>(_url + "/ecmd?pin%20set%20k1%20off");
+        LogInfo.LightEx.Info("关闭报警灯");
       }
       catch (Exception ex)
       {
