@@ -49,8 +49,6 @@
 <div id="reset" class="btn btn-default hidden">一键重置</div>
 <div id="clear" class="btn btn-default hidden">一键清除</div>
 <div id="back" class="btn btn-default">返回</div>
-
-<div id="big" class="btn btn-default">放大</div>
 <!--js-->
 <script>
 	$('#back').hide();
@@ -197,7 +195,6 @@
 </script>
 <!--重大危险源监控图层template模版-->
 <script type="text/html" id="templateDanger">
-
     <ul>
 		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
 			<ul class="nav nav-tabs">
@@ -227,6 +224,7 @@
 								Your browser is too old which doesn't support HTML5 video.
 							</video>
 						</div>
+						<div id="big" class="btn btn-default" onClick="bigSize()">放大</div>
 					</div>
 				</div>
 			</div>
@@ -247,9 +245,9 @@
 					<div id="tab-1" class="tab-pane active">
 						<div class="panel-body">
 							<table class="table table-striped">
-								<tr><td>监测设备名称：</td><td>未指定</td></tr>
+								<tr><td>监测设备名称：</td><td>/</td></tr>
 								<tr>
-									<td>监测设备点简称：</td><td>未指定</td>
+									<td>监测设备点简称：</td><td>/</td>
 								</tr>
 								<tr><td>区域名称：</td><td><%= data.equipment %></td></tr>
 								

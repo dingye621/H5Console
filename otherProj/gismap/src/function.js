@@ -13,16 +13,46 @@ window.onresize = function () {
 	$("#mainContainer").height(height);
 }
 
-$('#big').click(function(){
-	//获取当前窗口高度
+// $('#big').click(function(){
+// 	//获取当前窗口高度
+// 	var height = document.body.clientHeight;
+// 	var hei=0.8*height;
+// 	$("#videoElement").height(hei);
+// 	$("#mainContainer").height(hei);
+// });
+
+$("#big").on("click",function(){
+	console.log('放大');
+	debugger
+    //获取当前窗口高度
 	var height = document.body.clientHeight;
 	var hei=0.8*height;
 	$("#videoElement").height(hei);
 	$("#mainContainer").height(hei);
-});
+	
+  });
+
+function bigSize()
+{
+  //获取当前窗口高度
+  var height = document.body.clientHeight;
+  var width = document.body.clientWidth;
+  var hei=0.7*height;
+  var wid=0.5*width;
+  $('.layui-layer').height(hei);
+  $('.layui-layer').width(wid);
+  //$("#videoElement").height(hei);
+ // $("#mainContainer").height(hei);
+	
+}
+
 $('#back').click(function (){
 	window.history.back(-1); 
 });
+if(type!=2)
+{
+	$('#big').hide();
+}
 if(hist==1)
 	$('#back').show();
 function groupBy(array, f) {
@@ -168,6 +198,7 @@ async function fitContent(info,layerName,layerType)
 	}
 	else if(globalConfig.hidden.type==type)
 	{
+		debugger
 		 var resData = await getLineChartDataPack();
 		 var pieResData = await getPieChartDataPack();
 			for(var item of resData)
@@ -1155,10 +1186,20 @@ if(tagName)
 	}
 	else if(type == globalConfig.hidden.type)
 	{
-		debugger
+		//debugger
 		var rr = await getLineChartDataPack();
 		var names = rr.select((t)=>t.CldName);
+
+		for(var i = 0;i<names.length;i++){
+			if(names[i]==''||names[i]==null||typeof(names[i])==undefined){
+				names.splice(i,1);
+				i=i-1;
+			}
+		}
 		getAreaByName(names);
+		
+		//getAreaByName(["球罐区泵棚"]);
+		getAreasByClickReal();
 		//getAreaByType(globalConfig.hidden.load);
 	}
 	else if(type == globalConfig.risk.type)
