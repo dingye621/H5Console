@@ -13,6 +13,7 @@ using System.Web.Caching;
 using HYIT.Alarm.Con.CacheHelper;
 using HYIT.Alarm.Con.EF;
 using HYIT.Alarm.Con.Models;
+using System.Threading.Tasks;
 
 namespace HYIT.Alarm.Con
 {
@@ -29,12 +30,14 @@ namespace HYIT.Alarm.Con
     private static string _url { get; set; }
     private static bool _lightOpen { get; set; }
     private static int _timeOut { get; set; }
+    private static string _moteUrl { get; set; }
     // private static EFOperation db { get; set; }
 
 
 
     static AlarmHelper()
     {
+      _moteUrl = Configs.GetValue("MoteUrl");
       _timeOut = Configs.GetValue<int>("TimeOut");
       _url = Configs.GetValue("LightUrl");
       _lightOpen = Configs.GetValue<bool>("LightOpen");
@@ -157,12 +160,14 @@ namespace HYIT.Alarm.Con
       string tagName = string.Empty;
       Tag tag = null;
       AlarmRecord record = null;
-
       var tagNameList = EFOperation.GetTagNameList();
 
       foreach (var item in ret)
       {
-        if(string.IsNullOrEmpty(_cache.GetCache<string>(Const.ALARM_LIGHT)))
+        //判断是否有报警
+        if (IsMoteAlarm().Result)
+          On();
+        if (string.IsNullOrEmpty(_cache.GetCache<string>(Const.ALARM_LIGHT)))
           Off();//关闭报警灯
         var elm = item as ITagElement;
         if (elm != null)
@@ -526,6 +531,22 @@ namespace HYIT.Alarm.Con
       catch (Exception ex)
       {
         LogInfo.LightEx.Error(ex);
+      }
+    }
+
+    public async static Task<bool> IsMoteAlarm()
+    {
+      try
+      {
+        var httpCelint = new QxHttpClient(_timeOut);
+        var res = await httpCelint.GetAsync<bool>(_moteUrl);
+        return res;
+     
+      }
+      catch (Exception ex)
+      {
+          LogInfo.LightEx.Error(ex);
+        return false;
       }
     }
 
