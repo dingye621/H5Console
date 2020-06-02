@@ -28,13 +28,14 @@ namespace HYIT.Alarm.Con
     private static int lightTimes { get; set; }
     private static string _url { get; set; }
     private static bool _lightOpen { get; set; }
-
+    private static int _timeOut { get; set; }
     // private static EFOperation db { get; set; }
 
 
 
     static AlarmHelper()
     {
+      _timeOut = Configs.GetValue<int>("TimeOut");
       _url = Configs.GetValue("LightUrl");
       _lightOpen = Configs.GetValue<bool>("LightOpen");
       _serverName = Configs.GetValue("ServerName");
@@ -500,7 +501,7 @@ namespace HYIT.Alarm.Con
         return;
       try
       {
-        var httpCelint = new QxHttpClient();
+        var httpCelint = new QxHttpClient(_timeOut);
         var res = await httpCelint.GetAsync<string>(_url + "/ecmd?pin%20set%20k1%20on");
         _cache.WriteCache<string>(Const.ALARM_LEVLE_1, Const.ALARM_LIGHT, DateTime.Now.AddSeconds(lightTimes));
         LogInfo.LightEx.Info("开启报警灯");
@@ -518,7 +519,7 @@ namespace HYIT.Alarm.Con
         return;
       try
       {
-        var httpCelint = new QxHttpClient();
+        var httpCelint = new QxHttpClient(_timeOut);
         await httpCelint.GetAsync<string>(_url + "/ecmd?pin%20set%20k1%20off");
         LogInfo.LightEx.Info("关闭报警灯");
       }

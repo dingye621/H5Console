@@ -12,6 +12,12 @@ namespace HYIT.Alarm.Con.Controllers
       return res;
     }
     [HttpGet]
+    [Route("test")]
+    public bool Test()
+    {
+      return true;
+    }
+    [HttpGet]
     [Route("On")]
     public void On()
     {

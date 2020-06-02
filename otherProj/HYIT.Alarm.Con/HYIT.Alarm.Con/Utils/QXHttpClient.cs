@@ -33,6 +33,7 @@ namespace HYIT.Alarm.Con.Utils
       handler = new HttpClientHandler() { CookieContainer = cookieContainer, AllowAutoRedirect = true, UseCookies = true };
       _httpClient = new HttpClient();
       timeout = _timeout;
+      
     }
 
     public QxHttpClient()
@@ -40,6 +41,7 @@ namespace HYIT.Alarm.Con.Utils
       cookieContainer = new CookieContainer();
       handler = new HttpClientHandler() { CookieContainer = cookieContainer, AllowAutoRedirect = true, UseCookies = true };
       _httpClient = new HttpClient();
+ 
     }
     public QxHttpClient(string proxyIp, int proxyPort, string proxyAccount, string proxyPassword)
     {
@@ -139,12 +141,13 @@ namespace HYIT.Alarm.Con.Utils
     }
     public async Task<T> GetAsync<T>(string url, bool ignoreHttpErrorrCode = false)
     {
-      Object result = null;
+        _httpClient.Timeout = TimeSpan.FromMilliseconds(timeout);
+       Object result = null;
 
-      var httpResult = _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, url)).Result;
+      var httpResult =await _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, url));
       if (ignoreHttpErrorrCode || httpResult.StatusCode == HttpStatusCode.OK)
       {
-        var buffer = httpResult.Content.ReadAsByteArrayAsync().Result;
+        var buffer = await httpResult.Content.ReadAsByteArrayAsync();
         result = CastObj<T>(buffer);
 
       }
