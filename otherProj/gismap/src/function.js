@@ -198,7 +198,6 @@ async function fitContent(info,layerName,layerType)
 	}
 	else if(globalConfig.hidden.type==type)
 	{
-		debugger
 		 var resData = await getLineChartDataPack();
 		 var pieResData = await getPieChartDataPack();
 			for(var item of resData)
@@ -221,6 +220,7 @@ async function fitContent(info,layerName,layerType)
 	}
 	else if(globalConfig.work.type==layerType){
 		var workRes=await getPermit();
+		data={}
 		if(workRes.data && workRes.data.msg=='success')
 		{
 			// var ppList=filterWorkList(workRes.data.data);
@@ -233,8 +233,15 @@ async function fitContent(info,layerName,layerType)
 			// }
 			if(workRes.data.data.length>0&&workRes.data.data[0].data.length>0)
 			{
-				var test=workRes.data.data[0].data;
-				data=workRes.data.data[0].data[0];
+				for(var d of workRes.data.data)
+				{
+if(d.name==info.name)
+{
+	data=d.data;
+}
+				}
+			//	var test=workRes.data.data[0].data;
+			//	data=workRes.data.data[0].data[0];
 			}
 			else{
 				layer.alert('数据为空');
