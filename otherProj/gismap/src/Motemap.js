@@ -358,6 +358,7 @@ var Mote = (function()
 				for(var i=0;i<eachs.length;i++){
 					selectedFeatures.remove(eachs[i])
 				}
+				self.setDeselectedInfo(eachs);
 			}
 		 };
 		 this.selectFeature.init();

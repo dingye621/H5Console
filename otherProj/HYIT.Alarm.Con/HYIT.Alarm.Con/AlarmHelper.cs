@@ -165,7 +165,7 @@ namespace HYIT.Alarm.Con
       foreach (var item in ret)
       {
         //判断是否有报警
-        if (IsMoteAlarm().Result)
+        if (IsMoteAlarm())
           On();
         if (string.IsNullOrEmpty(_cache.GetCache<string>(Const.ALARM_LIGHT)))
           Off();//关闭报警灯
@@ -500,16 +500,19 @@ namespace HYIT.Alarm.Con
       LogInfo.AlarmInfo.Info(s);
     }
 
-    public async static void On()
+    public static void On()
     {
-      if (!_lightOpen)
+      if (!_lightOpen || !GetStatus().Contains("off"))
         return;
       try
       {
-        var httpCelint = new QxHttpClient(_timeOut);
-        var res = await httpCelint.GetAsync<string>(_url + "/ecmd?pin%20set%20k1%20on");
-        _cache.WriteCache<string>(Const.ALARM_LEVLE_1, Const.ALARM_LIGHT, DateTime.Now.AddSeconds(lightTimes));
-        LogInfo.LightEx.Info("开启报警灯");
+        using (var httpCelint = new QxHttpClient(_timeOut))
+        {
+          var res = httpCelint.GetAsync<string>(_url + "/ecmd?pin%20set%20k1%20on").Result;
+          _cache.WriteCache<string>(Const.ALARM_LEVLE_1, Const.ALARM_LIGHT, DateTime.Now.AddSeconds(lightTimes));
+          LogInfo.LightEx.Info("开启报警灯");
+        }
+         
       }
       catch (Exception ex)
       {
@@ -518,15 +521,18 @@ namespace HYIT.Alarm.Con
       }
     }
 
-    public async static void Off()
+    public static void Off()
     {
-      if (!_lightOpen)
+      if (!_lightOpen || !GetStatus().Contains("on"))
         return;
       try
       {
-        var httpCelint = new QxHttpClient(_timeOut);
-        await httpCelint.GetAsync<string>(_url + "/ecmd?pin%20set%20k1%20off");
-        LogInfo.LightEx.Info("关闭报警灯");
+        using (var httpCelint = new QxHttpClient(_timeOut))
+        {
+          var res = httpCelint.GetAsync<string>(_url + "/ecmd?pin%20set%20k1%20off").Result;
+          LogInfo.LightEx.Info("关闭报警灯");
+        } 
+      
       }
       catch (Exception ex)
       {
@@ -534,18 +540,37 @@ namespace HYIT.Alarm.Con
       }
     }
 
-    public async static Task<bool> IsMoteAlarm()
+    public static string GetStatus()
     {
       try
       {
-        var httpCelint = new QxHttpClient(_timeOut);
-        var res = await httpCelint.GetAsync<bool>(_moteUrl);
-        return res;
+        using (var httpCelint = new QxHttpClient(_timeOut))
+        {
+          var res = httpCelint.GetAsync<string>(_url + "/ecmd?pin%20get%20k1").Result;
+          return res;
+        }
+      }
+      catch (Exception ex)
+      {
+        LogInfo.LightEx.Error(ex);
+        return string.Empty;
+      }
+    }
+
+    public static bool IsMoteAlarm()
+    {
+      try
+      {
+        using (var httpCelint = new QxHttpClient(_timeOut))
+        {
+          var res = httpCelint.GetAsync<bool>(_moteUrl).Result;
+          return res;
+        }
      
       }
       catch (Exception ex)
       {
-          LogInfo.LightEx.Error(ex);
+        LogInfo.LightEx.Error(ex);
         return false;
       }
     }

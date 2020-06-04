@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HYIT.Alarm.Con.Utils
 {
-  public class QxHttpClient
+  public class QxHttpClient : HttpClient
   {
     public HttpClient _httpClient = null;
     HttpClientHandler handler = null;
