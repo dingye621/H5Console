@@ -161,14 +161,13 @@ namespace HYIT.Alarm.Con
       Tag tag = null;
       AlarmRecord record = null;
       var tagNameList = EFOperation.GetTagNameList();
-
+      //判断是否有报警
+      if (IsMoteAlarm())
+        On();
+      if (string.IsNullOrEmpty(_cache.GetCache<string>(Const.ALARM_LIGHT)))
+        Off();//关闭报警灯
       foreach (var item in ret)
       {
-        //判断是否有报警
-        if (IsMoteAlarm())
-          On();
-        if (string.IsNullOrEmpty(_cache.GetCache<string>(Const.ALARM_LIGHT)))
-          Off();//关闭报警灯
         var elm = item as ITagElement;
         if (elm != null)
         {
@@ -178,7 +177,7 @@ namespace HYIT.Alarm.Con
           status = _cache.GetCache<string>(cachKeyStatus);
           var realdata = DataIO.Snapshot(connector, elm);
           tagName = StaticFunc.FilterString(item.TagLongName.ToString());
-          if (!item.TagLongName.Contains("YDKR") && !item.TagLongName.Contains("MTBE"))
+          if (!item.TagLongName.Contains("YDKR") && !item.TagLongName.Contains("MTBE") && !item.TagLongName.Contains("YXW_A_R"))
           {
             continue;
           }
@@ -192,6 +191,15 @@ namespace HYIT.Alarm.Con
             continue;
         
           count2++;
+          if (item.TagLongName.Contains("YXW_A_R"))
+          {
+            EFOperation.UpdateTag(new Models.Tag()
+            {
+              TagName = tagName,
+              TagValue = realdata.Value.ToString(),
+            }, flag, status);
+            count++;
+          }
           if (r.Next(1, _random) == 1)
           {
             EFOperation.UpdateTag(new Models.Tag()
@@ -542,6 +550,8 @@ namespace HYIT.Alarm.Con
 
     public static string GetStatus()
     {
+      if (!_lightOpen)
+        return string.Empty;
       try
       {
         using (var httpCelint = new QxHttpClient(_timeOut))
@@ -559,6 +569,8 @@ namespace HYIT.Alarm.Con
 
     public static bool IsMoteAlarm()
     {
+      if (!_lightOpen)
+        return false;
       try
       {
         using (var httpCelint = new QxHttpClient(_timeOut))
