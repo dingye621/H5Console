@@ -23,12 +23,15 @@ window.onresize = function () {
 
 $("#big").on("click",function(){
 	console.log('放大');
-	debugger
     //获取当前窗口高度
 	var height = document.body.clientHeight;
+//	var width = document.body.clientWidth;
 	var hei=0.8*height;
+//	var wid=0.8*width;
 	$("#videoElement").height(hei);
 	$("#mainContainer").height(hei);
+//	$("#videoElement").width(wid);
+//	$("#mainContainer").width(wid);
 	
   });
 
@@ -38,9 +41,16 @@ function bigSize()
   var height = document.body.clientHeight;
   var width = document.body.clientWidth;
   var hei=0.7*height;
-  var wid=0.5*width;
+  var wid=0.7*width;
   $('.layui-layer').height(hei);
   $('.layui-layer').width(wid);
+  $('.layui-layer').css("top","100px");
+  $('.layui-layer').css("left","100px");
+
+  $("#videoElement").height(hei);
+	$("#mainContainer").height(hei);
+	$("#videoElement").width(wid);
+	$("#mainContainer").width(wid);
   //$("#videoElement").height(hei);
  // $("#mainContainer").height(hei);
 	
@@ -794,6 +804,9 @@ $("input[name='hazard'],input[name='work'],input[name='clean'],input[name='darea
 	getPOIByType([globalConfig.danger.load[2],globalConfig.danger.load[3]]);
 	if(!poisonArr[0]&&poisonArr[1]&&!poisonArr[2])    //010
 	getPOIByType([globalConfig.danger.load[2]]);
+	if(poisonArr[0]&&!poisonArr[1]&&poisonArr[2])    //101
+	getPOIByType([globalConfig.danger.load[1],globalConfig.danger.load[3]]);
+	//000啥都不干
 	//区域
 	if(poisonArr[3])
 	getAreaByType([globalConfig.defaultColor]);
