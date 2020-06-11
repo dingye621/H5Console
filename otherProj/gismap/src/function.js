@@ -341,7 +341,7 @@ function layerOpen(info)
 	{
 		layerType=globalConfig.danger.type;
 		layerName=globalConfig.danger.name;
-		area=['320px', '246px'];
+		area=['420px', '296px'];
 	}
 	if(type==globalConfig.hidden.type)
 	//if(globalConfig.hidden.load.includes(info.color))
