@@ -353,7 +353,7 @@ function layerOpen(info)
 	{
 		layerType=globalConfig.emer.type;
 		layerName=globalConfig.emer.name;
-		area=['380px', '380px'];
+		area=['580px', '380px'];
 	}
 	if(type==globalConfig.work.type)
 	{
