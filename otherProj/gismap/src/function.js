@@ -951,11 +951,11 @@ async function resetPOI()
 			info.remarks=poi.cameraId;
 			if(poi.useObject!=null)
 			{
-				if(poi.useObject.code=globalConfig.danger.code[3])
+				if(poi.useObject.code==globalConfig.danger.code[3])
 				info.type=globalConfig.danger.load[3];
-				if(poi.useObject.code=globalConfig.danger.code[1])
+				if(poi.useObject.code==globalConfig.danger.code[1])
 				info.type=globalConfig.danger.load[1];
-				if(poi.useObject.code=globalConfig.danger.code[2])
+				if(poi.useObject.code==globalConfig.danger.code[2])
 				info.type=globalConfig.danger.load[2];	
 			}
 			else{
