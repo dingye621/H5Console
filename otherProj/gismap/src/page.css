@@ -69,3 +69,12 @@ ul{
     padding-bottom: 10px !important;
 
 }
+
+.nav .active {
+
+    background-color:#ccc;
+}
+.nav a{
+
+    background-color: inherit !important;
+}
