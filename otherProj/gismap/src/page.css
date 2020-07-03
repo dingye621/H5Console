@@ -78,3 +78,24 @@ ul{
 
     background-color: inherit !important;
 }
+
+/*菜单选项*/
+
+#fix2{
+    position:fixed; bottom:600px; left:0;
+    margin-left:40px;
+}
+.menu-select{
+    position: relative;
+    top:0px;
+    left: 5px;
+    border:1px solid skyblue;
+    border-radius:5px;
+    padding: 5px;
+    background-color: skyblue;
+    display: none;
+}
+.menu-select li{
+    float: left;
+    margin:0px 10px 0px 10px;
+}

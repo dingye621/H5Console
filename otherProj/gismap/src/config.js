@@ -7,6 +7,7 @@
 			cameraDomain:"cam.hse.upneep.com",
 			hseDomain:'192.168.18.12:8088',
 			alertDomain:'192.168.18.12:8080',
+			gisDomain:'localhost:8089',
 			poison:{type:1,load:['11','12'],name:'Poison',code:['K03','K02']},//可燃(load[0])有毒(load[1])
 			danger:{type:2,load:['31','32','33','34'],name:'Danger',code:['default','JKYT01','JKYT02','JKYT03']},//重大危险源监控
 			hidden:{type:3,load:['#DC143C30'],name:'Hidden'},//隐患排查 红色

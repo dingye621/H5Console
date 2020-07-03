@@ -103,6 +103,8 @@ var ip = globalConfig.ip;
 var h=$(window).height();
 $('#fix').css('bottom',h/2+'px');
 
+$('#fix2').css('bottom',(h/2-35)+'px');
+
 //播放视频监控
 async function playFlvFunc(cameraId)
 {
@@ -135,11 +137,15 @@ function drawTemplate()
 		var templateSelect= document.getElementById('templateSelect').innerHTML;
 		document.getElementById('fix').innerHTML = template(templateSelect,{data:null});
 	}
-	if(type==2&&document.getElementById('templateSelectDanger'))
+	else if(type==2&&document.getElementById('templateSelectDanger'))
 	{
 		var templateSelect= document.getElementById('templateSelectDanger').innerHTML;
 		document.getElementById('fix').innerHTML = template(templateSelect,{data:null});
 	}
+
+		var templateSelect2= document.getElementById('templateSelectOther').innerHTML;
+		document.getElementById('fix2').innerHTML = template(templateSelect2,{data:null});
+	
 }
 drawTemplate();
 
@@ -710,6 +716,7 @@ $('#clear').click(function(){
 	clearPotArea();
 });
 layerSelectHide();
+menuSelectHide();
 $('#layer-select').click(function(){
 	if(fixShow)
 	{
@@ -722,6 +729,16 @@ $('#layer-select').click(function(){
 		fixShow=true;
 	}
 });
+$('#menu-select').click(function(){
+	if($('.menu-select').css('visibility')=='hidden')
+	{
+		menuSelectShow();
+	}
+	else
+	{
+		menuSelectHide();
+	}
+});
 function layerSelectHide()
 {
 	//$('.layer-select').hide();
@@ -731,6 +748,14 @@ function layerSelectShow()
 {
 	//$('.layer-select').hide();
 	$('.layer-select').css('visibility','visible');
+}
+function menuSelectHide()
+{
+	$('.menu-select').css('visibility','hidden');
+}
+function menuSelectShow()
+{
+	$('.menu-select').css('visibility','visible');
 }
 //多选框属性默认为选中
 $("input[name='poison'],input[name='fire'],input[name='area']").prop('checked', true);
