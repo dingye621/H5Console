@@ -33,11 +33,12 @@ ul{
     position: relative;
     top:0px;
     left: 5px;
-    border:1px solid skyblue;
+    border:1px solid rgb(206, 205, 205);
     border-radius:5px;
     padding: 5px;
-    background-color: skyblue;
+    background-color: white;
     display: none;
+    opacity: 0.8;
 }
 .layer-select li{
     float: left;
@@ -89,13 +90,15 @@ ul{
     position: relative;
     top:0px;
     left: 5px;
-    border:1px solid skyblue;
+    border:1px solid rgb(206, 205, 205);
     border-radius:5px;
-    padding: 5px;
-    background-color: skyblue;
+    padding: 2px;
+    background-color: white;
     display: none;
+    opacity: 0.8;
 }
 .menu-select li{
     float: left;
-    margin:0px 10px 0px 10px;
+    margin:0px 3px 0px 3px;
+    padding-top: 10px !important;
 }
