@@ -5,6 +5,7 @@ var hist = req['history'];
 var la = req['la']; //纬度
 var lo = req['lo']; //经度
 var rtspU = req['cameraId'];
+var zoomReq = req['zoom'];
 var poisonArr = [true,true,true,true];
 
 window.onresize = function () {
@@ -143,9 +144,11 @@ function drawTemplate()
 		document.getElementById('fix').innerHTML = template(templateSelect,{data:null});
 	}
 
+	if(document.getElementById('templateSelectOther'))
+	{
 		var templateSelect2= document.getElementById('templateSelectOther').innerHTML;
 		document.getElementById('fix2').innerHTML = template(templateSelect2,{data:null});
-	
+	}
 }
 drawTemplate();
 
@@ -459,7 +462,7 @@ var tmap = new Mote.Map({
 	mode: "2d"
 })
 
-
+configAreaLayer.setMaxResolution(0.00003);
 function playFlv(url) {
 	var height = $(window).height;
      $("#videoElement").height(height);
@@ -637,6 +640,10 @@ function getAreaByName(names){
 function loadMapByLonLatZoom(){
 	//var lon = 119.02492270,lat = 33.38843574,zoom = 18;// minZoom 15,maxZoom 24
 	var lon = 119.02492270,lat = 33.38800574,zoom=18;
+	if(zoomReq)
+	{
+		zoom=zoomReq;
+	}
 	if(lo&&la)
 	{
 		lon=lo;
