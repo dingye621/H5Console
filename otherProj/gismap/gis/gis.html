@@ -412,5 +412,58 @@
 		</div>
     </ul>
 </script>
+<!--风险四色图览-->
+<script type="text/html" id="templateRisk">
+    <ul>
+		<div style="margin-top: 10px; margin-left: 10px; margin-right: 10px;">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-1" data-toggle="tab">基础信息</a></li>
+				<li><a href="#tab-2" data-toggle="tab">作业活动清单</a></li>
+				<li><a href="#tab-3" data-toggle="tab">设施设备清单</a></li>
+				<li><a href="#tab-4" data-toggle="tab">重大危险源监测</a></li>
+			</ul>
+			<div style="padding-top: 20px; margin-right: 30px;">
+				<div class="tab-content">
+					<div id="tab-1" class="tab-pane active">
+						<div class="panel-body">
+							<table class="table table-striped">
+								<tr><td>区域名称：</td><td><%= data.baseInfo.name %></td></tr>
+								<tr>
+									<td>风险等级：</td><td><%= data.baseInfo.level %></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div id="tab-2" class="tab-pane">
+						<table class="table table-striped t-body">
+							<tr>
+							<td>风险点</td><td>作业活动</td>
+							</tr>
+								<%for(var i = 0; i < data.workInfo.length; i++) {%>
+									<tr>
+										<td><%= data.workInfo[i].RiskObject %></td>
+										<td><%= data.workInfo[i].Device %></td>
+									</tr>
+								<%}%>
+						</table>
+					</div>
+					<div id="tab-3" class="tab-pane">
+						<table class="table table-striped t-body">
+							<tr>
+							<td>风险点</td><td>设施设备</td>
+							</tr>
+								<%for(var i = 0; i < data.deviceInfo.length; i++) {%>
+									<tr>
+										<td><%= data.deviceInfo[i].RiskObject %></td>
+										<td><%= data.deviceInfo[i].Device %></td>
+									</tr>
+								<%}%>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+    </ul>
+</script>
 </body>
 </html>

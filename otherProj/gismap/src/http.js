@@ -206,6 +206,38 @@ async function getHazardListPack()
     return [];
 }
 
+async function getHseAreaClassify(param)
+{
+    return await axios.get('http://' + globalConfig.hseDomain + '/service/rskm/getHseAreaClassify.action?code='+param);
+}
+
+async function getHseAreaClassifyPack(param)
+{
+    var res = await getHseAreaClassify(param);
+    if(res.data.data&&res.data.data.length>0)
+    {
+        return res.data.data;
+    }
+    layer.alert('数据请求失败');
+    return [];
+}
+
+async function getItemAreaClassify(param)
+{
+    return await axios.get('http://' + globalConfig.hseDomain + '/service/rskm/getItemAreaClassify.action?code='+param);
+}
+
+async function getItemAreaClassifyPack(param)
+{
+    var res = await getItemAreaClassify(param);
+    if(res.data.data&&res.data.data.length>0)
+    {
+        return res.data.data;
+    }
+    layer.alert('数据请求失败');
+    return [];
+}
+
 
 
 
