@@ -208,7 +208,7 @@ async function getHazardListPack()
 
 async function getHseAreaClassify(param)
 {
-    return await axios.get('http://' + globalConfig.hseDomain + '/service/rskm/getHseAreaClassify.action?code='+param);
+    return await axios.get('http://' + globalConfig.hseDomain + '/bpm/getHseAreaClassify.action?code='+param);
 }
 
 async function getHseAreaClassifyPack(param)
@@ -218,13 +218,13 @@ async function getHseAreaClassifyPack(param)
     {
         return res.data.data;
     }
-    layer.alert('数据请求失败');
+    //layer.alert('数据请求失败');
     return [];
 }
 
 async function getItemAreaClassify(param)
 {
-    return await axios.get('http://' + globalConfig.hseDomain + '/service/rskm/getItemAreaClassify.action?code='+param);
+    return await axios.get('http://' + globalConfig.hseDomain + '/bpm/getItemAreaClassify.action?code='+param);
 }
 
 async function getItemAreaClassifyPack(param)
@@ -234,7 +234,23 @@ async function getItemAreaClassifyPack(param)
     {
         return res.data.data;
     }
-    layer.alert('数据请求失败');
+    //layer.alert('数据请求失败');
+    return [];
+}
+
+async function getHseTagList(param)
+{
+    return await axios.get('http://' + globalConfig.ip + '/api/Tag/GetHseTagList?code='+param);
+}
+
+async function getHseTagListPack(param)
+{
+    var res = await getHseTagList(param);
+    if(res.data&&res.data.length>0)
+    {
+        return res.data;
+    }
+    //layer.alert('数据请求失败');
     return [];
 }
 

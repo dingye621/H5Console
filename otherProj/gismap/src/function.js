@@ -236,14 +236,16 @@ async function fitContent(info,layerName,layerType)
 			}
 	}
 	else if(globalConfig.risk.type==layerType){
-		console.log('code',info.remarks);
 		let baseRes=await getHseAreaClassifyPack(info.remarks);
 		let itemRes=await getItemAreaClassifyPack(info.remarks);
+		let tagRes=await getHseTagListPack(info.remarks);
+		console.log('tagRes',tagRes);
 		let level='/';
 		if(baseRes && baseRes.length>0)
 			level=riskRes[0].Name;
 		data={baseInfo:{name:info.name,level:level},workInfo:itemRes.filter(x=>x.TypeName==='作业活动')
-		,deviceInfo:itemRes.filter(x=>x.TypeName==='设施设备')};
+		,deviceInfo:itemRes.filter(x=>x.TypeName==='设施设备'),
+		tagInfo:tagRes};
 		//TypeName:作业活动 /设施设备    RiskObject Device
 	}
 	else if(globalConfig.work.type==layerType){

@@ -460,6 +460,19 @@
 								<%}%>
 						</table>
 					</div>
+					<div id="tab-4" class="tab-pane">
+						<table class="table table-striped t-body">
+							<tr>
+							<td>采集位号</td><td>实时数值</td>
+							</tr>
+								<%for(var i = 0; i < data.tagInfo.length; i++) {%>
+									<tr>
+										<td><%= data.tagInfo[i].tagName %></td>
+										<td><%= data.tagInfo[i].tagValue %></td>
+									</tr>
+								<%}%>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
