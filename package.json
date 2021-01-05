@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@jiaminghi/data-view": "^2.6.0",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^3.4.1",
     "datatables.net": "^1.10.16",
